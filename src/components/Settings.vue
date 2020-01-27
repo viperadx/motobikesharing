@@ -1,27 +1,15 @@
 <template>
   <v-container>
+    <v-layout text-center wrap>Active vehicle</v-layout>
+    <v-layout text-center wrap>Aici tre sa fie nr. de inmatriculare/bicicleta</v-layout>
     <v-layout text-center wrap>
-      Active vehicle
+      <router-link to="/changevehicle">Change vehicle</router-link>
     </v-layout>
-    <v-layout text-center wrap>
-      Aici tre sa fie nr. de inmatriculare/bicicleta (link catre schimbarea
-      vehicului)
-    </v-layout>
-    <v-layout text-center wrap>
-      Aplicatie navigare
-    </v-layout>
-    <v-layout text-center wrap>
-      Pornire automata (trigger)
-    </v-layout>
-    <v-layout text-center wrap>
-      Mod intunecat (trigger)
-    </v-layout>
-    <v-layout text-center wrap>
-      Campaigns
-    </v-layout>
-    <v-layout text-center wrap>
-      Rides
-    </v-layout>
+    <v-layout text-center wrap>Aplicatie navigare</v-layout>
+    <v-layout text-center wrap>Pornire automata (trigger)</v-layout>
+    <v-layout text-center wrap>Mod intunecat (trigger)</v-layout>
+    <v-layout text-center wrap>Nr versiune</v-layout>
+    <v-layout text-center wrap>Logout</v-layout>
   </v-container>
 </template>
 
