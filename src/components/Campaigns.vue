@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Campaigns",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

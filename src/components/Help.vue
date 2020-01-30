@@ -33,7 +33,9 @@
 <script>
 export default {
   name: "Help",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

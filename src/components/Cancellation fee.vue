@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Cancellation fee",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

@@ -12,7 +12,9 @@
 <script>
 export default {
   name: "Rides",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

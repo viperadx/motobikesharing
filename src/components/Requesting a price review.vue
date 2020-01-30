@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Requesting a price review",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

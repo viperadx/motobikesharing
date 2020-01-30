@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Passenger campaigns",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

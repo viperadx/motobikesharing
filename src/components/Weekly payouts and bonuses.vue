@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Weekly payouts and bonuses",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>
