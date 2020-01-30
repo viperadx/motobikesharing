@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "See all conversations",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

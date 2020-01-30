@@ -57,9 +57,11 @@ export default {
   props: {
     source: String
   },
-  data: () => ({
-    drawer: null
-  }),
+  data() {
+    return {
+      drawer: null
+    }
+  },
   created() {
     this.$vuetify.theme.dark = true;
   }

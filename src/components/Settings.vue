@@ -16,7 +16,9 @@
 <script>
 export default {
   name: "Settings",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Parking fees and tolls",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

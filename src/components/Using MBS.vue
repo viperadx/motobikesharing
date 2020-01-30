@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Using MBS",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

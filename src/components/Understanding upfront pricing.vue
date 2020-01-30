@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Understanding upfront pricing",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Account",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

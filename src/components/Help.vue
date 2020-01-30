@@ -12,7 +12,7 @@
       <router-link to="/helpwithrides">Help with rides</router-link>
     </v-layout>
     <v-layout text-center wrap>
-      <router-link to="/winnings">Winnings</router-link>
+      <router-link to="/earnings">Earnings</router-link>
     </v-layout>
     <v-layout text-center wrap>
       <router-link to="/technicalproblems">Technical problems</router-link>
@@ -33,7 +33,9 @@
 <script>
 export default {
   name: "Help",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

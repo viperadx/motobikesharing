@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Change vehicle",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

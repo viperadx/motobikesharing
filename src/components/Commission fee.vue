@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Commission fee",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>

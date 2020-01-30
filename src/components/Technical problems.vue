@@ -7,7 +7,9 @@
 <script>
 export default {
   name: "Technical problems",
-
-  data() {}
-};
+  data () {
+    return {
+    }
+  }
+}
 </script>
