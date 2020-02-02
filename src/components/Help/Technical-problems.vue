@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Technical problems",
-  data () {
-    return {
-    }
+  name: "Technical-problems",
+  data() {
+    return {};
   }
-}
+};
 </script>

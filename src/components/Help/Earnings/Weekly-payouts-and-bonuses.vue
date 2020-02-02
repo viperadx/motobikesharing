@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Weekly payouts and bonuses",
-  data () {
-    return {
-    }
+  name: "Weekly-payouts-and-bonuses",
+  data() {
+    return {};
   }
-}
+};
 </script>

@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Passenger campaigns",
-  data () {
-    return {
-    }
+  name: "Passenger-campaigns",
+  data() {
+    return {};
   }
-}
+};
 </script>

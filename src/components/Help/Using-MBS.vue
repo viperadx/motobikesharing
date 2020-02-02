@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Using MBS",
-  data () {
-    return {
-    }
+  name: "Using-MBS",
+  data() {
+    return {};
   }
-}
+};
 </script>

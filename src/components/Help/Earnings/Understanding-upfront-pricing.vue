@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Understanding upfront pricing",
-  data () {
-    return {
-    }
+  name: "Understanding-upfront-pricing",
+  data() {
+    return {};
   }
-}
+};
 </script>

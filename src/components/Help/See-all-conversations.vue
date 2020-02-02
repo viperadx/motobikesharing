@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "See all conversations",
-  data () {
-    return {
-    }
+  name: "See-all-conversations",
+  data() {
+    return {};
   }
-}
+};
 </script>

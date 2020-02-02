@@ -21,7 +21,7 @@
       <router-link to="/usingmbs">Using MBS</router-link>
     </v-layout>
     <v-layout text-center wrap>
-      <router-link to="/account">Account</router-link>
+      <router-link to="/accounthelp">Account</router-link>
     </v-layout>
     <v-layout text-center wrap>Conversations</v-layout>
     <v-layout text-center wrap>
@@ -33,9 +33,8 @@
 <script>
 export default {
   name: "Help",
-  data () {
-    return {
-    }
+  data() {
+    return {};
   }
-}
+};
 </script>

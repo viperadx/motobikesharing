@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Requesting a price review",
-  data () {
-    return {
-    }
+  name: "Requesting-a-price-review",
+  data() {
+    return {};
   }
-}
+};
 </script>

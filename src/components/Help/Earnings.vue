@@ -36,9 +36,8 @@
 <script>
 export default {
   name: "Earnings",
-  data () {
-    return {
-    }
+  data() {
+    return {};
   }
-}
+};
 </script>

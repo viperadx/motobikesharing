@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Commission fee",
-  data () {
-    return {
-    }
+  name: "Commission-fee",
+  data() {
+    return {};
   }
-}
+};
 </script>

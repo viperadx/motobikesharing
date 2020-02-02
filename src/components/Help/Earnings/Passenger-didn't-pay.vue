@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Passenger didn't pay",
-  data () {
-    return {
-    }
+  name: "Passenger-didn't-pay",
+  data() {
+    return {};
   }
-}
+};
 </script>

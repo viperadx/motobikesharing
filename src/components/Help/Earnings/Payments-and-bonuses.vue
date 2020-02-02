@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Payments and bonuses",
-  data () {
-    return {
-    }
+  name: "Payments-and-bonuses",
+  data() {
+    return {};
   }
-}
+};
 </script>

@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Driver paid wait time fees",
-  data () {
-    return {
-    }
+  name: "Driver-paid-wait-time-fees",
+  data() {
+    return {};
   }
-}
+};
 </script>

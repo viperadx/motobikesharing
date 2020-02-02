@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "Help with rides",
-  data () {
-    return {
-    }
+  name: "Help-with-rides",
+  data() {
+    return {};
   }
-}
+};
 </script>

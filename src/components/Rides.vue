@@ -6,15 +6,17 @@
       xx.xx;Statusul cursei(toate astea sa fie un link catre detaliile acestei
       curse)
     </v-layout>
+    <v-layout text-center wrap>
+      <router-link to="/Cursa1">Cursa 1</router-link>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
 export default {
   name: "Rides",
-  data () {
-    return {
-    }
+  data() {
+    return {};
   }
-}
+};
 </script>

@@ -6,10 +6,9 @@
 
 <script>
 export default {
-  name: "List all news",
-  data () {
-    return {
-    }
+  name: "List-all-news",
+  data() {
+    return {};
   }
-}
+};
 </script>

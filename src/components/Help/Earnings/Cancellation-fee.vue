@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <v-img :src="require('../assets/exemplu profil.jpeg')"></v-img>
+    <v-layout text-center wrap>test cancellation fee/test passed</v-layout>
   </v-container>
 </template>
 
 <script>
 export default {
-  name: "Account",
+  name: "Cancellation-fee",
   data() {
     return {};
   }
