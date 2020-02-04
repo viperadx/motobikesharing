@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: "Passenger-lost-an-item",
+  name: "Issues-with-order-notification",
   data() {
     return {};
   }

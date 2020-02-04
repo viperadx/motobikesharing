@@ -23,6 +23,9 @@
     <v-layout text-center wrap>
       <router-link to="/accounthelp">Account</router-link>
     </v-layout>
+    <v-layout text-center wrap>
+      <router-link to="/otherquestions">Other questions</router-link>
+    </v-layout>
     <v-layout text-center wrap>Conversations</v-layout>
     <v-layout text-center wrap>
       <router-link to="/seeallconversations">See all conversations</router-link>

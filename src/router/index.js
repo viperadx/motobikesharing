@@ -29,6 +29,7 @@ import Passengerlostanitem from "../components/Rides/Passenger-lost-an-item.vue"
 import Passengermisconduct from "../components/Rides/Passenger-misconduct.vue";
 import Reportinganaccidentorviolentbehaviour from "../components/Rides/Reporting-an-accident-or-violent-behaviour.vue";
 import Havingatechnicalissue from "../components/Rides/Having-a-technical-issue.vue";
+import Otherquestions from "../components/Help/Other-questions.vue";
 
 Vue.use(VueRouter);
 
@@ -178,6 +179,11 @@ export default new VueRouter({
       path: "/havingatechnicalissue",
       name: "Having-a-technical-issue",
       component: Havingatechnicalissue
+    },
+    {
+      path: "/otherquestions",
+      name: "Other-questions",
+      component: Otherquestions
     }
   ]
 });

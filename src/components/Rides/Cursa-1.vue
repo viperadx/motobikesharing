@@ -29,9 +29,10 @@
       <router-link to="/Requestingapricereview">Requesting a price review</router-link>
     </v-layout>
     <v-layout text-center wrap>
-      Aici tre sa mai adaug:
-      <br />Having a technical issue
-      <br />Other question (FAQ)
+      <router-link to="/technicalproblems">Technical problems</router-link>
+    </v-layout>
+    <v-layout text-center wrap>
+      <router-link to="/Otherquestions">Other questions</router-link>
     </v-layout>
   </v-container>
 </template>
