@@ -28,8 +28,11 @@ import Account from "../components/Account.vue";
 import Passengerlostanitem from "../components/Rides/Passenger-lost-an-item.vue";
 import Passengermisconduct from "../components/Rides/Passenger-misconduct.vue";
 import Reportinganaccidentorviolentbehaviour from "../components/Rides/Reporting-an-accident-or-violent-behaviour.vue";
-import Havingatechnicalissue from "../components/Rides/Having-a-technical-issue.vue";
+import Havingatechnicalissue from "../components/Help/Technical_problems/Having-a-technical-issue.vue";
 import Otherquestions from "../components/Help/Other-questions.vue";
+import Issueswithordernotification from "../components/Help/Technical_problems/Issues-with-order-notification.vue";
+import Updatesfordriverapp from "../components/Help/Technical_problems/Updates-for-driver-app.vue";
+import Devicerequirements from "../components/Help/Technical_problems/Device-requirements.vue";
 
 Vue.use(VueRouter);
 
@@ -184,6 +187,21 @@ export default new VueRouter({
       path: "/otherquestions",
       name: "Other-questions",
       component: Otherquestions
+    },
+    {
+      path: "/issueswithordernotification",
+      name: "Issues-with-order-notification",
+      component: Issueswithordernotification
+    },
+    {
+      path: "/updatesfordriverapp",
+      name: "Updates-for-driver-app",
+      component: Updatesfordriverapp
+    },
+    {
+      path: "/devicerequirements",
+      name: "Device-requirements",
+      component: Devicerequirements
     }
   ]
 });

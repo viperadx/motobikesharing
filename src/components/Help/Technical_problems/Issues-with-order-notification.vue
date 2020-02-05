@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>test passenger lost an item/test passed</v-layout>
+    <v-layout text-center wrap>test issues with order notification/test passed</v-layout>
   </v-container>
 </template>
 
