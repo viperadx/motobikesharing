@@ -9,30 +9,30 @@
     </v-layout>
     <v-layout text-center wrap>Need help?</v-layout>
     <v-layout text-center wrap>
-      <router-link to="/Passengerlostanitem">Passenger lost an item</router-link>
+      <router-link to="/passengerlostanitem">Passenger lost an item</router-link>
     </v-layout>
     <v-layout text-center wrap>
-      <router-link to="/Parkingfeesandtolls">Parking fees and tolls</router-link>
+      <router-link to="/parkingfeesandtolls">Parking fees and tolls</router-link>
     </v-layout>
     <v-layout text-center wrap>
-      <router-link to="/Passengermisconduct">Passenger misconduct</router-link>
+      <router-link to="/passengermisconduct">Passenger misconduct</router-link>
     </v-layout>
     <v-layout text-center wrap>
       <router-link
-        to="/Reportinganaccidentorviolentbehaviour"
+        to="/reportinganaccidentorviolentbehaviour"
       >Reporting an accident or violent behavior</router-link>
     </v-layout>
     <v-layout text-center wrap>
-      <router-link to="/Havingatechnicalissue">Having a technical issue</router-link>
+      <router-link to="/havingatechnicalissue">Having a technical issue</router-link>
     </v-layout>
     <v-layout text-center wrap>
-      <router-link to="/Requestingapricereview">Requesting a price review</router-link>
+      <router-link to="/requestingapricereview">Requesting a price review</router-link>
     </v-layout>
     <v-layout text-center wrap>
       <router-link to="/technicalproblems">Technical problems</router-link>
     </v-layout>
     <v-layout text-center wrap>
-      <router-link to="/Otherquestions">Other questions</router-link>
+      <router-link to="/otherquestions">Other questions</router-link>
     </v-layout>
   </v-container>
 </template>
