@@ -35,7 +35,7 @@
 
 <script>
 export default {
-  name: "Earnings",
+  name: "Earnings-help",
   data() {
     return {};
   }

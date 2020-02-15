@@ -18,12 +18,12 @@
             <v-list-item-title>Account</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/help">
+        <v-list-item link to="/earnings">
           <v-list-item-action>
-            <v-icon>mdi-help-circle</v-icon>
+            <v-icon>mdi-cash</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Help</v-list-item-title>
+            <v-list-item-title>Earnings</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link to="/rides">
@@ -32,6 +32,14 @@
           </v-list-item-action>
           <v-list-item-content>
             <v-list-item-title>Rides</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link to="/help">
+          <v-list-item-action>
+            <v-icon>mdi-help-circle</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Help</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item link to="/settings">

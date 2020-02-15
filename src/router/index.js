@@ -7,22 +7,22 @@ import Rides from "../components/Rides.vue";
 import Listallnews from "../components/Help/List-all-news.vue";
 import Campaigns from "../components/Help/Campaigns.vue";
 import Helpwithrides from "../components/Help/Help-with-rides.vue";
-import Earnings from "../components/Help/Earnings.vue";
+import Earningshelp from "../components/Help/Earnings-help.vue";
 import Technicalproblems from "../components/Help/Technical-problems.vue";
 import Usingmbs from "../components/Help/Using-MBS.vue";
 import Accounthelp from "../components/Help/Account-help.vue";
 import Seeallconversations from "../components/Help/See-all-conversations.vue";
 import Changevehicle from "../components/Account/Change-vehicle.vue";
-import Passengerdidntpay from "../components/Help/Earnings/Passenger-didn't-pay.vue";
-import Paymentsandbonuses from "../components/Help/Earnings/Payments-and-bonuses.vue";
-import Passengercampaigns from "../components/Help/Earnings/Passenger-campaigns.vue";
-import Driverpaidwaittimefees from "../components/Help/Earnings/Driver-paid-wait-time-fees.vue";
-import Cancellationfee from "../components/Help/Earnings/Cancellation-fee.vue";
-import Requestingapricereview from "../components/Help/Earnings/Requesting-a-price-review.vue";
-import Weeklypayoutsandbonuses from "../components/Help/Earnings/Weekly-payouts-and-bonuses.vue";
-import Understandingupfrontpricing from "../components/Help/Earnings/Understanding-upfront-pricing.vue";
-import Commissionfee from "../components/Help/Earnings/Commission-fee.vue";
-import Parkingfeesandtolls from "../components/Help/Earnings/Parking-fees-and-tolls.vue";
+import Passengerdidntpay from "../components/Help/Earnings_help/Passenger-didn't-pay.vue";
+import Paymentsandbonuses from "../components/Help/Earnings_help/Payments-and-bonuses.vue";
+import Passengercampaigns from "../components/Help/Earnings_help/Passenger-campaigns.vue";
+import Driverpaidwaittimefees from "../components/Help/Earnings_help/Driver-paid-wait-time-fees.vue";
+import Cancellationfee from "../components/Help/Earnings_help/Cancellation-fee.vue";
+import Requestingapricereview from "../components/Help/Earnings_help/Requesting-a-price-review.vue";
+import Weeklypayoutsandbonuses from "../components/Help/Earnings_help/Weekly-payouts-and-bonuses.vue";
+import Understandingupfrontpricing from "../components/Help/Earnings_help/Understanding-upfront-pricing.vue";
+import Commissionfee from "../components/Help/Earnings_help/Commission-fee.vue";
+import Parkingfeesandtolls from "../components/Help/Earnings_help/Parking-fees-and-tolls.vue";
 import Cursa1 from "../components/Rides/Cursa-1.vue";
 import Account from "../components/Account.vue";
 import Passengerlostanitem from "../components/Help/Using_MBS/Passenger-lost-an-item.vue";
@@ -63,6 +63,7 @@ import Deletingyouraccount from "../components/Help/Account/Deleting-your-accoun
 import Documents from "../components/Account/Documents.vue";
 import Accountdetails from "../components/Account/Account-details.vue";
 import Bankdetails from "../components/Account/Bank-details.vue";
+import Earnings from "../components/Earnings.vue";
 
 Vue.use(VueRouter);
 
@@ -104,9 +105,9 @@ export default new VueRouter({
       component: Helpwithrides
     },
     {
-      path: "/earnings",
-      name: "Earnings",
-      component: Earnings
+      path: "/earningshelp",
+      name: "Earnings-help",
+      component: Earningshelp
     },
     {
       path: "/technicalproblems",
@@ -382,6 +383,11 @@ export default new VueRouter({
       path: "/bankdetails",
       name: "Bank-details",
       component: Bankdetails
+    },
+    {
+      path: "/earnings",
+      name: "Earnings",
+      component: Earnings
     }
   ]
 });
