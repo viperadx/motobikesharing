@@ -9,6 +9,10 @@ export default {
   name: "Updating-your-account-details",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

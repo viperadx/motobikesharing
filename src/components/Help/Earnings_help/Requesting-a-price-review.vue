@@ -9,6 +9,10 @@ export default {
   name: "Requesting-a-price-review",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

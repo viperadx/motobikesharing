@@ -9,6 +9,10 @@ export default {
   name: "Passenger-campaigns",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

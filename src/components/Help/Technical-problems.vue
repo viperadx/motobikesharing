@@ -21,6 +21,10 @@ export default {
   name: "Technical-problems",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

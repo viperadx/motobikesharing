@@ -23,6 +23,10 @@ export default {
   name: "Account",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

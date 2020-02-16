@@ -9,6 +9,10 @@ export default {
   name: "Help-with-rides",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

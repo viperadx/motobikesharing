@@ -13,6 +13,10 @@ export default {
   name: "Settings",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

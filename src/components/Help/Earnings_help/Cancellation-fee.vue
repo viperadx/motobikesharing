@@ -9,6 +9,10 @@ export default {
   name: "Cancellation-fee",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

@@ -9,6 +9,10 @@ export default {
   name: "Having-a-technical-issue",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

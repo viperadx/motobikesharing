@@ -9,6 +9,10 @@ export default {
   name: "Understanding-upfront-pricing",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

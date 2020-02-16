@@ -9,6 +9,10 @@ export default {
   name: "See-all-conversations",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

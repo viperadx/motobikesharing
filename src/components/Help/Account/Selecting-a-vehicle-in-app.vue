@@ -9,6 +9,10 @@ export default {
   name: "Selecting-a-vehicle-in-app",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

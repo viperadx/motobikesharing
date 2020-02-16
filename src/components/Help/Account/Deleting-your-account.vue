@@ -9,6 +9,10 @@ export default {
   name: "Deleting-your-account",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

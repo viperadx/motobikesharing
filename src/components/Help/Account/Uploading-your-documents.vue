@@ -9,6 +9,10 @@ export default {
   name: "Uploading-your-documents",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

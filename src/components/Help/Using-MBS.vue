@@ -70,6 +70,10 @@ export default {
   name: "Using-MBS",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

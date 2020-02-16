@@ -9,6 +9,10 @@ export default {
   name: "Collecting-and-processing-personal-data",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

@@ -9,6 +9,10 @@ export default {
   name: "Earnings",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

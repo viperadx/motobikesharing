@@ -9,6 +9,10 @@ export default {
   name: "List-all-news",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

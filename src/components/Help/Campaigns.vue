@@ -7,9 +7,12 @@
 <script>
 export default {
   name: "Campaigns",
-  data () {
-    return {
-    }
-  }
-}
+  data() {
+    return {};
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
+};
 </script>

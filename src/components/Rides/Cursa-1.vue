@@ -42,6 +42,10 @@ export default {
   name: "Cursa-1",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

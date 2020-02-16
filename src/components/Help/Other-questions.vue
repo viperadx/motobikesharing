@@ -22,6 +22,10 @@ export default {
   name: "Other-questions",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

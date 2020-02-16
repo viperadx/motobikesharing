@@ -9,6 +9,10 @@ export default {
   name: "Device-requirements",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

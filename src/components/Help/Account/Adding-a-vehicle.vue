@@ -9,6 +9,10 @@ export default {
   name: "Adding-a-vehicle",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

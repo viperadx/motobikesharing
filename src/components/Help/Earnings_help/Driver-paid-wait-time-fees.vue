@@ -9,6 +9,10 @@ export default {
   name: "Driver-paid-wait-time-fees",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

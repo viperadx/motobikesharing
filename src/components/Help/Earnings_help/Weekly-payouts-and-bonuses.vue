@@ -9,6 +9,10 @@ export default {
   name: "Weekly-payouts-and-bonuses",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

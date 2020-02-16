@@ -9,6 +9,10 @@ export default {
   name: "Reasons-for-a-blocked-account",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

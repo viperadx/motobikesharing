@@ -9,6 +9,10 @@ export default {
   name: "Payments-and-bonuses",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

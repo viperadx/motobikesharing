@@ -9,6 +9,10 @@ export default {
   name: "Issues-with-order-notification",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

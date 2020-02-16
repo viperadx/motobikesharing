@@ -38,6 +38,10 @@ export default {
   name: "Help",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

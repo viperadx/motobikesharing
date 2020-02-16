@@ -9,6 +9,10 @@ export default {
   name: "Requesting-your-data",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

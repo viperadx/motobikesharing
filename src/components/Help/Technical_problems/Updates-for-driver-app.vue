@@ -9,6 +9,10 @@ export default {
   name: "Updates-for-driver-app",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

@@ -9,6 +9,10 @@ export default {
   name: "Commission-fee",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

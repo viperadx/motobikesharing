@@ -38,6 +38,10 @@ export default {
   name: "Earnings-help",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

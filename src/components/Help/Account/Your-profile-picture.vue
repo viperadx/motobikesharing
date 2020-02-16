@@ -9,6 +9,10 @@ export default {
   name: "Your-profile-picture",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

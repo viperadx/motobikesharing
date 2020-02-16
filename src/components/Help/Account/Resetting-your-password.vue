@@ -9,6 +9,10 @@ export default {
   name: "Resetting-your-password",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

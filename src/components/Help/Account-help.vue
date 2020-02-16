@@ -42,6 +42,10 @@ export default {
   name: "Account-help",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>
