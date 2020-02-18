@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>test having a technical issue/test passed</v-layout>
+    <v-layout text-center wrap>{{ text }}</v-layout>
   </v-container>
 </template>
 
@@ -10,7 +10,12 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    text() {
+      return this.$store.getters.allTextsGetter.TechnicalProblems
+        .havingAtechnicalIssue;
+    }
+  },
   methods: {},
   created() {},
   mounted() {}

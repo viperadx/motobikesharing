@@ -13,10 +13,3 @@ const firebaseConfig = {
 };
 
 export default firebase.initializeApp(firebaseConfig);
-
-firebase
-  .database()
-  .ref("/Drivers/idDriver")
-  .on("value", snap => {
-    console.log(snap.val());
-  });

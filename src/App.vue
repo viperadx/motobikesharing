@@ -80,6 +80,7 @@ export default {
   },
   created() {
     this.$vuetify.theme.dark = true;
+    this.$store.dispatch('readAllTexts')
   }
 };
 </script>
