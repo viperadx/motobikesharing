@@ -12,8 +12,7 @@ export default {
   },
   computed: {
     text() {
-      return this.$store.getters.allTextsGetter.TechnicalProblems
-        .selectingAvehicleInApp;
+      return this.$store.getters.allTextsGetter.Account.selectingAvehicleInApp;
     }
   },
   methods: {},

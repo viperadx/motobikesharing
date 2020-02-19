@@ -1,6 +1,11 @@
 <template>
   <v-container>
-    <v-img :src="require('../assets/exemplu profil.jpeg')"></v-img>
+    <div v-if="!userCanEdit">{{ driverData | json}}</div>
+    <div v-if="userCanEdit">
+      <v-text-field :v-model="name"></v-text-field>
+    </div>
+    <v-btn @click="faCeva()">{{ userCanEdit ? 'Save' : 'Editeaza'}}</v-btn>
+    <!-- <v-img :src="require('../assets/exemplu profil.jpeg')"></v-img> -->
     <v-layout text-center wrap>Active vehicle</v-layout>
     <v-layout text-center wrap>Aici tre sa fie nr. de inmatriculare/bicicleta</v-layout>
     <v-layout text-center wrap>
@@ -22,11 +27,35 @@
 export default {
   name: "Account",
   data() {
-    return {};
+    return {
+      name: "",
+      userCanEdit: false
+    };
   },
-  computed: {},
-  methods: {},
-  created() {},
-  mounted() {}
+  computed: {
+    userData() {
+      return this.$store.getters.userDataGetter
+        ? this.$store.getters.userDataGetter
+        : "";
+    },
+    driverData() {
+      return this.$store.getters.presentDriverDataGetter
+        ? this.$store.getters.presentDriverDataGetter
+        : "";
+    }
+  },
+  methods: {
+    faCeva() {
+      this.userCanEdit = !this.userCanEdit;
+    }
+  },
+  created() {
+    this.$store.dispatch("readUserDataByUserID", "idUser");
+    this.$store.dispatch("readDriverDetailsByUserID", "idUser");
+  },
+  mounted() {
+    // eslint-disable-next-line no-console
+    console.log(this.$store.getters.allDriversDataGetter);
+  }
 };
 </script>

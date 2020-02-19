@@ -1,9 +1,6 @@
 <template>
   <v-container>
     <v-layout text-center wrap>
-      <router-link to="/passengerdidntpay">Passenger didn't pay or paid less</router-link>
-    </v-layout>
-    <v-layout text-center wrap>
       <router-link to="/paymentsandbonuses">Payments and bonuses</router-link>
     </v-layout>
     <v-layout text-center wrap>

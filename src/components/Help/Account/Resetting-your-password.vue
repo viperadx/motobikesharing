@@ -12,8 +12,7 @@ export default {
   },
   computed: {
     text() {
-      return this.$store.getters.allTextsGetter.TechnicalProblems
-        .resettingYourPassword;
+      return this.$store.getters.allTextsGetter.Account.resettingYourPassword;
     }
   },
   methods: {},

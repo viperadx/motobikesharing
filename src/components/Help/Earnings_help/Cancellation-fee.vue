@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>test cancellation fee/test passed</v-layout>
+    <v-layout text-center wrap>{{ text }}</v-layout>
   </v-container>
 </template>
 
@@ -10,7 +10,11 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    text() {
+      return this.$store.getters.allTextsGetter.Earnings.cancellationFee;
+    }
+  },
   methods: {},
   created() {},
   mounted() {}

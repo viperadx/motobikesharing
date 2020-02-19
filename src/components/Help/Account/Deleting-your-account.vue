@@ -12,8 +12,7 @@ export default {
   },
   computed: {
     text() {
-      return this.$store.getters.allTextsGetter.TechnicalProblems
-        .deletingYourAccount;
+      return this.$store.getters.allTextsGetter.Account.deletingYourAccount;
     }
   },
   methods: {},

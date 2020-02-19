@@ -13,7 +13,6 @@ import Usingmbs from "../components/Help/Using-MBS.vue";
 import Accounthelp from "../components/Help/Account-help.vue";
 import Seeallconversations from "../components/Help/See-all-conversations.vue";
 import Changevehicle from "../components/Account/Change-vehicle.vue";
-import Passengerdidntpay from "../components/Help/Earnings_help/Passenger-didn't-pay.vue";
 import Paymentsandbonuses from "../components/Help/Earnings_help/Payments-and-bonuses.vue";
 import Passengercampaigns from "../components/Help/Earnings_help/Passenger-campaigns.vue";
 import Driverpaidwaittimefees from "../components/Help/Earnings_help/Driver-paid-wait-time-fees.vue";
@@ -133,11 +132,6 @@ export default new VueRouter({
       path: "/changevehicle",
       name: "Change-vehicle",
       component: Changevehicle
-    },
-    {
-      path: "/passengerdidntpay",
-      name: "Passenger-didn't-pay",
-      component: Passengerdidntpay
     },
     {
       path: "/paymentsandbonuses",

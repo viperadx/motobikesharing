@@ -12,8 +12,7 @@ export default {
   },
   computed: {
     text() {
-      return this.$store.getters.allTextsGetter.TechnicalProblems
-        .updatingYourBankDetails;
+      return this.$store.getters.allTextsGetter.Account.updatingYourBankDetails;
     }
   },
   methods: {},
