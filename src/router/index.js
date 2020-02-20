@@ -63,6 +63,8 @@ import Documents from "../components/Account/Documents.vue";
 import Accountdetails from "../components/Account/Account-details.vue";
 import Bankdetails from "../components/Account/Bank-details.vue";
 import Earnings from "../components/Earnings.vue";
+import Signup from "../components/Authentication/Sign-up.vue";
+import Login from "../components/Authentication/Login.vue";
 
 Vue.use(VueRouter);
 
@@ -382,6 +384,16 @@ export default new VueRouter({
       path: "/earnings",
       name: "Earnings",
       component: Earnings
+    },
+    {
+      path: "/signup",
+      name: "Sign-up",
+      component: Signup
+    },
+    {
+      path: "/login",
+      name: "Login",
+      component: Login
     }
   ]
 });

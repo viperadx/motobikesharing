@@ -9,6 +9,10 @@ export default {
   name: "Documents",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

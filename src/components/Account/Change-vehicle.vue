@@ -9,6 +9,10 @@ export default {
   name: "Change-vehicle",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>

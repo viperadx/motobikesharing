@@ -1,10 +1,11 @@
 <template>
   <v-container>
-    <div v-if="!userCanEdit">{{ driverData | json}}</div>
+    <div>{{ userData | json}}</div>
+    <div v-if="!userCanEdit">{{ userData | json}}</div>
     <div v-if="userCanEdit">
       <v-text-field :v-model="name"></v-text-field>
     </div>
-    <v-btn @click="faCeva()">{{ userCanEdit ? 'Save' : 'Editeaza'}}</v-btn>
+    <v-btn @click="faCeva()">{{ userCanEdit ? 'Save' : 'Edit'}}</v-btn>
     <!-- <v-img :src="require('../assets/exemplu profil.jpeg')"></v-img> -->
     <v-layout text-center wrap>Active vehicle</v-layout>
     <v-layout text-center wrap>Aici tre sa fie nr. de inmatriculare/bicicleta</v-layout>

@@ -9,6 +9,10 @@ export default {
   name: "Bank-details",
   data() {
     return {};
-  }
+  },
+  computed: {},
+  methods: {},
+  created() {},
+  mounted() {}
 };
 </script>
