@@ -3,47 +3,27 @@
     <div>{{ userData.email }}</div>
     <v-col cols="12" sm="6" md="3">
       <v-text-field
-        label="First Name"
+        label="Average Rating"
         outlined
-        :readonly="readonlyData"
-        :value="userData.firstName"
+        readonly="readonlyData"
+        :value="userData.avgRating"
       ></v-text-field>
       <v-text-field
-        label="Last Name"
+        label="Number of Rides"
         outlined
-        :readonly="readonlyData"
-        :value="userData.lastName"
-      ></v-text-field>
-      <v-text-field
-        label="Email"
-        outlined
-        v-if="driverData"
-        :readonly="readonlyData"
-        :value="userData.email"
-      ></v-text-field>
-      <v-text-field
-        label="Phone number"
-        outlined
-        :readonly="readonlyData"
-        :value="userData.phoneNumber"
+        readonly="readonlyData"
+        :value="userData.noOfRides"
       ></v-text-field>
     </v-col>
-
-    {{ driverData ? "da" : "nu" }}
-    <v-btn @click="faCeva()">{{ readonlyData ? "Edit" : "Save" }}</v-btn>
-    <!-- <v-img :src="require('../assets/exemplu profil.jpeg')"></v-img> -->
-    <v-layout text-center wrap>Active vehicle</v-layout>
-    <v-layout text-center wrap
-      >Aici tre sa fie nr. de inmatriculare/bicicleta</v-layout
-    >
+    <v-layout text-center wrap>aici tre sa mai adaug pie chart uri etc</v-layout>
+    <v-layout text-center wrap>
+      <router-link to="/accountdetails">Account details</router-link>
+    </v-layout>
     <v-layout text-center wrap>
       <router-link to="/changevehicle">Change vehicle</router-link>
     </v-layout>
     <v-layout text-center wrap>
       <router-link to="/documents">Documents</router-link>
-    </v-layout>
-    <v-layout text-center wrap>
-      <router-link to="/accountdetails">Account details</router-link>
     </v-layout>
     <v-layout text-center wrap>
       <router-link to="/bankdetails">Bank details</router-link>

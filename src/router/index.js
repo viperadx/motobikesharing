@@ -72,15 +72,15 @@ Vue.use(VueRouter);
 export default new VueRouter({
   routes: [
     {
-      path: "/",
-      name: "Home",
-      component: Home,
-      beforeEnter: AuthGuard
-    },
-    {
       path: "/help",
       name: "Help",
       component: Help
+    },
+    {
+      path: "/Home",
+      name: "Home",
+      component: Home,
+      beforeEnter: AuthGuard
     },
     {
       path: "/settings",

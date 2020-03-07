@@ -10,13 +10,11 @@
           placeholder="Search..."
           country="ro"
           enable-geolocation
-          types="establishment"
+          types="address"
           v-on:placechanged="getAddressData"
         ></vue-google-autocomplete>
         <div class="custom-search-icons">
-          <v-icon @click="clearSearch()" class="custom-search-erase"
-            >mdi-close</v-icon
-          >
+          <v-icon @click="clearSearch()" class="custom-search-erase">mdi-close</v-icon>
           <v-icon color="green" @click="search()">mdi-magnify</v-icon>
         </div>
       </v-card>
@@ -122,7 +120,7 @@ export default {
         const request = {
           origin: this.defaultLocation,
           destination: this.destination.geometry.location,
-          travelMode: "TRANSIT"
+          travelMode: "DRIVING"
         };
         this.directions.service.route(request, (response, status) => {
           if (status === "OK") {
