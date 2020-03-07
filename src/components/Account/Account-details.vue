@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <div>{{ userData.email }}</div>
     <v-col cols="12" sm="6" md="3">
       <v-text-field
         label="First Name"
