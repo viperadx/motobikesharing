@@ -65,6 +65,7 @@ import Bankdetails from "../components/Account/Bank-details.vue";
 import Earnings from "../components/Earnings.vue";
 import Signup from "../components/Authentication/Sign-up.vue";
 import Login from "../components/Authentication/Login.vue";
+import AuthGuard from "../router/AuthGuard";
 
 Vue.use(VueRouter);
 
@@ -73,7 +74,8 @@ export default new VueRouter({
     {
       path: "/",
       name: "Home",
-      component: Home
+      component: Home,
+      beforeEnter: AuthGuard
     },
     {
       path: "/help",

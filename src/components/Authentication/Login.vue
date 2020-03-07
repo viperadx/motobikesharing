@@ -1,6 +1,11 @@
 <template>
   <v-container>
-    <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+    <v-text-field
+      v-model="email"
+      :rules="emailRules"
+      label="E-mail"
+      required
+    ></v-text-field>
     <v-text-field
       v-model="password"
       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -13,7 +18,7 @@
       @click:append="show1 = !show1"
     ></v-text-field>
 
-    <v-btn color="success" class="mr-4" @click="submit">Login</v-btn>
+    <v-btn color="success" class="mr-4" @click="submit()">Login</v-btn>
   </v-container>
 </template>
 
@@ -22,6 +27,7 @@ export default {
   name: "Login",
   data: () => ({
     email: "",
+    password: "",
     emailRules: [
       v => !!v || "E-mail is required",
       v => /.+@.+\..+/.test(v) || "E-mail must be valid"
@@ -33,7 +39,9 @@ export default {
       passwordMatch: () => "The password you entered doesn' t match"
     },
     computed: {},
-    methods: { submit() {} },
+    methods: {
+      submit() {}
+    },
     created: {},
     mounted: {}
   })
