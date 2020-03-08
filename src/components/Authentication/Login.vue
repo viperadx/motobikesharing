@@ -1,11 +1,6 @@
 <template>
   <v-container>
-    <v-text-field
-      v-model="email"
-      :rules="emailRules"
-      label="E-mail"
-      required
-    ></v-text-field>
+    <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
     <v-text-field
       v-model="password"
       :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
@@ -19,6 +14,11 @@
     ></v-text-field>
 
     <v-btn color="success" class="mr-4" @click="submit()">Login</v-btn>
+
+    <v-layout text-center wrap>
+      New user?
+      <router-link to="/signup">Sign up now!</router-link>
+    </v-layout>
   </v-container>
 </template>
 

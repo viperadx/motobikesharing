@@ -66,6 +66,7 @@ import Earnings from "../components/Earnings.vue";
 import Signup from "../components/Authentication/Sign-up.vue";
 import Login from "../components/Authentication/Login.vue";
 import AuthGuard from "../router/AuthGuard";
+import TermsandConditions from "../components/GDPR/Terms-and-Conditions.vue";
 
 Vue.use(VueRouter);
 
@@ -396,6 +397,11 @@ export default new VueRouter({
       path: "/login",
       name: "Login",
       component: Login
+    },
+    {
+      path: "/termsandconditions",
+      name: "Terms-and-Conditions",
+      component: TermsandConditions
     }
   ]
 });

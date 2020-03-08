@@ -44,18 +44,30 @@
       counter
       @click:append="show2 = !show2"
     ></v-text-field>
-    <v-checkbox
-      v-model="checkbox"
-      :rules="[v => !!v || 'You must agree to continue!']"
-      label="Do you agree?"
-      required
-    ></v-checkbox>
+    <v-checkbox v-model="checkbox" :rules="[v => !!v || 'You must agree to continue!']">
+      <template v-slot:label>
+        <div>
+          I agree to the
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on }">
+              <a
+                target="_blank"
+                href="http://localhost:8080/#/termsandconditions"
+                @click.stop
+                v-on="on"
+              >Terms and Conditions</a>
+            </template>
+            Opens in new window
+          </v-tooltip>
+        </div>
+      </template>
+    </v-checkbox>
 
-    <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Validate</v-btn>
+    <v-btn :disabled="!valid" color="success" class="mr-4" @click="validate">Register</v-btn>
 
     <v-btn color="error" class="mr-4" @click="reset">Reset Form</v-btn>
 
-    <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn>
+    <!-- <v-btn color="warning" @click="resetValidation">Reset Validation</v-btn> -->
   </v-form>
 </template>
 
