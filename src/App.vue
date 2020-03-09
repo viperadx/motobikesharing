@@ -81,6 +81,7 @@ export default {
   created() {
     this.$vuetify.theme.dark = true;
     this.$store.dispatch("readAllTexts");
+    this.$store.dispatch("AuthChange");
   }
 };
 </script>

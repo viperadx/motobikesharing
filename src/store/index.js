@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 import Vue from "vue";
 import Vuex from "vuex";
-import firebase from "@/firebase";
+import firebase from "firebase/app";
+import router from "@/router";
 
 Vue.use(Vuex);
 
@@ -9,19 +10,27 @@ export default new Vuex.Store({
   state: {
     driverData: null,
     userData: null,
+    loggedInUserData: null,
     allDriversData: [],
     allRatingsData: [],
     allRidesData: [],
     allUsersData: [],
     allTexts: null,
+    user: null,
     presentDriverData: null
   },
   mutations: {
+    setUser: (state, payload) => {
+      state.user = payload;
+    },
     setDriverData(state, payload) {
       state.driverData = payload;
     },
     setUserData(state, payload) {
       state.userData = payload;
+    },
+    setloggedInUserData(state, payload) {
+      state.loggedInUserData = payload;
     },
     setAllDriversData(state, payload) {
       state.allDriversData = payload;
@@ -43,6 +52,53 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    AuthChange({ commit }) {
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          commit("setUser", user.uid);
+          firebase
+            .database()
+            .ref("Users/" + this.state.user.uid)
+            .on(
+              "value",
+              snap => {
+                commit("setloggedInUserData", snap.val());
+              },
+              function(error) {
+                console.log("Error: " + error.message);
+              }
+            );
+        } else {
+          commit("setUser", null);
+        }
+      });
+    },
+    signUp({ commit }, payload) {
+      firebase
+        .auth()
+        .createUserWithEmailAndPassword(payload.email, payload.password)
+        .then(user => {
+          commit("setUser", user.uid);
+          router.push({ path: "/" });
+          firebase
+            .database()
+            .ref("/Users/" + user.user.uid)
+            .set({
+              Name: payload.nume,
+              Surname: payload.prenume,
+              Locality: payload.localitate,
+              // BirthDate: payload.datana,
+              Email: payload.email,
+              Collaborations: "",
+              Admin: false,
+              GDPR: false,
+              phone: payload.phone
+            });
+        })
+        .catch(error => {
+          window.alert(error);
+        });
+    },
     readDriverDataByDriverID({ commit }, payload) {
       firebase
         .database()
@@ -126,6 +182,7 @@ export default new Vuex.Store({
     allRidesDataGetter: state => state.allRidesData,
     allUsersDataGetter: state => state.allUsersData,
     allTextsGetter: state => state.allTexts,
-    presentDriverDataGetter: state => state.presentDriverData
+    presentDriverDataGetter: state => state.presentDriverData,
+    user: state => state.user
   }
 });
