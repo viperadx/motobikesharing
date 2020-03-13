@@ -50,14 +50,6 @@
             <v-list-item-title>Settings</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item @click="onSignOut" v-if="user">
-          <v-list-item-action>
-            <v-icon>mdi-settings</v-icon>
-          </v-list-item-action>
-          <v-list-item-content>
-            <v-list-item-title>Logout</v-list-item-title>
-          </v-list-item-content>
-        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -85,16 +77,6 @@ export default {
     return {
       drawer: null
     };
-  },
-  computed: {
-    user() {
-      return this.$store.getters.user;
-    }
-  },
-  methods: {
-    onSignOut() {
-      this.$store.dispatch("signOut");
-    }
   },
   created() {
     this.$vuetify.theme.dark = true;

@@ -52,51 +52,13 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    signOut({ commit }) {
-      firebase
-        .auth()
-        .signOut()
-        .then(function() {
-          commit("setUser", null);
-          commit("setloggedInUserData", null);
-          router.push({ path: "/" });
-        })
-        .catch(error => {
-          window.alert(error.message);
-        });
-    },
-    signIn({ commit }, payload) {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(payload.email, payload.password)
-        .then(details => {
-          console.log(details);
-          commit("setUser", details.user.uid);
-          firebase
-            .database()
-            .ref("Users/" + details.user.uid)
-            .on(
-              "value",
-              snap => {
-                commit("setloggedInUserData", snap.val());
-              },
-              function(error) {
-                console.log("Error: " + error.message);
-              }
-            );
-          router.push({ path: "/" });
-        })
-        .catch(error => {
-          window.alert(error.message);
-        });
-    },
     AuthChange({ commit }) {
-      firebase.auth().onAuthStateChanged(details => {
-        if (details) {
-          commit("setUser", details.uid);
+      firebase.auth().onAuthStateChanged(user => {
+        if (user) {
+          commit("setUser", user.uid);
           firebase
             .database()
-            .ref("Users/" + details.uid)
+            .ref("Users/" + this.state.user.uid)
             .on(
               "value",
               snap => {
@@ -115,12 +77,12 @@ export default new Vuex.Store({
       firebase
         .auth()
         .createUserWithEmailAndPassword(payload.email, payload.password)
-        .then(details => {
-          commit("setUser", details.user.uid);
+        .then(user => {
+          commit("setUser", user.uid);
           router.push({ path: "/" });
           firebase
             .database()
-            .ref("/Users/" + details.user.uid)
+            .ref("/Users/" + user.user.uid)
             .set({
               Name: payload.nume,
               Surname: payload.prenume,
@@ -221,7 +183,6 @@ export default new Vuex.Store({
     allUsersDataGetter: state => state.allUsersData,
     allTextsGetter: state => state.allTexts,
     presentDriverDataGetter: state => state.presentDriverData,
-    user: state => state.user,
-    loggedInUserData: state => state.loggedInUserData
+    user: state => state.user
   }
 });
