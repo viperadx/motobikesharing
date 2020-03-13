@@ -28,6 +28,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 import VueGoogleAutocomplete from "vue-google-autocomplete";
 export default {
   name: "Home",
@@ -124,6 +125,8 @@ export default {
         };
         this.directions.service.route(request, (response, status) => {
           if (status === "OK") {
+            console.log(response.routes[0].legs[0].distance.text)
+            console.log(response.routes[0].legs[0].duration.text)
             this.directions.display.setDirections(response);
           } else {
             window.alert("Directions request failed due to " + status);
