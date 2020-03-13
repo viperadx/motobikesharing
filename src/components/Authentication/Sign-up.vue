@@ -2,8 +2,7 @@
   <v-card>
     <v-card-title
       style="background: linear-gradient(to right, #433d6b , #f86c5c);color: white;"
-      >Crează cont nou</v-card-title
-    >
+    >Crează cont nou</v-card-title>
     <v-container grid-list-sm class="pa-4">
       <v-layout wrap>
         <v-flex xs12 align-center justify-space-between>
@@ -24,18 +23,10 @@
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
-          <v-text-field
-            label="Nume"
-            v-model="nume"
-            color="normal"
-          ></v-text-field>
+          <v-text-field label="Nume" v-model="nume" color="normal"></v-text-field>
         </v-flex>
         <v-flex xs6>
-          <v-text-field
-            label="Prenume"
-            color="normal"
-            v-model="prenume"
-          ></v-text-field>
+          <v-text-field label="Prenume" color="normal" v-model="prenume"></v-text-field>
         </v-flex>
         <v-flex xs12>
           <v-select
@@ -100,35 +91,11 @@
             :rules="[comparePasswords]"
           ></v-text-field>
         </v-flex>
-        <v-checkbox
-          v-model="checkbox"
-          :rules="[v => !!v || 'You must agree to continue!']"
-        >
-          <template v-slot:label>
-            <div>
-              I agree to the
-              <v-tooltip bottom>
-                <template v-slot:activator="{ on }">
-                  <a
-                    target="_blank"
-                    href="http://localhost:8080/#/termsandconditions"
-                    @click.stop
-                    v-on="on"
-                    >Terms and Conditions</a
-                  >
-                </template>
-                Opens in new window
-              </v-tooltip>
-            </div>
-          </template>
-        </v-checkbox>
-      </v-layout>
+      </v-layout>Prin crearea contului declar că sunt de acord cu Termenii și Condițiile de utilizare a aplicației, cât și cu Politica de Confidențialitate.
     </v-container>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn style="color: #f86c5c;" type="submit" @click="userSignUp"
-        >Înregistrare</v-btn
-      >
+      <v-btn style="color: #f86c5c;" type="submit" @click="userSignUp">Înregistrare</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -139,7 +106,6 @@ import LocalitatiRO from "../../assets/LocalitatiRO";
 export default {
   name: "Sign-up",
   data: () => ({
-    checkbox: false,
     localitate: null,
     phone: null,
     nume: null,
