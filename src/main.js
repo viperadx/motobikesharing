@@ -4,6 +4,9 @@ import router from "./router";
 import vuetify from "./plugins/vuetify";
 import * as firebase from "@/firebase";
 import store from "./store";
+import VueSimpleAlert from "vue-simple-alert";
+
+Vue.use(VueSimpleAlert);
 
 Vue.config.productionTip = false;
 

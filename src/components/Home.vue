@@ -1,7 +1,38 @@
 <template>
   <div class="map-wrapper">
     <div id="map" />
-    <div class="custom-search-wrap">
+    <v-snackbar v-model="rideInfo.status" :timeout="0">
+      <div class="user-ride-info" v-if="!userDetails.idDriver">
+        <div class="justify-center-flex">
+          <span class="user-ride-info-text bold-text">Ride Info</span>
+        </div>
+        <div class="justify-start-flex">
+          <v-icon class="blue-color">mdi-map-marker-distance</v-icon>
+          <span class="user-ride-info-text ml-1">{{
+            this.rideInfo.distance
+          }}</span>
+        </div>
+        <div class="justify-start-flex">
+          <v-icon class="orange-color">mdi-account-clock-outline</v-icon>
+          <span class="user-ride-info-text ml-1">{{
+            this.rideInfo.duration
+          }}</span>
+        </div>
+        <div class="justify-start-flex">
+          <v-icon class="green-color">mdi-cash</v-icon>
+          <span class="user-ride-info-text ml-1"
+            >{{ this.rideInfo.price }} RON</span
+          >
+        </div>
+        <div class="justify-center-flex">
+          <v-btn class="button-margin-remover" @click="searchRide()"
+            >Search</v-btn
+          >
+        </div>
+      </div>
+    </v-snackbar>
+
+    <div class="custom-search-wrap" v-if="!userDetails.idDriver">
       <v-card class="search-card" elevation="0">
         <vue-google-autocomplete
           ref="address"
@@ -14,7 +45,9 @@
           v-on:placechanged="getAddressData"
         ></vue-google-autocomplete>
         <div class="custom-search-icons">
-          <v-icon @click="clearSearch()" class="custom-search-erase">mdi-close</v-icon>
+          <v-icon @click="clearSearch()" class="custom-search-erase"
+            >mdi-close</v-icon
+          >
           <v-icon color="green" @click="search()">mdi-magnify</v-icon>
         </div>
       </v-card>
@@ -29,7 +62,9 @@
 
 <script>
 /* eslint-disable no-console */
+
 import VueGoogleAutocomplete from "vue-google-autocomplete";
+import * as firebase from "firebase";
 export default {
   name: "Home",
   components: {
@@ -49,6 +84,12 @@ export default {
         display: null,
         start: null,
         end: null
+      },
+      rideInfo: {
+        status: false,
+        distance: null,
+        duration: null,
+        price: null
       }
     };
   },
@@ -64,13 +105,44 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    },
+    userDetails() {
+      return this.$store.getters.loggedInUserData;
+    }
+  },
 
   mounted() {
     this.createMap();
     this.geolocate();
   },
   methods: {
+    searchRide() {
+      console.log(this.user);
+      const newRide = {
+        userLocationLat: this.defaultLocation.lat,
+        userLocationLng: this.defaultLocation.lng,
+        userDestinationLat: this.destination.geometry.location.lat(),
+        userDestinationLng: this.destination.geometry.location.lng(),
+        price: this.rideInfo.price,
+        distance: this.rideInfo.distance,
+        duration: this.rideInfo.duration,
+        clientId: this.user
+      };
+      // TODO: replace with userId
+      firebase
+        .database()
+        .ref("Rides/")
+        .push(newRide)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    },
     initialize(data) {
       this.map = data.map;
       this.google = data.google;
@@ -125,8 +197,19 @@ export default {
         };
         this.directions.service.route(request, (response, status) => {
           if (status === "OK") {
-            console.log(response.routes[0].legs[0].distance.text)
-            console.log(response.routes[0].legs[0].duration.text)
+            // this.$confirm("ceva").then(() => {
+            //   //do something...
+            //   console.log("something");
+            // });
+            this.rideInfo.status = true;
+            this.rideInfo.distance = response.routes[0].legs[0].distance.text;
+            let price = 3;
+            console.log(response.routes[0].legs[0].distance.value * price);
+            this.rideInfo.price = (
+              (response.routes[0].legs[0].distance.value * price) /
+              1000
+            ).toFixed(2);
+            this.rideInfo.duration = response.routes[0].legs[0].duration.text;
             this.directions.display.setDirections(response);
           } else {
             window.alert("Directions request failed due to " + status);
@@ -197,5 +280,16 @@ export default {
   position: absolute;
   right: 0.5vw;
   bottom: 3vh;
+}
+
+.user-ride-info {
+  display: flex;
+  flex-flow: column;
+  width: -webkit-fill-available;
+  padding: 10px;
+}
+
+.user-ride-info-text {
+  font-size: 1.4rem;
 }
 </style>
