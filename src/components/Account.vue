@@ -5,17 +5,19 @@
       <v-text-field
         label="Average Rating"
         outlined
-        readonly="readonlyData"
+        readonly
         :value="userData.avgRating"
       ></v-text-field>
       <v-text-field
         label="Number of Rides"
         outlined
-        readonly="readonlyData"
+        readonly
         :value="userData.noOfRides"
       ></v-text-field>
     </v-col>
-    <v-layout text-center wrap>aici tre sa mai adaug pie chart uri etc</v-layout>
+    <v-layout text-center wrap>
+      // TODO: aici tre sa mai adaug pie chart uri etc</v-layout
+    >
     <v-layout text-center wrap>
       <router-link to="/accountdetails">Account details</router-link>
     </v-layout>

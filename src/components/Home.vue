@@ -32,7 +32,8 @@
       </div>
     </v-snackbar>
 
-    <div class="custom-search-wrap" v-if="!userDetails.idDriver">
+    <div class="custom-search-wrap">
+      <!-- v-if="!userDetails.idDriver" -->
       <v-card class="search-card" elevation="0">
         <vue-google-autocomplete
           ref="address"
@@ -57,6 +58,58 @@
         <v-icon color="blue lighten-1">mdi-crosshairs-gps</v-icon>
       </v-btn>
     </div>
+    <div class="connect-driver" v-if="userDetails.idDriver">
+      <v-btn
+        color="green"
+        fab
+        x-large
+        dark
+        v-if="!driverIsConnected"
+        @click="connectDriver()"
+      >
+        <v-icon>mdi-motorbike</v-icon>
+      </v-btn>
+      <v-btn
+        color="red"
+        fab
+        x-large
+        dark
+        v-if="driverIsConnected"
+        @click="disconnectDriver()"
+      >
+        <v-icon>mdi-motorbike</v-icon>
+      </v-btn>
+    </div>
+    <!-- <v-snackbar v-model="rideInfo.status" :timeout="3000">
+      <div class="driver-ride-info" v-if="driverIsConnected">
+        <div class="justify-center-flex">
+          <span class="driver-ride-info-text bold-text">Ride Info</span>
+        </div>
+        <div class="justify-start-flex">
+          <v-icon class="blue-color">mdi-map-marker-distance</v-icon>
+          <span class="driver-ride-info-text ml-1">{{
+            this.rideInfo.distance
+          }}</span>
+        </div>
+        <div class="justify-start-flex">
+          <v-icon class="orange-color">mdi-account-clock-outline</v-icon>
+          <span class="driver-ride-info-text ml-1">{{
+            this.rideInfo.duration
+          }}</span>
+        </div>
+        <div class="justify-start-flex">
+          <v-icon class="green-color">mdi-cash</v-icon>
+          <span class="driver-ride-info-text ml-1"
+            >{{ this.rideInfo.price }} RON</span
+          >
+        </div>
+        <div class="justify-center-flex">
+          <v-btn class="button-margin-remover" @click="acceptRide()"
+            >Accept ride</v-btn
+          >
+        </div>
+      </div>
+    </v-snackbar> -->
   </div>
 </template>
 
@@ -90,7 +143,9 @@ export default {
         distance: null,
         duration: null,
         price: null
-      }
+      },
+      driverIsConnected: false,
+      incomingRequest: true
     };
   },
   created() {},
@@ -119,6 +174,15 @@ export default {
     this.geolocate();
   },
   methods: {
+    connectDriver() {
+      this.driverIsConnected = !this.driverIsConnected;
+    },
+    disconnectDriver() {
+      this.driverIsConnected = !this.driverIsConnected;
+    },
+    newRequest() {
+      this.incomingRequest = !this.incomingRequest;
+    },
     searchRide() {
       console.log(this.user);
       const newRide = {
@@ -142,6 +206,9 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    acceptRide() {
+      console.log("ura");
     },
     initialize(data) {
       this.map = data.map;
@@ -287,9 +354,31 @@ export default {
   flex-flow: column;
   width: -webkit-fill-available;
   padding: 10px;
+  height: 230px;
 }
 
 .user-ride-info-text {
   font-size: 1.4rem;
+}
+
+.driver-ride-info {
+  display: flex;
+  flex-flow: column;
+  width: -webkit-fill-available;
+  padding: 10px;
+}
+
+.driver-ride-info-text {
+  font-size: 1.4rem;
+}
+
+.connect-driver {
+  position: absolute;
+  height: 100px;
+  right: 40vw;
+  bottom: 5vh;
+  display: flex;
+  flex-flow: column;
+  padding: 10px;
 }
 </style>

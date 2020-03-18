@@ -63,7 +63,7 @@
 
     <v-app-bar app clipped-left>
       <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-      <v-toolbar-title>MotorBike Sharing</v-toolbar-title>
+      <v-toolbar-title>MotoBike Sharing</v-toolbar-title>
     </v-app-bar>
 
     <v-content>
