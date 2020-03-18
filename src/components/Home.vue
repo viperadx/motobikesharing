@@ -1,28 +1,46 @@
 <template>
   <div class="map-wrapper">
     <div id="map" />
-    <v-snackbar v-model="rideInfo.status" :timeout="0">
-      <div class="user-ride-info" v-if="!userDetails.idDriver">
+    <v-snackbar
+      v-model="showSnackbarForUser"
+      :timeout="0"
+      class="custom-snackbar"
+    >
+      <div
+        v-if="activeRideRequest && activeRideRequest.status === 'driver on route'"
+      >
+        Soferul e pe drum
+      </div>
+      <div
+        class="custom-search-progress"
+        column
+        fill-height
+        v-if="activeRideRequest && activeRideRequest.status === 'pending'"
+      >
+        <div>
+          Searching ride
+        </div>
+        <v-progress-circular indeterminate color="primary">
+        </v-progress-circular>
+      </div>
+      <div
+        class="user-ride-info"
+        v-if="!userDetails.idDriver && !activeRideRequest"
+      >
         <div class="justify-center-flex">
           <span class="user-ride-info-text bold-text">Ride Info</span>
         </div>
         <div class="justify-start-flex">
           <v-icon class="blue-color">mdi-map-marker-distance</v-icon>
-          <span class="user-ride-info-text ml-1">{{
-            this.rideInfo.distance
-          }}</span>
+          <span class="user-ride-info-text ml-1">{{ rideInfo.distance }}</span>
         </div>
         <div class="justify-start-flex">
           <v-icon class="orange-color">mdi-account-clock-outline</v-icon>
-          <span class="user-ride-info-text ml-1">{{
-            this.rideInfo.duration
-          }}</span>
+          <span class="user-ride-info-text ml-1">{{ rideInfo.duration }}</span>
         </div>
         <div class="justify-start-flex">
           <v-icon class="green-color">mdi-cash</v-icon>
-          <span class="user-ride-info-text ml-1"
-            >{{ this.rideInfo.price }} RON</span
-          >
+          <span class="user-ride-info-text ml-1">{{ rideInfo.price }} RON</span>
         </div>
         <div class="justify-center-flex">
           <v-btn class="button-margin-remover" @click="searchRide()"
@@ -32,7 +50,7 @@
       </div>
     </v-snackbar>
 
-    <div class="custom-search-wrap">
+    <div class="custom-search-wrap" v-if="!userDetails.idDriver">
       <!-- v-if="!userDetails.idDriver" -->
       <v-card class="search-card" elevation="0">
         <vue-google-autocomplete
@@ -64,52 +82,78 @@
         fab
         x-large
         dark
-        v-if="!driverIsConnected"
+        v-if="!driverIsConnected && !currentRideDriver"
         @click="connectDriver()"
       >
         <v-icon>mdi-motorbike</v-icon>
+      </v-btn>
+      <v-btn
+        color="yellow"
+        fab
+        x-large
+        dark
+        v-if="
+          driverIsConnected &&
+            currentRideDriver &&
+            currentRideDriver.status === 'driver on route'
+        "
+        @click="connectDriver()"
+      >
+        <v-icon>mdi-account-plus</v-icon>
       </v-btn>
       <v-btn
         color="red"
         fab
         x-large
         dark
-        v-if="driverIsConnected"
+        v-if="driverIsConnected && !currentRideDriver"
         @click="disconnectDriver()"
       >
         <v-icon>mdi-motorbike</v-icon>
       </v-btn>
     </div>
-    <!-- <v-snackbar v-model="rideInfo.status" :timeout="3000">
-      <div class="driver-ride-info" v-if="driverIsConnected">
-        <div class="justify-center-flex">
-          <span class="driver-ride-info-text bold-text">Ride Info</span>
-        </div>
-        <div class="justify-start-flex">
-          <v-icon class="blue-color">mdi-map-marker-distance</v-icon>
-          <span class="driver-ride-info-text ml-1">{{
-            this.rideInfo.distance
-          }}</span>
-        </div>
-        <div class="justify-start-flex">
-          <v-icon class="orange-color">mdi-account-clock-outline</v-icon>
-          <span class="driver-ride-info-text ml-1">{{
-            this.rideInfo.duration
-          }}</span>
-        </div>
-        <div class="justify-start-flex">
-          <v-icon class="green-color">mdi-cash</v-icon>
-          <span class="driver-ride-info-text ml-1"
-            >{{ this.rideInfo.price }} RON</span
-          >
-        </div>
-        <div class="justify-center-flex">
-          <v-btn class="button-margin-remover" @click="acceptRide()"
-            >Accept ride</v-btn
-          >
-        </div>
+    <div
+      class="custom-rides-requests"
+      v-if="userDetails.idDriver && !currentRideDriver"
+    >
+      <div v-for="(ride, index) in rides" :key="index">
+        <v-card
+          v-if="ride.status === 'pending'"
+          class="custom-ride-request"
+          v-on:
+          click="showRides"
+        >
+          <div class="driver-ride-info" v-if="driverIsConnected">
+            <div class="justify-center-flex">
+              <span class="driver-ride-info-text bold-text">Ride Info</span>
+            </div>
+            <div class="justify-start-flex">
+              <v-icon class="blue-color">mdi-map-marker-distance</v-icon>
+              <span class="driver-ride-info-text ml-1">{{
+                ride.distance
+              }}</span>
+            </div>
+            <div class="justify-start-flex">
+              <v-icon class="orange-color">mdi-account-clock-outline</v-icon>
+              <span class="driver-ride-info-text ml-1">{{
+                ride.duration
+              }}</span>
+            </div>
+            <div class="justify-start-flex">
+              <v-icon class="green-color">mdi-cash</v-icon>
+              <span class="driver-ride-info-text ml-1"
+                >{{ ride.price }} RON</span
+              >
+            </div>
+            <div class="justify-center-flex">
+              <v-btn class="button-margin-remover" @click="acceptRide(ride)"
+                >Accept ride</v-btn
+              >
+            </div>
+          </div>
+        </v-card>
       </div>
-    </v-snackbar> -->
+    </div>
   </div>
 </template>
 
@@ -145,7 +189,8 @@ export default {
         price: null
       },
       driverIsConnected: false,
-      incomingRequest: true
+      incomingRequest: true,
+      showRides: true
     };
   },
   created() {},
@@ -161,6 +206,20 @@ export default {
     }
   },
   computed: {
+    currentRideDriver() {
+      return this.$store.getters.currentRideDriverGetter;
+    },
+    showSnackbarForUser() {
+      return (
+        this.rideInfo.status === "requesting" && !this.userDetails.idDriver
+      );
+    },
+    rides() {
+      return this.$store.getters.allRidesDataGetter;
+    },
+    activeRideRequest() {
+      return this.$store.getters.activeRideRequest;
+    },
     user() {
       return this.$store.getters.user;
     },
@@ -172,6 +231,7 @@ export default {
   mounted() {
     this.createMap();
     this.geolocate();
+    this.$store.dispatch("readAllRidesDetails");
   },
   methods: {
     connectDriver() {
@@ -184,10 +244,10 @@ export default {
       this.incomingRequest = !this.incomingRequest;
     },
     searchRide() {
-      console.log(this.user);
       const newRide = {
         userLocationLat: this.defaultLocation.lat,
         userLocationLng: this.defaultLocation.lng,
+        status: "pending",
         userDestinationLat: this.destination.geometry.location.lat(),
         userDestinationLng: this.destination.geometry.location.lng(),
         price: this.rideInfo.price,
@@ -195,20 +255,27 @@ export default {
         duration: this.rideInfo.duration,
         clientId: this.user
       };
-      // TODO: replace with userId
       firebase
         .database()
         .ref("Rides/")
         .push(newRide)
         .then(res => {
           console.log(res);
+          this.$store.dispatch("activeRideRequest", res.key);
         })
         .catch(error => {
           console.log(error);
         });
     },
-    acceptRide() {
-      console.log("ura");
+    acceptRide(ride) {
+      const payload = { ride, idDriver: this.user };
+      this.$store.dispatch("acceptRide", payload);
+      this.initRouteMap(
+        new window.google.maps.LatLng(
+          ride.userLocationLat,
+          ride.userLocationLng
+        )
+      );
     },
     initialize(data) {
       this.map = data.map;
@@ -239,7 +306,7 @@ export default {
         }
       });
       this.directions.display.setMap(this.map);
-      this.search();
+      // this.search();
       new window.google.maps.Marker({
         position: myLatLng,
         map: this.map,
@@ -255,23 +322,22 @@ export default {
       document.getElementById("search").value = "";
     },
     search() {
-      this.destination;
-      if (this.destination) {
+      this.initRouteMap(this.destination.geometry.location);
+    },
+    initRouteMap(destination) {
+      console.log(destination);
+      if (destination) {
         const request = {
           origin: this.defaultLocation,
-          destination: this.destination.geometry.location,
+          destination: destination,
           travelMode: "DRIVING"
         };
         this.directions.service.route(request, (response, status) => {
           if (status === "OK") {
-            // this.$confirm("ceva").then(() => {
-            //   //do something...
-            //   console.log("something");
-            // });
-            this.rideInfo.status = true;
+            this.rideInfo.status = "requesting";
+            this.$store.dispatch("activeRideRequest", null);
             this.rideInfo.distance = response.routes[0].legs[0].distance.text;
             let price = 3;
-            console.log(response.routes[0].legs[0].distance.value * price);
             this.rideInfo.price = (
               (response.routes[0].legs[0].distance.value * price) /
               1000
@@ -294,6 +360,19 @@ export default {
   height: 100%;
   position: absolute;
   top: 0;
+}
+
+.custom-rides-requests {
+  top: 74px;
+  position: fixed;
+  right: 10px;
+  bottom: 46px;
+  overflow: auto;
+  height: auto;
+}
+.custom-ride-request {
+  margin: 5px;
+  padding: 10px;
 }
 #map {
   height: 100%;
@@ -361,6 +440,17 @@ export default {
   font-size: 1.4rem;
 }
 
+.custom-search-progress {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-flow: column;
+}
+
+.v-snack__wrapper {
+  min-height: 220px;
+}
+
 .driver-ride-info {
   display: flex;
   flex-flow: column;
@@ -370,6 +460,10 @@ export default {
 
 .driver-ride-info-text {
   font-size: 1.4rem;
+}
+
+.custom-snackbar {
+  min-height: 220px;
 }
 
 .connect-driver {

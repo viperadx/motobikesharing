@@ -17,7 +17,9 @@ export default new Vuex.Store({
     allUsersData: [],
     allTexts: null,
     user: null,
-    presentDriverData: null
+    presentDriverData: null,
+    activeRide: null,
+    currentRideDriver: null
   },
   mutations: {
     setUser: (state, payload) => {
@@ -49,6 +51,12 @@ export default new Vuex.Store({
     },
     savePresentDriverData(state, payload) {
       state.presentDriverData = payload;
+    },
+    setActiveRideRequest(state, payload) {
+      state.activeRide = payload;
+    },
+    setCurrentRideForDriver(state, payload) {
+      state.currentRideDriver = payload;
     }
   },
   actions: {
@@ -179,7 +187,50 @@ export default new Vuex.Store({
         .database()
         .ref("/Rides/")
         .on("value", snap => {
-          commit("setAllRidesData", snap.val());
+          const myObj = snap.val();
+          var rides = [];
+          console.log(snap.val());
+          const keysRides = Object.keys(snap.val());
+          keysRides.forEach(key => {
+            const ride = myObj[key];
+            ride.key = key;
+            rides.push(ride);
+          });
+          console.log(rides);
+          commit("setAllRidesData", rides);
+        });
+    },
+    activeRideRequest({ commit }, payload) {
+      if (payload) {
+        firebase
+          .database()
+          .ref("/Rides/" + payload)
+          .on("value", snap => {
+            commit("setActiveRideRequest", snap.val());
+          });
+      } else {
+        commit("setActiveRideRequest", null);
+      }
+    },
+    acceptRide({ commit }, payload) {
+      console.log(payload.ride);
+      firebase
+        .database()
+        .ref("/Rides/" + payload.ride.key)
+        .update({
+          status: "driver on route",
+          idDriver: payload.idDriver
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Rides/" + payload.ride.key)
+            .on("value", snap => {
+              commit("setCurrentRideForDriver", snap.val());
+            });
+        })
+        .catch(err => {
+          console.log(err);
         });
     },
     readAllUsersDetails({ commit }) {
@@ -222,6 +273,8 @@ export default new Vuex.Store({
     allTextsGetter: state => state.allTexts,
     presentDriverDataGetter: state => state.presentDriverData,
     user: state => state.user,
-    loggedInUserData: state => state.loggedInUserData
+    loggedInUserData: state => state.loggedInUserData,
+    activeRideRequest: state => state.activeRide,
+    currentRideDriverGetter: state => state.currentRideDriver
   }
 });
