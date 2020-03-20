@@ -7,9 +7,26 @@
       class="custom-snackbar"
     >
       <div
-        v-if="activeRideRequest && activeRideRequest.status === 'driver on route'"
+        class="custom-driver-is-on-route"
+        v-if="
+          activeRideRequest && activeRideRequest.status === 'driver on route'
+        "
       >
-        Soferul e pe drum
+        Driver is on route
+      </div>
+      <div
+        class="custom-driver-arrived"
+        v-if="
+          activeRideRequest && activeRideRequest.status === 'driver arrived'
+        "
+      >
+        Meet your driver outside
+      </div>
+      <div
+        class="custom-ride-finished"
+        v-if="activeRideRequest && activeRideRequest.status === 'ride finished'"
+      >
+        Thank you for your ride!
       </div>
       <div
         class="custom-search-progress"
@@ -87,9 +104,10 @@
       >
         <v-icon>mdi-motorbike</v-icon>
       </v-btn>
+
       <v-btn
-        color="yellow"
-        fab
+        color="orange"
+        rounded
         x-large
         dark
         v-if="
@@ -97,10 +115,24 @@
             currentRideDriver &&
             currentRideDriver.status === 'driver on route'
         "
-        @click="connectDriver()"
-      >
-        <v-icon>mdi-account-plus</v-icon>
+        @click="driverArrived()"
+        >I have arrived
       </v-btn>
+
+      <v-btn
+        color="blue"
+        rounded
+        x-large
+        dark
+        v-if="
+          driverIsConnected &&
+            currentRideDriver &&
+            currentRideDriver.status === 'driver arrived'
+        "
+        @click="finishRide()"
+        >Finish ride
+      </v-btn>
+
       <v-btn
         color="red"
         fab
@@ -188,6 +220,7 @@ export default {
         duration: null,
         price: null
       },
+      currentRide: null,
       driverIsConnected: false,
       incomingRequest: true,
       showRides: true
@@ -201,6 +234,16 @@ export default {
       handler(newLocation) {
         if (newLocation && this.defaultLocation) {
           this.createMap();
+        }
+      }
+    },
+    activeRideRequest: {
+      deep: true,
+      immediate: false,
+      handler(newValue) {
+        if (newValue.status === "ride finished") {
+          this.createMap();
+          this.geolocate();
         }
       }
     }
@@ -244,6 +287,7 @@ export default {
       this.incomingRequest = !this.incomingRequest;
     },
     searchRide() {
+      console.log(this);
       const newRide = {
         userLocationLat: this.defaultLocation.lat,
         userLocationLng: this.defaultLocation.lng,
@@ -255,13 +299,21 @@ export default {
         duration: this.rideInfo.duration,
         clientId: this.user
       };
+      let rideId;
       firebase
         .database()
         .ref("Rides/")
         .push(newRide)
         .then(res => {
           console.log(res);
-          this.$store.dispatch("activeRideRequest", res.key);
+          rideId = res.key;
+          firebase
+            .database()
+            .ref("Rides/" + rideId)
+            .update({ rideId: res.key })
+            .then(() => {
+              this.$store.dispatch("activeRideRequest", rideId);
+            });
         })
         .catch(error => {
           console.log(error);
@@ -276,6 +328,27 @@ export default {
           ride.userLocationLng
         )
       );
+    },
+    driverArrived() {
+      const payload = { ride: this.currentRideDriver, idDriver: this.user };
+      this.$store.dispatch("driverArrived", payload);
+      this.initRouteMap(
+        new window.google.maps.LatLng(
+          this.currentRideDriver.userDestinationLat,
+          this.currentRideDriver.userDestinationLng
+        )
+      );
+
+      this.defaultLocation = {
+        lat: this.currentRideDriver.userLocationLat,
+        lng: this.currentRideDriver.userLocationLng
+      };
+    },
+    finishRide() {
+      const payload = { ride: this.currentRideDriver, idDriver: this.user };
+      this.$store.dispatch("finishRide", payload);
+      this.createMap();
+      this.geolocate();
     },
     initialize(data) {
       this.map = data.map;
@@ -441,6 +514,27 @@ export default {
 }
 
 .custom-search-progress {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-flow: column;
+}
+
+.custom-driver-is-on-route {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-flow: column;
+}
+
+.custom-driver-arrived {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-flow: column;
+}
+
+.custom-ride-finished {
   display: flex;
   width: 100%;
   align-items: center;

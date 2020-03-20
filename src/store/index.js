@@ -193,7 +193,6 @@ export default new Vuex.Store({
           const keysRides = Object.keys(snap.val());
           keysRides.forEach(key => {
             const ride = myObj[key];
-            ride.key = key;
             rides.push(ride);
           });
           console.log(rides);
@@ -216,7 +215,7 @@ export default new Vuex.Store({
       console.log(payload.ride);
       firebase
         .database()
-        .ref("/Rides/" + payload.ride.key)
+        .ref("/Rides/" + payload.ride.rideId)
         .update({
           status: "driver on route",
           idDriver: payload.idDriver
@@ -224,7 +223,50 @@ export default new Vuex.Store({
         .then(() => {
           firebase
             .database()
-            .ref("/Rides/" + payload.ride.key)
+            .ref("/Rides/" + payload.ride.rideId)
+            .on("value", snap => {
+              const values = snap.val();
+              values.rideId = snap.key;
+              commit("setCurrentRideForDriver", values);
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+
+    driverArrived({ commit }, payload) {
+      console.log(payload.ride);
+      firebase
+        .database()
+        .ref("/Rides/" + payload.ride.rideId)
+        .update({
+          status: "driver arrived"
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Rides/" + payload.ride.rideId)
+            .on("value", snap => {
+              commit("setCurrentRideForDriver", snap.val());
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    finishRide({ commit }, payload) {
+      console.log(payload.ride);
+      firebase
+        .database()
+        .ref("/Rides/" + payload.ride.rideId)
+        .update({
+          status: "ride finished"
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Rides/" + payload.ride.rideId)
             .on("value", snap => {
               commit("setCurrentRideForDriver", snap.val());
             });
