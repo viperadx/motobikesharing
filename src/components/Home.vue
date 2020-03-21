@@ -497,7 +497,7 @@ export default {
 }
 .gps-custom-button {
   position: absolute;
-  right: 0.5vw;
+  left: 0.5vw;
   bottom: 3vh;
 }
 
