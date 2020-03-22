@@ -349,6 +349,7 @@ export default {
       this.$store.dispatch("finishRide", payload);
       this.createMap();
       this.geolocate();
+      this.driverIsConnected = true;
     },
     initialize(data) {
       this.map = data.map;

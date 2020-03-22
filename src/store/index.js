@@ -257,6 +257,8 @@ export default new Vuex.Store({
     },
     finishRide({ commit }, payload) {
       console.log(payload.ride);
+      // this.currentRideDriver = null;
+
       firebase
         .database()
         .ref("/Rides/" + payload.ride.rideId)
@@ -270,6 +272,7 @@ export default new Vuex.Store({
             .on("value", snap => {
               commit("setCurrentRideForDriver", snap.val());
             });
+          commit("setCurrentRideForDriver", null);
         })
         .catch(err => {
           console.log(err);
