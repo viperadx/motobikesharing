@@ -45,7 +45,6 @@ export default {
   },
   mounted() {
     // eslint-disable-next-line no-console
-    console.log(this.$store.getters.allDriversDataGetter);
   }
 };
 </script>

@@ -287,7 +287,6 @@ export default {
       this.incomingRequest = !this.incomingRequest;
     },
     searchRide() {
-      console.log(this);
       const newRide = {
         userLocationLat: this.defaultLocation.lat,
         userLocationLng: this.defaultLocation.lng,
@@ -305,7 +304,6 @@ export default {
         .ref("Rides/")
         .push(newRide)
         .then(res => {
-          console.log(res);
           rideId = res.key;
           firebase
             .database()
@@ -399,7 +397,6 @@ export default {
       this.initRouteMap(this.destination.geometry.location);
     },
     initRouteMap(destination) {
-      console.log(destination);
       if (destination) {
         const request = {
           origin: this.defaultLocation,

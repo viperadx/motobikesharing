@@ -8,7 +8,12 @@
         :readonly="readonlyData"
         :value="userData.firstName"
       ></v-text-field>
-      <v-text-field label="Last Name" outlined :readonly="readonlyData" :value="userData.lastName"></v-text-field>
+      <v-text-field
+        label="Last Name"
+        outlined
+        :readonly="readonlyData"
+        :value="userData.lastName"
+      ></v-text-field>
       <v-text-field
         label="Email"
         outlined
@@ -78,7 +83,6 @@ export default {
   },
   mounted() {
     // eslint-disable-next-line no-console
-    console.log(this.$store.getters.allDriversDataGetter);
   }
 };
 </script>

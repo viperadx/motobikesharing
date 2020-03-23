@@ -18,6 +18,7 @@
     <v-layout text-center wrap>
       // TODO: aici tre sa mai adaug pie chart uri etc</v-layout
     >
+
     <v-layout text-center wrap>
       <router-link to="/accountdetails">Account details</router-link>
     </v-layout>
@@ -66,7 +67,6 @@ export default {
   },
   mounted() {
     // eslint-disable-next-line no-console
-    console.log(this.$store.getters.allDriversDataGetter);
   }
 };
 </script>

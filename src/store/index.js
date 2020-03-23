@@ -19,7 +19,9 @@ export default new Vuex.Store({
     user: null,
     presentDriverData: null,
     activeRide: null,
-    currentRideDriver: null
+    currentRideDriver: null,
+    currentDriverRidesHistory: [],
+    currentUserRidesHistory: []
   },
   mutations: {
     setUser: (state, payload) => {
@@ -57,6 +59,12 @@ export default new Vuex.Store({
     },
     setCurrentRideForDriver(state, payload) {
       state.currentRideDriver = payload;
+    },
+    setRidesHistoryForDriver(state, payload) {
+      state.currentDriverRidesHistory = payload;
+    },
+    setRidesHistoryForUser(state, payload) {
+      state.currentUserRidesHistory = payload;
     }
   },
   actions: {
@@ -78,8 +86,10 @@ export default new Vuex.Store({
         .auth()
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(details => {
-          console.log(details);
           commit("setUser", details.user.uid);
+          console.log("test - ", details.user.uid);
+          this.dispatch("readAllRidesDetailsByDriverID", details.user.uid);
+          this.dispatch("readAllRidesDetailsByUserID", details.user.uid);
           firebase
             .database()
             .ref("Users/" + details.user.uid)
@@ -102,6 +112,8 @@ export default new Vuex.Store({
       firebase.auth().onAuthStateChanged(details => {
         if (details) {
           commit("setUser", details.uid);
+          this.dispatch("readAllRidesDetailsByDriverID", details.uid);
+          this.dispatch("readAllRidesDetailsByUserID", details.uid);
           firebase
             .database()
             .ref("Users/" + details.uid)
@@ -125,6 +137,8 @@ export default new Vuex.Store({
         .createUserWithEmailAndPassword(payload.email, payload.password)
         .then(details => {
           commit("setUser", details.user.uid);
+          this.dispatch("readAllRidesDetailsByDriverID", details.user.uid);
+          this.dispatch("readAllRidesDetailsByUserID", details.user.uid);
           router.push({ path: "/" });
           firebase
             .database()
@@ -189,14 +203,46 @@ export default new Vuex.Store({
         .on("value", snap => {
           const myObj = snap.val();
           var rides = [];
-          console.log(snap.val());
           const keysRides = Object.keys(snap.val());
           keysRides.forEach(key => {
             const ride = myObj[key];
             rides.push(ride);
           });
-          console.log(rides);
           commit("setAllRidesData", rides);
+        });
+    },
+    readAllRidesDetailsByDriverID({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Rides/")
+        .on("value", snap => {
+          console.log("driver", snap.val());
+          const myObj = snap.val();
+          var rides = [];
+          const keysRides = Object.keys(snap.val());
+          keysRides.forEach(key => {
+            if (myObj[key].idDriver === payload) {
+              rides.push(myObj[key]);
+            }
+          });
+          commit("setRidesHistoryForDriver", rides);
+        });
+    },
+    readAllRidesDetailsByUserID({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Rides/")
+        .on("value", snap => {
+          console.log("user", snap.val());
+          const myObj = snap.val();
+          var rides = [];
+          const keysRides = Object.keys(snap.val());
+          keysRides.forEach(key => {
+            if (myObj[key].clientId === payload) {
+              rides.push(myObj[key]);
+            }
+          });
+          commit("setRidesHistoryForUser", rides);
         });
     },
     activeRideRequest({ commit }, payload) {
@@ -212,7 +258,6 @@ export default new Vuex.Store({
       }
     },
     acceptRide({ commit }, payload) {
-      console.log(payload.ride);
       firebase
         .database()
         .ref("/Rides/" + payload.ride.rideId)
@@ -236,7 +281,6 @@ export default new Vuex.Store({
     },
 
     driverArrived({ commit }, payload) {
-      console.log(payload.ride);
       firebase
         .database()
         .ref("/Rides/" + payload.ride.rideId)
@@ -256,9 +300,6 @@ export default new Vuex.Store({
         });
     },
     finishRide({ commit }, payload) {
-      console.log(payload.ride);
-      // this.currentRideDriver = null;
-
       firebase
         .database()
         .ref("/Rides/" + payload.ride.rideId)
@@ -320,6 +361,8 @@ export default new Vuex.Store({
     user: state => state.user,
     loggedInUserData: state => state.loggedInUserData,
     activeRideRequest: state => state.activeRide,
-    currentRideDriverGetter: state => state.currentRideDriver
+    currentRideDriverGetter: state => state.currentRideDriver,
+    currentDriverRidesHistoryGetter: state => state.currentDriverRidesHistory,
+    currentUserRidesHistoryGetter: state => state.currentUserRidesHistory
   }
 });
