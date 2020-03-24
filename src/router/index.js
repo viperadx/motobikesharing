@@ -22,7 +22,7 @@ import Weeklypayoutsandbonuses from "../components/Help/Earnings_help/Weekly-pay
 import Understandingupfrontpricing from "../components/Help/Earnings_help/Understanding-upfront-pricing.vue";
 import Commissionfee from "../components/Help/Earnings_help/Commission-fee.vue";
 import Parkingfeesandtolls from "../components/Help/Earnings_help/Parking-fees-and-tolls.vue";
-import Cursa1 from "../components/Rides/Cursa-1.vue";
+import Cursa from "../components/Rides/Cursa.vue";
 import Account from "../components/Account.vue";
 import Passengerlostanitem from "../components/Help/Using_MBS/Passenger-lost-an-item.vue";
 import Passengermisconduct from "../components/Help/Using_MBS/Passenger-misconduct.vue";
@@ -184,9 +184,9 @@ export default new VueRouter({
       component: Parkingfeesandtolls
     },
     {
-      path: "/cursa1",
-      name: "Cursa-1",
-      component: Cursa1
+      path: "/cursa/:id",
+      name: "Cursa",
+      component: Cursa
     },
     {
       path: "/account",

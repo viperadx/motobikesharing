@@ -6,28 +6,43 @@
       <br />tariful cursei LEI xx.xx; <br />Statusul cursei(toate astea sa fie
       un link catre detaliile acesteicurse)
     </v-layout>
+    <div>{{ user }}</div>
     <v-col cols="12" sm="6" md="3">
-      <v-text-field
-        label="Average Rating"
-        outlined
-        readonly
-        :value="userData.avgRating"
-      ></v-text-field>
-      <v-text-field
-        label="Number of Rides"
-        outlined
-        readonly
-        :value="userData.noOfRides"
-      ></v-text-field>
+      <div v-if="currentDriverRidesHistoryGetter.length > 0">
+        Driver rides
+      </div>
+      <v-list v-if="currentDriverRidesHistoryGetter.length > 0">
+        <v-list-item
+          v-for="ride in currentDriverRidesHistoryGetter"
+          :key="ride.rideId"
+          :to="{
+            name: 'Cursa',
+            params: {
+              id: ride.rideId
+            }
+          }"
+        >
+          {{ ride.rideId }}
+        </v-list-item>
+      </v-list>
+      <div v-if="currentUserRidesHistoryGetter.length > 0">
+        User rides
+      </div>
+      <v-list v-if="currentUserRidesHistoryGetter.length > 0">
+        <v-list-item
+          v-for="ride in currentUserRidesHistoryGetter"
+          :key="ride.rideId"
+          :to="{
+            name: 'Cursa',
+            params: {
+              id: ride.rideId
+            }
+          }"
+        >
+          {{ ride.rideId }}
+        </v-list-item>
+      </v-list>
     </v-col>
-    <div class="custom-test-chestii">
-      <v-btn color="green" fab x-large @click="setloggedInUserData()">
-        <v-icon>mdi-motorbike</v-icon>
-      </v-btn>
-    </div>
-    <v-layout text-center wrap>
-      <router-link to="/Cursa1">Cursa 1</router-link>
-    </v-layout>
   </v-container>
 </template>
 
@@ -55,12 +70,22 @@ export default {
         ? this.$store.getters.presentDriverDataGetter
         : "";
     },
-    setloggedInUserData() {
-      return this.setloggedInUserData;
+    currentDriverRidesHistoryGetter() {
+      return this.$store.getters.currentDriverRidesHistoryGetter
+        ? this.$store.getters.currentDriverRidesHistoryGetter
+        : [];
+    },
+    currentUserRidesHistoryGetter() {
+      return this.$store.getters.currentUserRidesHistoryGetter
+        ? this.$store.getters.currentUserRidesHistoryGetter
+        : [];
     }
   },
   methods: {},
-  created() {},
+  created() {
+    this.$store.dispatch("readUserDataByUserID", "idUser");
+    this.$store.dispatch("readDriverDetailsByUserID", "idUser");
+  },
   mounted() {
     this.$store.dispatch("");
   }

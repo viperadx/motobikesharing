@@ -35,6 +35,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 export default {
   name: "Account",
   data() {
@@ -65,8 +66,6 @@ export default {
     this.$store.dispatch("readUserDataByUserID", "idUser");
     this.$store.dispatch("readDriverDetailsByUserID", "idUser");
   },
-  mounted() {
-    // eslint-disable-next-line no-console
-  }
+  mounted() {}
 };
 </script>
