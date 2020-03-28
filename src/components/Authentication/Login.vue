@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import router from "@/router";
 import firebase from "@/firebase";
 export default {
   name: "Login",
@@ -82,6 +83,7 @@ export default {
         password: this.password
       });
       this.signin = false;
+      router.push("/home");
     }
   }
 };

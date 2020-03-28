@@ -102,7 +102,7 @@ export default new Vuex.Store({
                 console.log("Error: " + error.message);
               }
             );
-          router.push({ path: "/" });
+          router.push({ path: "/Home" });
         })
         .catch(error => {
           window.alert(error.message);

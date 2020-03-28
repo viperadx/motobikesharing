@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import router from "@/router";
 export default {
   props: {
     source: String
@@ -97,12 +98,17 @@ export default {
   methods: {
     onSignOut() {
       this.$store.dispatch("signOut");
+      window.location.reload();
+      router.push("/login");
     }
   },
   created() {
     this.$vuetify.theme.dark = true;
     this.$store.dispatch("readAllTexts");
     this.$store.dispatch("AuthChange");
+  },
+  mounted() {
+    router.push("/home");
   }
 };
 </script>

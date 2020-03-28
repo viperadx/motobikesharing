@@ -76,7 +76,8 @@ export default new VueRouter({
     {
       path: "/help",
       name: "Help",
-      component: Help
+      component: Help,
+      beforeEnter: AuthGuard
     },
     {
       path: "/Home",
@@ -99,32 +100,38 @@ export default new VueRouter({
     {
       path: "/listallnews",
       name: "List-all-news",
-      component: Listallnews
+      component: Listallnews,
+      beforeEnter: AuthGuard
     },
     {
       path: "/campaigns",
       name: "Campaigns",
-      component: Campaigns
+      component: Campaigns,
+      beforeEnter: AuthGuard
     },
     {
       path: "/helpwithrides",
       name: "Help-with-rides",
-      component: Helpwithrides
+      component: Helpwithrides,
+      beforeEnter: AuthGuard
     },
     {
       path: "/earningshelp",
       name: "Earnings-help",
-      component: Earningshelp
+      component: Earningshelp,
+      beforeEnter: AuthGuard
     },
     {
       path: "/technicalproblems",
       name: "Technical-problems",
-      component: Technicalproblems
+      component: Technicalproblems,
+      beforeEnter: AuthGuard
     },
     {
       path: "/usingmbs",
       name: "Using-MBS",
-      component: Usingmbs
+      component: Usingmbs,
+      beforeEnter: AuthGuard
     },
     {
       path: "/accounthelp",
@@ -135,7 +142,8 @@ export default new VueRouter({
     {
       path: "/seeallconversations",
       name: "See-all-conversations",
-      component: Seeallconversations
+      component: Seeallconversations,
+      beforeEnter: AuthGuard
     },
     {
       path: "/changevehicle",
@@ -146,47 +154,56 @@ export default new VueRouter({
     {
       path: "/paymentsandbonuses",
       name: "Payments-and-bonuses",
-      component: Paymentsandbonuses
+      component: Paymentsandbonuses,
+      beforeEnter: AuthGuard
     },
     {
       path: "/passengercampaigns",
       name: "Passenger-campaigns",
-      component: Passengercampaigns
+      component: Passengercampaigns,
+      beforeEnter: AuthGuard
     },
     {
       path: "/driverpaidwaittimefees",
       name: "Driver-paid-wait-time-fees",
-      component: Driverpaidwaittimefees
+      component: Driverpaidwaittimefees,
+      beforeEnter: AuthGuard
     },
     {
       path: "/cancellationfee",
       name: "Cancellation-fee",
-      component: Cancellationfee
+      component: Cancellationfee,
+      beforeEnter: AuthGuard
     },
     {
       path: "/requestingapricereview",
       name: "Requesting-a-price-review",
-      component: Requestingapricereview
+      component: Requestingapricereview,
+      beforeEnter: AuthGuard
     },
     {
       path: "/weeklypayoutsandbonuses",
       name: "Weekly-payouts-and-bonuses",
-      component: Weeklypayoutsandbonuses
+      component: Weeklypayoutsandbonuses,
+      beforeEnter: AuthGuard
     },
     {
       path: "/understandingupfrontpricing",
       name: "Understanding-upfront-pricing",
-      component: Understandingupfrontpricing
+      component: Understandingupfrontpricing,
+      beforeEnter: AuthGuard
     },
     {
       path: "/commissionfee",
       name: "Commission-fee",
-      component: Commissionfee
+      component: Commissionfee,
+      beforeEnter: AuthGuard
     },
     {
       path: "/parkingfeesandtolls",
       name: "Parking-fees-and-tolls",
-      component: Parkingfeesandtolls
+      component: Parkingfeesandtolls,
+      beforeEnter: AuthGuard
     },
     {
       path: "/cursa/:id",
@@ -203,167 +220,200 @@ export default new VueRouter({
     {
       path: "/passengerlostanitem",
       name: "Passenger-lost-an-item",
-      component: Passengerlostanitem
+      component: Passengerlostanitem,
+      beforeEnter: AuthGuard
     },
     {
       path: "/passengermisconduct",
       name: "Passenger-misconduct",
-      component: Passengermisconduct
+      component: Passengermisconduct,
+      beforeEnter: AuthGuard
     },
     {
       path: "/reportinganaccidentorviolentbehaviour",
       name: "Reporting-an-accident-or-violent-behaviour",
-      component: Reportinganaccidentorviolentbehaviour
+      component: Reportinganaccidentorviolentbehaviour,
+      beforeEnter: AuthGuard
     },
     {
       path: "/havingatechnicalissue",
       name: "Having-a-technical-issue",
-      component: Havingatechnicalissue
+      component: Havingatechnicalissue,
+      beforeEnter: AuthGuard
     },
     {
       path: "/otherquestions",
       name: "Other-questions",
-      component: Otherquestions
+      component: Otherquestions,
+      beforeEnter: AuthGuard
     },
     {
       path: "/issueswithordernotification",
       name: "Issues-with-order-notification",
-      component: Issueswithordernotification
+      component: Issueswithordernotification,
+      beforeEnter: AuthGuard
     },
     {
       path: "/updatesfordriverapp",
       name: "Updates-for-driver-app",
-      component: Updatesfordriverapp
+      component: Updatesfordriverapp,
+      beforeEnter: AuthGuard
     },
     {
       path: "/devicerequirements",
       name: "Device-requirements",
-      component: Devicerequirements
+      component: Devicerequirements,
+      beforeEnter: AuthGuard
     },
     {
       path: "/finishedandcompletionratecalculation",
       name: "Finished-and-completion-rate-calculation",
-      component: Finishedandcompletionratecalculation
+      component: Finishedandcompletionratecalculation,
+      beforeEnter: AuthGuard
     },
     {
       path: "/outofradiusrides",
       name: "Out-of-radius-rides",
-      component: Outofradiusrides
+      component: Outofradiusrides,
+      beforeEnter: AuthGuard
     },
     {
       path: "/acceptanceratecalculation",
       name: "Acceptance-rate-calculation",
-      component: Acceptanceratecalculation
+      component: Acceptanceratecalculation,
+      beforeEnter: AuthGuard
     },
     {
       path: "/callingapassenger",
       name: "Calling-a-passenger",
-      component: Callingapassenger
+      component: Callingapassenger,
+      beforeEnter: AuthGuard
     },
     {
       path: "/activityscorecalculation",
       name: "Activity-score-calculation",
-      component: Activityscorecalculation
+      component: Activityscorecalculation,
+      beforeEnter: AuthGuard
     },
     {
       path: "/usingdrivingradius",
       name: "Using-driving-radius",
-      component: Usingdrivingradius
+      component: Usingdrivingradius,
+      beforeEnter: AuthGuard
     },
     {
       path: "/improvingyourratings",
       name: "Improving-your-ratings",
-      component: Improvingyourratings
+      component: Improvingyourratings,
+      beforeEnter: AuthGuard
     },
     {
       path: "/guidetobacktobackrides",
       name: "Guide-to-back-to-back-rides",
-      component: Guidetobacktobackrides
+      component: Guidetobacktobackrides,
+      beforeEnter: AuthGuard
     },
     {
       path: "/disablingbacktobackrides",
       name: "Disabling-back-to-back-rides",
-      component: Disablingbacktobackrides
+      component: Disablingbacktobackrides,
+      beforeEnter: AuthGuard
     },
     {
       path: "/getridestowardsyourdestination",
       name: "Get-rides-towards-your-destination",
-      component: Getridestowardsyourdestination
+      component: Getridestowardsyourdestination,
+      beforeEnter: AuthGuard
     },
     {
       path: "/tipstogetmorejourneyrequests",
       name: "Tips-to-get-more-journey-requests",
-      component: Tipstogetmorejourneyrequests
+      component: Tipstogetmorejourneyrequests,
+      beforeEnter: AuthGuard
     },
     {
       path: "/waitingforpassenger",
       name: "Waiting-for-passenger",
-      component: Waitingforpassenger
+      component: Waitingforpassenger,
+      beforeEnter: AuthGuard
     },
     {
       path: "/ratingapassenger",
       name: "Rating-a-passenger",
-      component: Ratingapassenger
+      component: Ratingapassenger,
+      beforeEnter: AuthGuard
     },
     {
       path: "/passengermadeamess",
       name: "Passenger-made-a-mess",
-      component: Passengermadeamess
+      component: Passengermadeamess,
+      beforeEnter: AuthGuard
     },
     {
       path: "/safetytips",
       name: "Safety-tips",
-      component: Safetytips
+      component: Safetytips,
+      beforeEnter: AuthGuard
     },
     {
       path: "/understandingdriverfraud",
       name: "Understanding-driver-fraud",
-      component: Understandingdriverfraud
+      component: Understandingdriverfraud,
+      beforeEnter: AuthGuard
     },
     {
       path: "/reasonsforablockedaccount",
       name: "Reasons-for-a-blocked-account",
-      component: Reasonsforablockedaccount
+      component: Reasonsforablockedaccount,
+      beforeEnter: AuthGuard
     },
     {
       path: "/collectingandprocessingpersonaldata",
       name: "Collecting-and-processing-personal-data",
-      component: Collectingandprocessingpersonaldata
+      component: Collectingandprocessingpersonaldata,
+      beforeEnter: AuthGuard
     },
     {
       path: "/requestingyourdata",
       name: "Requesting-your-data",
-      component: Requestingyourdata
+      component: Requestingyourdata,
+      beforeEnter: AuthGuard
     },
     {
       path: "/addingavehicle",
       name: "Adding-a-vehicle",
-      component: Addingavehicle
+      component: Addingavehicle,
+      beforeEnter: AuthGuard
     },
     {
       path: "/selectingavehicleinapp",
       name: "Selecting-a-vehicle-in-app",
-      component: Selectingavehicleinapp
+      component: Selectingavehicleinapp,
+      beforeEnter: AuthGuard
     },
     {
       path: "/resettingyourpassword",
       name: "Resetting-your-password",
-      component: Resettingyourpassword
+      component: Resettingyourpassword,
+      beforeEnter: AuthGuard
     },
     {
       path: "/uploadingyourdocuments",
       name: "Uploading-your-documents",
-      component: Uploadingyourdocuments
+      component: Uploadingyourdocuments,
+      beforeEnter: AuthGuard
     },
     {
       path: "/updatingyourbankdetails",
       name: "Updating-your-bank-details",
-      component: Updatingyourbankdetails
+      component: Updatingyourbankdetails,
+      beforeEnter: AuthGuard
     },
     {
       path: "/updatingyouraccountdetails",
       name: "Updating-your-account-details",
-      component: Updatingyouraccountdetails
+      component: Updatingyouraccountdetails,
+      beforeEnter: AuthGuard
     },
     {
       path: "/yourprofilepicture",
@@ -374,7 +424,8 @@ export default new VueRouter({
     {
       path: "/deletingyouraccount",
       name: "Deleting-your-account",
-      component: Deletingyouraccount
+      component: Deletingyouraccount,
+      beforeEnter: AuthGuard
     },
     {
       path: "/documents",
@@ -413,7 +464,8 @@ export default new VueRouter({
     {
       path: "/termsandconditions",
       name: "Terms-and-Conditions",
-      component: TermsandConditions
+      component: TermsandConditions,
+      beforeEnter: AuthGuard
     },
     {
       path: "/becomedriver",
