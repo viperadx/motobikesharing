@@ -42,12 +42,12 @@
             <v-list-item-title>Help</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link to="/settings">
+        <v-list-item v-if="user && this.userDetails.Admin" link to="/Admin">
           <v-list-item-action>
-            <v-icon>mdi-settings-box</v-icon>
+            <v-icon>mdi-head-minus</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Settings</v-list-item-title>
+            <v-list-item-title>Admin</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="onSignOut" v-if="user">
@@ -89,6 +89,9 @@ export default {
   computed: {
     user() {
       return this.$store.getters.user;
+    },
+    userDetails() {
+      return this.$store.getters.loggedInUserData;
     }
   },
   methods: {

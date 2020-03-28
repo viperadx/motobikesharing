@@ -7,13 +7,19 @@
       readonly
       :value="Rides.rideId"
     ></v-text-field> -->
-    <div>{{ currentUserRidesHistoryGetter }}</div>
+    <div>{{ currentUserRidesHistoryGetter.id }}</div>
     <v-text-field
       label="Number of Rides"
       outlined
-      readonly
+      readonly: true
       :value="id"
     ></v-text-field>
+        <v-list-item
+          v-for="id in currentUserRidesHistoryGetter"
+          :key="id">
+          {{ id.distance }}
+          {{ id.duration }}
+        </v-list-item>
     <v-layout text-center wrap>
       Numele strazii(destinatia)
       <br />An.luna.zi ora.minut <br />Tarif xx.xx LEI <br />Statusul
@@ -60,7 +66,6 @@
 <script>
 /* eslint-disable no-console */
 export default {
-  name: "Cursa",
   data() {
     return {
       id: this.$route.params.id
@@ -89,8 +94,8 @@ export default {
         : [];
     },
     currentUserRidesHistoryGetter() {
-      return this.$store.getters.currentUserRidesHistoryGetter.indexOf(this.id)
-        ? this.$store.getters.currentUserRidesHistoryGetter.indexOf(this.id)
+      return this.$store.getters.currentUserRidesHistoryGetter
+        ? this.$store.getters.currentUserRidesHistoryGetter
         : [];
     }
   },

@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import Home from "../components/Home.vue";
 import Help from "../components/Help.vue";
-import Settings from "../components/Settings.vue";
+import Admin from "../components/Admin.vue";
 import Rides from "../components/Rides.vue";
 import Listallnews from "../components/Help/List-all-news.vue";
 import Campaigns from "../components/Help/Campaigns.vue";
@@ -52,7 +52,7 @@ import Reasonsforablockedaccount from "../components/Help/Account/Reasons-for-a-
 import Collectingandprocessingpersonaldata from "../components/Help/Account/Collecting-and-processing-personal-data.vue";
 import Requestingyourdata from "../components/Help/Account/Requesting-your-data.vue";
 import Addingavehicle from "../components/Help/Account/Adding-a-vehicle.vue";
-import Selectinavehicleinapp from "../components/Help/Account/Selecting-a-vehicle-in-app.vue";
+import Selectingavehicleinapp from "../components/Help/Account/Selecting-a-vehicle-in-app.vue";
 import Resettingyourpassword from "../components/Help/Account/Resetting-your-password.vue";
 import Uploadingyourdocuments from "../components/Help/Account/Uploading-your-documents.vue";
 import Updatingyourbankdetails from "../components/Help/Account/Updating-your-bank-details.vue";
@@ -67,6 +67,7 @@ import Signup from "../components/Authentication/Sign-up.vue";
 import Login from "../components/Authentication/Login.vue";
 import AuthGuard from "../router/AuthGuard";
 import TermsandConditions from "../components/GDPR/Terms-and-Conditions.vue";
+import Becomedriver from "../components/Account/Become-driver.vue";
 
 Vue.use(VueRouter);
 
@@ -84,14 +85,16 @@ export default new VueRouter({
       beforeEnter: AuthGuard
     },
     {
-      path: "/settings",
-      name: "Settings",
-      component: Settings
+      path: "/admin",
+      name: "Admin",
+      component: Admin,
+      beforeEnter: AuthGuard
     },
     {
       path: "/rides",
       name: "Rides",
-      component: Rides
+      component: Rides,
+      beforeEnter: AuthGuard
     },
     {
       path: "/listallnews",
@@ -126,7 +129,8 @@ export default new VueRouter({
     {
       path: "/accounthelp",
       name: "Account-help",
-      component: Accounthelp
+      component: Accounthelp,
+      beforeEnter: AuthGuard
     },
     {
       path: "/seeallconversations",
@@ -136,7 +140,8 @@ export default new VueRouter({
     {
       path: "/changevehicle",
       name: "Change-vehicle",
-      component: Changevehicle
+      component: Changevehicle,
+      beforeEnter: AuthGuard
     },
     {
       path: "/paymentsandbonuses",
@@ -186,12 +191,14 @@ export default new VueRouter({
     {
       path: "/cursa/:id",
       name: "Cursa",
-      component: Cursa
+      component: Cursa,
+      beforeEnter: AuthGuard
     },
     {
       path: "/account",
       name: "Account",
-      component: Account
+      component: Account,
+      beforeEnter: AuthGuard
     },
     {
       path: "/passengerlostanitem",
@@ -336,7 +343,7 @@ export default new VueRouter({
     {
       path: "/selectingavehicleinapp",
       name: "Selecting-a-vehicle-in-app",
-      component: Selectinavehicleinapp
+      component: Selectingavehicleinapp
     },
     {
       path: "/resettingyourpassword",
@@ -361,7 +368,8 @@ export default new VueRouter({
     {
       path: "/yourprofilepicture",
       name: "Your-profile-picture",
-      component: Yourprofilepicture
+      component: Yourprofilepicture,
+      beforeEnter: AuthGuard
     },
     {
       path: "/deletingyouraccount",
@@ -371,22 +379,26 @@ export default new VueRouter({
     {
       path: "/documents",
       name: "Documents",
-      component: Documents
+      component: Documents,
+      beforeEnter: AuthGuard
     },
     {
       path: "/accountdetails",
       name: "Account-details",
-      component: Accountdetails
+      component: Accountdetails,
+      beforeEnter: AuthGuard
     },
     {
       path: "/bankdetails",
       name: "Bank-details",
-      component: Bankdetails
+      component: Bankdetails,
+      beforeEnter: AuthGuard
     },
     {
       path: "/earnings",
       name: "Earnings",
-      component: Earnings
+      component: Earnings,
+      beforeEnter: AuthGuard
     },
     {
       path: "/signup",
@@ -402,6 +414,12 @@ export default new VueRouter({
       path: "/termsandconditions",
       name: "Terms-and-Conditions",
       component: TermsandConditions
+    },
+    {
+      path: "/becomedriver",
+      name: "Become-driver",
+      component: Becomedriver,
+      beforeEnter: AuthGuard
     }
   ]
 });

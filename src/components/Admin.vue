@@ -1,9 +1,9 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>TRE SA VAD DACA MAI TIN PAGINA ASTA</v-layout>
+    <v-layout text-center wrap>
+      // TODO: aici tre sa mai adaug pie chart uri etc</v-layout
+    >
     <v-layout text-center wrap>Aplicatie navigare</v-layout>
-    <v-layout text-center wrap>Pornire automata (trigger)</v-layout>
-    <v-layout text-center wrap>Mod intunecat (trigger)</v-layout>
     <v-layout text-center wrap>Nr versiune</v-layout>
     <v-layout text-center wrap>Logout</v-layout>
   </v-container>
@@ -11,11 +11,15 @@
 
 <script>
 export default {
-  name: "Settings",
+  name: "Admin",
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    userDetails() {
+      return this.$store.getters.loggedInUserData;
+    }
+  },
   methods: {},
   created() {},
   mounted() {}

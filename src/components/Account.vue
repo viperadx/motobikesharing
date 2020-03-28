@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div>{{ userData.email }}</div>
+    <div>{{ userDetails }}</div>
     <v-col cols="12" sm="6" md="3">
       <v-text-field
         label="Average Rating"
@@ -15,9 +15,13 @@
         :value="userData.noOfRides"
       ></v-text-field>
     </v-col>
-    <v-layout text-center wrap>
-      // TODO: aici tre sa mai adaug pie chart uri etc</v-layout
-    >
+    <div v-if="!this.userDetails.idDriver && this.userDetails.Admin === false">
+      <v-layout text-center wrap
+        ><router-link to="/becomedriver">
+          Do you want to become a driver on the platform?</router-link
+        ></v-layout
+      >
+    </div>
 
     <v-layout text-center wrap>
       <router-link to="/accountdetails">Account details</router-link>
@@ -55,6 +59,9 @@ export default {
       return this.$store.getters.presentDriverDataGetter
         ? this.$store.getters.presentDriverDataGetter
         : "";
+    },
+    userDetails() {
+      return this.$store.getters.loggedInUserData;
     }
   },
   methods: {
