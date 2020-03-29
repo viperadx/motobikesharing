@@ -14,12 +14,12 @@
       readonly: true
       :value="id"
     ></v-text-field>
-        <v-list-item
+        <!-- <v-list-item
           v-for="id in currentUserRidesHistoryGetter"
           :key="id">
           {{ id.distance }}
           {{ id.duration }}
-        </v-list-item>
+        </v-list-item> -->
     <v-layout text-center wrap>
       Numele strazii(destinatia)
       <br />An.luna.zi ora.minut <br />Tarif xx.xx LEI <br />Statusul

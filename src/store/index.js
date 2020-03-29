@@ -20,6 +20,7 @@ export default new Vuex.Store({
     presentDriverData: null,
     activeRide: null,
     currentRideDriver: null,
+    currentRideClient: null,
     currentDriverRidesHistory: [],
     currentUserRidesHistory: []
   },
@@ -59,6 +60,9 @@ export default new Vuex.Store({
     },
     setCurrentRideForDriver(state, payload) {
       state.currentRideDriver = payload;
+    },
+    setCurrentRideForClient(state, payload) {
+      state.currentRideClient = payload;
     },
     setRidesHistoryForDriver(state, payload) {
       state.currentDriverRidesHistory = payload;
@@ -252,6 +256,9 @@ export default new Vuex.Store({
           .ref("/Rides/" + payload)
           .on("value", snap => {
             commit("setActiveRideRequest", snap.val());
+            const values = snap.val();
+            values.rideId = snap.key;
+            commit("setCurrentRideForClient", values);
           });
       } else {
         commit("setActiveRideRequest", null);
@@ -274,6 +281,26 @@ export default new Vuex.Store({
               values.rideId = snap.key;
               commit("setCurrentRideForDriver", values);
             });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    cancelRide({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Rides/" + payload.ride.rideId)
+        .update({
+          status: "ride cancelled by client"
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Rides/" + payload.ride.rideId)
+            .on("value", snap => {
+              commit("setCurrentRideForClient", snap.val());
+            });
+          commit("setCurrentRideForClient", null);
         })
         .catch(err => {
           console.log(err);
@@ -362,6 +389,7 @@ export default new Vuex.Store({
     loggedInUserData: state => state.loggedInUserData,
     activeRideRequest: state => state.activeRide,
     currentRideDriverGetter: state => state.currentRideDriver,
+    currentRideClientGetter: state => state.currentRideClient,
     currentDriverRidesHistoryGetter: state => state.currentDriverRidesHistory,
     currentUserRidesHistoryGetter: state => state.currentUserRidesHistory
   }

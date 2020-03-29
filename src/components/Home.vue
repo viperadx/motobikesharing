@@ -39,6 +39,11 @@
         </div>
         <v-progress-circular indeterminate color="primary">
         </v-progress-circular>
+        <div class="custom-cancel-ride">
+          <v-btn small color="primary" dark @click="cancelRide(ride)"
+            >Cancel ride</v-btn
+          >
+        </div>
       </div>
       <div
         class="user-ride-info"
@@ -194,6 +199,7 @@
 
 import VueGoogleAutocomplete from "vue-google-autocomplete";
 import * as firebase from "firebase";
+import moment from "moment";
 export default {
   name: "Home",
   components: {
@@ -252,6 +258,9 @@ export default {
     currentRideDriver() {
       return this.$store.getters.currentRideDriverGetter;
     },
+    currentRideClient() {
+      return this.$store.getters.currentRideClientGetter;
+    },
     showSnackbarForUser() {
       return (
         this.rideInfo.status === "requesting" && !this.userDetails.idDriver
@@ -287,6 +296,9 @@ export default {
       this.incomingRequest = !this.incomingRequest;
     },
     searchRide() {
+      var day = new Date();
+      var dayWrapper = moment(day);
+      var dayString = dayWrapper.format("YYYY-MM-DD");
       const newRide = {
         userLocationLat: this.defaultLocation.lat,
         userLocationLng: this.defaultLocation.lng,
@@ -296,7 +308,8 @@ export default {
         price: this.rideInfo.price,
         distance: this.rideInfo.distance,
         duration: this.rideInfo.duration,
-        clientId: this.user
+        clientId: this.user,
+        Timestamp: dayString
       };
       let rideId;
       firebase
@@ -316,6 +329,14 @@ export default {
         .catch(error => {
           console.log(error);
         });
+    },
+    cancelRide() {
+      const payload = { ride: this.currentRideClient };
+      this.$store.dispatch("cancelRide", payload);
+      this.rideInfo.status = "not requesting";
+      this.createMap();
+      this.geolocate();
+      this.clearSearch();
     },
     acceptRide(ride) {
       const payload = { ride, idDriver: this.user };
@@ -512,6 +533,13 @@ export default {
 }
 
 .custom-search-progress {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-flow: column;
+}
+
+.custom-cancel-ride {
   display: flex;
   width: 100%;
   align-items: center;
