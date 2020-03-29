@@ -298,7 +298,7 @@ export default {
     searchRide() {
       var day = new Date();
       var dayWrapper = moment(day);
-      var dayString = dayWrapper.format("YYYY-MM-DD");
+      var dayString = dayWrapper.format("YYYY-MM-DD HH:MM:SS");
       const newRide = {
         userLocationLat: this.defaultLocation.lat,
         userLocationLng: this.defaultLocation.lng,
