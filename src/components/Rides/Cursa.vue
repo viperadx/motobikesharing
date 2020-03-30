@@ -11,15 +11,16 @@
     <v-text-field
       label="Number of Rides"
       outlined
-      readonly: true
+      readonly="true"
       :value="id"
     ></v-text-field>
-        <!-- <v-list-item
-          v-for="id in currentUserRidesHistoryGetter"
-          :key="id">
-          {{ id.distance }}
-          {{ id.duration }}
-        </v-list-item> -->
+    <v-text-field
+      label="Number of Rides"
+      outlined
+      readonly="true"
+      :value="rideDetails.duration"
+    ></v-text-field>
+
     <v-layout text-center wrap>
       Numele strazii(destinatia)
       <br />An.luna.zi ora.minut <br />Tarif xx.xx LEI <br />Statusul
@@ -65,9 +66,11 @@
 
 <script>
 /* eslint-disable no-console */
+import * as firebase from "firebase";
 export default {
   data() {
     return {
+      rideDetails: null,
       id: this.$route.params.id
     };
   },
@@ -75,6 +78,7 @@ export default {
     user() {
       return this.$store.getters.user;
     },
+
     userDetails() {
       return this.$store.getters.loggedInUserData;
     },
@@ -105,7 +109,12 @@ export default {
     this.$store.dispatch("readDriverDetailsByUserID", "idUser");
   },
   mounted() {
-    this.$store.dispatch("");
+    firebase
+      .database()
+      .ref("/Rides/" + this.id)
+      .on("value", snap => {
+        this.rideDetails = snap.val();
+      });
   }
 };
 </script>
