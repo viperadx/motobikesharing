@@ -7,18 +7,48 @@
       readonly
       :value="Rides.rideId"
     ></v-text-field> -->
-    <div>{{ currentUserRidesHistoryGetter.id }}</div>
+    <!-- <div>{{ currentUserRidesHistoryGetter.id }}</div> -->
     <v-text-field
-      label="Number of Rides"
+      label="Date & time"
       outlined
       readonly="true"
-      :value="id"
+      :value="rideDetails.timeStamp"
     ></v-text-field>
     <v-text-field
-      label="Number of Rides"
+      label="Pick up location"
+      outlined
+      readonly="true"
+      :value="rideDetails.price"
+    ></v-text-field>
+    <v-text-field
+      label="Drop off location"
+      outlined
+      readonly="true"
+      :value="rideDetails.price"
+    ></v-text-field>
+    <v-text-field
+      label="Cost"
+      outlined
+      readonly="true"
+      :value="rideDetails.price"
+    ></v-text-field>
+    <v-text-field
+      label="Duration"
       outlined
       readonly="true"
       :value="rideDetails.duration"
+    ></v-text-field>
+    <v-text-field
+      label="Distance"
+      outlined
+      readonly="true"
+      :value="rideDetails.distance"
+    ></v-text-field>
+    <v-text-field
+      label="Your driver"
+      outlined
+      readonly="true"
+      :value="rideDetails.idDriver"
     ></v-text-field>
 
     <v-layout text-center wrap>

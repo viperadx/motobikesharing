@@ -1,9 +1,6 @@
 <template>
   <v-card>
-    <v-card-title
-      style="background: linear-gradient(to right, #433d6b , #f86c5c);color: white;"
-      >Login</v-card-title
-    >
+    <v-card-title>Login</v-card-title>
     <v-container grid-list-sm class="pa-4">
       <v-layout row wrap>
         <v-flex xs12 align-center justify-space-between>
@@ -30,14 +27,12 @@
       </v-layout>
     </v-container>
     <v-card-actions>
-      <v-btn style="color: #f86c5c;" to="/signup">New account</v-btn>
+      <v-btn to="/signup">New account</v-btn>
       <v-spacer></v-spacer>
       <v-btn color="normal" type="submit" @click="userRecover"
         >Forgot password?</v-btn
       >
-      <v-btn style="color: #f86c5c;" type="submit" @click="userSignin"
-        >Login</v-btn
-      >
+      <v-btn type="submit" @click="userSignin">Login</v-btn>
     </v-card-actions>
   </v-card>
 </template>
