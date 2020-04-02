@@ -464,7 +464,8 @@ export default new VueRouter({
     {
       path: "/termsandconditions",
       name: "Terms-and-Conditions",
-      component: TermsandConditions
+      component: TermsandConditions,
+      beforeEnter: AuthGuard
     },
     {
       path: "/becomedriver",

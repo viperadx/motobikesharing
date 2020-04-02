@@ -1,6 +1,8 @@
 <template>
   <v-card>
-    <v-card-title>Create new account</v-card-title>
+    <v-card-title
+      style="background: linear-gradient(to right, #433d6b , #f86c5c);color: white;"
+    >Crează cont nou</v-card-title>
     <v-container grid-list-sm class="pa-4">
       <v-layout wrap>
         <v-flex xs12 align-center justify-space-between>
@@ -21,29 +23,21 @@
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
-          <v-text-field
-            label="Last Name"
-            v-model="lastname"
-            color="normal"
-          ></v-text-field>
+          <v-text-field label="Nume" v-model="nume" color="normal"></v-text-field>
         </v-flex>
         <v-flex xs6>
-          <v-text-field
-            label="First Name"
-            color="normal"
-            v-model="firstname"
-          ></v-text-field>
+          <v-text-field label="Prenume" color="normal" v-model="prenume"></v-text-field>
         </v-flex>
         <v-flex xs12>
           <v-select
             :items="locations"
-            v-model="location"
+            v-model="localitate"
             color="normal"
-            label="Location"
+            label="Localitate"
             autocomplete
           ></v-select>
         </v-flex>
-        <!-- <v-flex xs6> ASTA E ORIGINALUL
+        <!-- <v-flex xs6>
           <v-menu
             ref="datanamenu"
             :close-on-content-click="false"
@@ -70,85 +64,13 @@
               @change="$refs.datanamenu.save(datana)"
             ></v-date-picker>
           </v-menu>
-        </v-flex>
-        <v-flex xs6> -->
-        <!-- <v-flex xs6> - AICI E INCERCAREA MEA
-          <v-menu
-            ref="bdaymenu"
-            lazy
-            :close-on-content-click="false"
-            v-model="bdaymenu"
-            transition="scale-transition"
-            offset-y
-            full-width
-            :nudge-right="40"
-            min-width="290px"
-            :return-value.sync="bday"
-          >
-            <v-text-field
-              slot="activator"
-              v-model="bday"
-              label="Birthday date"
-              color="normal"
-              readonly
-            ></v-text-field>
-            <v-date-picker
-              ref="picker"
-              v-model="bday"
-              :max="new Date().toISOString().substr(0, 10)"
-              min="1930-01-01"
-            ></v-date-picker>
-          </v-menu>
-        </v-flex> -->
-        <v-flex xs6>
-          <v-menu
-            ref="menu"
-            v-model="menu"
-            :close-on-content-click="false"
-            :return-value.sync="bday"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <template v-slot:activator="{ on }">
-              <v-text-field
-                v-model="bday"
-                label="Birthday date"
-                readonly
-                v-on="on"
-                :rules="[rules.required]"
-              ></v-text-field>
-            </template>
-            <v-date-picker
-              v-model="bday"
-              no-title
-              scrollable
-              :max="new Date().toISOString().substr(0, 10)"
-              min="1940-01-01"
-            >
-              <div class="flex-grow-1"></div>
-              <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(bday)"
-                >OK</v-btn
-              >
-            </v-date-picker>
-          </v-menu>
-        </v-flex>
-        <v-flex xs6>
-          <v-select
-            :items="genders"
-            v-model="gender"
-            color="normal"
-            label="Gender"
-            autocomplete
-          ></v-select>
-        </v-flex>
+        </v-flex>-->
         <v-flex xs6>
           <v-text-field
             name="input-10-1"
-            label="Password"
+            label="Parolă"
             color="normal"
-            hint="At least 8 characters"
+            hint="Minim 8 caractere"
             v-model="password"
             min="8"
             :append-icon-cb="() => (e1 = !e1)"
@@ -160,8 +82,8 @@
         <v-flex xs6>
           <v-text-field
             name="input-10-1"
-            label="Confirm password"
-            hint="At least 8 characters"
+            label="Confirmă parolă"
+            hint="Minim 8 caractere"
             color="normal"
             v-model="confirmPassword"
             min="8"
@@ -169,31 +91,11 @@
             :rules="[comparePasswords]"
           ></v-text-field>
         </v-flex>
-      </v-layout>
-      <v-checkbox v-model="checkbox">
-        <template v-slot:label>
-          <div>
-            I agree to
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <a
-                  target="_blank"
-                  href="https://motobikesharing.web.app/#/termsandconditions"
-                  @click.stop
-                  v-on="on"
-                >
-                  Terms and conditions
-                </a>
-              </template>
-              Opens in new window
-            </v-tooltip>
-          </div>
-        </template>
-      </v-checkbox>
+      </v-layout>Prin crearea contului declar că sunt de acord cu Termenii și Condițiile de utilizare a aplicației, cât și cu Politica de Confidențialitate.
     </v-container>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn type="submit" @click="userSignUp">Register</v-btn>
+      <v-btn style="color: #f86c5c;" type="submit" @click="userSignUp">Înregistrare</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -204,35 +106,29 @@ import LocalitatiRO from "../../assets/LocalitatiRO";
 export default {
   name: "Sign-up",
   data: () => ({
-    checkbox: false,
-    location: null,
+    localitate: null,
     phone: null,
-    lastname: null,
-    firstname: null,
+    nume: null,
+    prenume: null,
     e1: true,
     password: "",
-    bdaymenu: false,
+    // datanamenu: false,
     email: "",
+    // datana: null,
     locations: [],
     confirmPassword: "",
-    bday: null,
-    menu: null,
-    modal: false,
-    genders: ["Male", "Female", "Other", "Unspecified"],
-    menu2: false,
-    gender: null,
     rules: {
-      required: value => !!value || "Required.",
+      required: value => !!value || "Obligatoriu.",
       email: value => {
         const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(value) || "Invalid email.";
+        return pattern.test(value) || "Email invalid.";
       }
     }
   }),
   computed: {
     comparePasswords() {
       return this.password !== this.confirmPassword
-        ? "Passwords do not match"
+        ? "Parolele nu corespund"
         : "";
     }
   },
@@ -241,12 +137,11 @@ export default {
       this.$store.dispatch("signUp", {
         email: this.email,
         password: this.password,
-        lastname: this.lastname,
-        firstname: this.firstname,
-        location: this.location,
-        bday: this.bday,
-        phone: this.phone,
-        gender: this.gender
+        nume: this.nume,
+        prenume: this.prenume,
+        localitate: this.localitate,
+        // datana: this.datana,
+        phone: this.phone
       });
       this.signup = false;
     }

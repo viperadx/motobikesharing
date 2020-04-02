@@ -298,10 +298,7 @@ export default {
     searchRide() {
       var day = new Date();
       var dayWrapper = moment(day);
-      var fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
-      var dayString = dayWrapper.format("DD");
-      var monthString = dayWrapper.format("MM");
-      var yearString = dayWrapper.format("YYYY");
+      var dayString = dayWrapper.format("YYYY-MM-DD HH:MM:SS");
       const newRide = {
         userLocationLat: this.defaultLocation.lat,
         userLocationLng: this.defaultLocation.lng,
@@ -312,10 +309,7 @@ export default {
         distance: this.rideInfo.distance,
         duration: this.rideInfo.duration,
         clientId: this.user,
-        timeStampFull: fullString,
-        timeStampDay: dayString,
-        timeStampMonth: monthString,
-        timeStampYear: yearString
+        Timestamp: dayString
       };
       let rideId;
       firebase

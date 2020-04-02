@@ -22,7 +22,7 @@
             }
           }"
         >
-          {{ ride.timeStampFull }}
+          {{ ride.rideId }}
         </v-list-item>
       </v-list>
       <div v-if="currentUserRidesHistoryGetter.length > 0">
@@ -39,7 +39,7 @@
             }
           }"
         >
-          {{ ride.timeStampFull }}
+          {{ ride.rideId }}
         </v-list-item>
       </v-list>
     </v-col>

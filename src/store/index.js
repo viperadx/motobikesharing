@@ -151,7 +151,7 @@ export default new Vuex.Store({
               Name: payload.nume,
               Surname: payload.prenume,
               Locality: payload.localitate,
-              BirthDate: payload.bday,
+              // BirthDate: payload.datana,
               Email: payload.email,
               Collaborations: "",
               Admin: false,

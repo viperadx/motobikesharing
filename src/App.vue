@@ -18,11 +18,7 @@
             <v-list-item-title>Account</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item
-          v-if="user && this.userDetails.idDriver"
-          link
-          to="/earnings"
-        >
+        <v-list-item link to="/earnings">
           <v-list-item-action>
             <v-icon>mdi-cash</v-icon>
           </v-list-item-action>
@@ -46,7 +42,7 @@
             <v-list-item-title>Help</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="user && this.userDetails.Admin" link to="/admin">
+        <v-list-item v-if="user && this.userDetails.Admin" link to="/Admin">
           <v-list-item-action>
             <v-icon>mdi-head-minus</v-icon>
           </v-list-item-action>
