@@ -25,6 +25,7 @@
             label="Last Name"
             v-model="lastname"
             color="normal"
+            :rules="[rules.required]"
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
@@ -32,6 +33,7 @@
             label="First Name"
             color="normal"
             v-model="firstname"
+            :rules="[rules.required]"
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
@@ -41,6 +43,7 @@
             color="normal"
             label="Location"
             autocomplete
+            :rules="[rules.required]"
           ></v-select>
         </v-flex>
         <!-- <v-flex xs6> ASTA E ORIGINALUL
@@ -140,7 +143,7 @@
             v-model="gender"
             color="normal"
             label="Gender"
-            autocomplete
+            :rules="[rules.required]"
           ></v-select>
         </v-flex>
         <v-flex xs6>
@@ -170,7 +173,7 @@
           ></v-text-field>
         </v-flex>
       </v-layout>
-      <v-checkbox v-model="checkbox">
+      <v-checkbox v-model="checkbox" :rules="[rules.required]">
         <template v-slot:label>
           <div>
             I agree to
@@ -200,35 +203,36 @@
 
 <script>
 import LocalitatiRO from "../../assets/LocalitatiRO";
-
 export default {
   name: "Sign-up",
-  data: () => ({
-    checkbox: false,
-    location: null,
-    phone: null,
-    lastname: null,
-    firstname: null,
-    e1: true,
-    password: "",
-    bdaymenu: false,
-    email: "",
-    locations: [],
-    confirmPassword: "",
-    bday: null,
-    menu: null,
-    modal: false,
-    genders: ["Male", "Female", "Other", "Unspecified"],
-    menu2: false,
-    gender: null,
-    rules: {
-      required: value => !!value || "Required.",
-      email: value => {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(value) || "Invalid email.";
+  data() {
+    return {
+      checkbox: false,
+      location: null,
+      phone: null,
+      lastname: null,
+      firstname: null,
+      e1: true,
+      password: "",
+      bdaymenu: false,
+      email: "",
+      locations: [],
+      confirmPassword: "",
+      bday: null,
+      menu: null,
+      modal: false,
+      genders: ["Male", "Female", "Other", "Unspecified"],
+      menu2: false,
+      gender: null,
+      rules: {
+        required: value => !!value || "Required.",
+        email: value => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || "Invalid email.";
+        }
       }
-    }
-  }),
+    };
+  },
   computed: {
     comparePasswords() {
       return this.password !== this.confirmPassword

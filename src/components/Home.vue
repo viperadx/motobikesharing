@@ -23,8 +23,30 @@
         Meet your driver outside
       </div>
       <div
-        class="custom-ride-finished"
-        v-if="activeRideRequest && activeRideRequest.status === 'ride finished'"
+        class="custom-send-rating-from-client"
+        v-if="
+          activeRideRequest &&
+          (activeRideRequest.status === 'client dropped at destination' ||
+            activeRideRequest.status === 'ride finished') &&
+          activeRideRequest.ratingForDriver === 'no input at the moment'
+        "
+      >
+        <v-rating v-model="ratingForDriver"> </v-rating>
+        <v-button
+          class="button-margin-remover"
+          rounded
+          x-large
+          @click="sendRatingForDriver()"
+        >
+          Send Rating</v-button
+        >
+      </div>
+      <div
+        class="custom-waiting-rating"
+        v-if="
+          activeRideRequest &&
+          activeRideRequest.ratingForDriver !== 'no input at the moment'
+        "
       >
         Thank you for your ride!
       </div>
@@ -117,8 +139,8 @@
         dark
         v-if="
           driverIsConnected &&
-            currentRideDriver &&
-            currentRideDriver.status === 'driver on route'
+          currentRideDriver &&
+          currentRideDriver.status === 'driver on route'
         "
         @click="driverArrived()"
         >I have arrived
@@ -131,12 +153,35 @@
         dark
         v-if="
           driverIsConnected &&
-            currentRideDriver &&
-            currentRideDriver.status === 'driver arrived'
+          currentRideDriver &&
+          currentRideDriver.status === 'driver arrived'
         "
-        @click="finishRide()"
+        @click="ratingForClientPopup()"
         >Finish ride
+        <!-- @click="finishRide()" -->
       </v-btn>
+      <v-card
+        class="custom-send-rating-from-driver"
+        v-if="
+          driverIsConnected &&
+          currentRideDriver &&
+          currentRideDriver.status === 'client dropped at destination' &&
+          currentRideDriver.ratingForClient ===
+            'waiting the driver to rate client'
+        "
+      >
+        <v-rating v-model="ratingForClient"> </v-rating>
+        <div class="justify-center-flex">
+          <v-button
+            class="button-margin-remover"
+            rounded
+            x-large
+            @click="finishRide()"
+          >
+            Send Rating</v-button
+          >
+        </div>
+      </v-card>
 
       <v-btn
         color="red"
@@ -203,14 +248,14 @@ import moment from "moment";
 export default {
   name: "Home",
   components: {
-    VueGoogleAutocomplete
+    VueGoogleAutocomplete,
   },
   data() {
     return {
       address: {},
       defaultLocation: {
         lat: 44.4268006,
-        lng: 26.1025036
+        lng: 26.1025036,
       },
       destination: null,
       map: null,
@@ -218,18 +263,20 @@ export default {
         service: null,
         display: null,
         start: null,
-        end: null
+        end: null,
       },
       rideInfo: {
         status: false,
         distance: null,
         duration: null,
-        price: null
+        price: null,
       },
       currentRide: null,
       driverIsConnected: false,
       incomingRequest: true,
-      showRides: true
+      ratingForClient: 3,
+      ratingForDriver: 3,
+      showRides: true,
     };
   },
   created() {},
@@ -241,7 +288,7 @@ export default {
         if (newLocation && this.defaultLocation) {
           this.createMap();
         }
-      }
+      },
     },
     activeRideRequest: {
       deep: true,
@@ -251,8 +298,8 @@ export default {
           this.createMap();
           this.geolocate();
         }
-      }
-    }
+      },
+    },
   },
   computed: {
     currentRideDriver() {
@@ -277,7 +324,7 @@ export default {
     },
     userDetails() {
       return this.$store.getters.loggedInUserData;
-    }
+    },
   },
 
   mounted() {
@@ -315,14 +362,16 @@ export default {
         timeStampFull: fullString,
         timeStampDay: dayString,
         timeStampMonth: monthString,
-        timeStampYear: yearString
+        timeStampYear: yearString,
+        ratingForClient: "no input at the moment",
+        ratingForDriver: "no input at the moment",
       };
       let rideId;
       firebase
         .database()
         .ref("Rides/")
         .push(newRide)
-        .then(res => {
+        .then((res) => {
           rideId = res.key;
           firebase
             .database()
@@ -332,7 +381,7 @@ export default {
               this.$store.dispatch("activeRideRequest", rideId);
             });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
@@ -366,11 +415,27 @@ export default {
 
       this.defaultLocation = {
         lat: this.currentRideDriver.userLocationLat,
-        lng: this.currentRideDriver.userLocationLng
+        lng: this.currentRideDriver.userLocationLng,
       };
     },
-    finishRide() {
+    ratingForClientPopup() {
       const payload = { ride: this.currentRideDriver, idDriver: this.user };
+      this.$store.dispatch("ratingForClientPopup", payload);
+    },
+    sendRatingForDriver() {
+      const payload = {
+        ride: this.currentRideClient,
+        clientId: this.user,
+        ratingForDriver: this.ratingForDriver,
+      };
+      this.$store.dispatch("sendRatingForDriver", payload);
+    },
+    finishRide() {
+      const payload = {
+        ride: this.currentRideDriver,
+        idDriver: this.user,
+        ratingForClient: this.ratingForClient,
+      };
       this.$store.dispatch("finishRide", payload);
       this.createMap();
       this.geolocate();
@@ -382,10 +447,10 @@ export default {
       this.askGeolocation();
     },
     geolocate() {
-      navigator.geolocation.getCurrentPosition(position => {
+      navigator.geolocation.getCurrentPosition((position) => {
         this.defaultLocation = {
           lat: position.coords.latitude,
-          lng: position.coords.longitude
+          lng: position.coords.longitude,
         };
       });
     },
@@ -401,15 +466,15 @@ export default {
         zoom: 16,
         options: {
           disableDefaultUI: true,
-          enableHighAccuracy: true
-        }
+          enableHighAccuracy: true,
+        },
       });
       this.directions.display.setMap(this.map);
       // this.search();
       new window.google.maps.Marker({
         position: myLatLng,
         map: this.map,
-        title: "Your Position"
+        title: "Your Position",
       });
     },
     getAddressData(addressData, placeResultData) {
@@ -428,7 +493,7 @@ export default {
         const request = {
           origin: this.defaultLocation,
           destination: destination,
-          travelMode: "DRIVING"
+          travelMode: "DRIVING",
         };
         this.directions.service.route(request, (response, status) => {
           if (status === "OK") {
@@ -447,8 +512,8 @@ export default {
           }
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -566,7 +631,21 @@ export default {
   flex-flow: column;
 }
 
+.custom-send-rating-from-client {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-flow: column;
+}
+
 .custom-ride-finished {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-flow: column;
+}
+
+.custom-waiting-rating {
   display: flex;
   width: 100%;
   align-items: center;
@@ -590,6 +669,10 @@ export default {
 
 .custom-snackbar {
   min-height: 220px;
+}
+
+.custom-send-rating-from-driver {
+  min-height: 180px;
 }
 
 .connect-driver {

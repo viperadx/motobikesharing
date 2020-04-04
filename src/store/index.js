@@ -22,7 +22,7 @@ export default new Vuex.Store({
     currentRideDriver: null,
     currentRideClient: null,
     currentDriverRidesHistory: [],
-    currentUserRidesHistory: []
+    currentUserRidesHistory: [],
   },
   mutations: {
     setUser: (state, payload) => {
@@ -69,19 +69,19 @@ export default new Vuex.Store({
     },
     setRidesHistoryForUser(state, payload) {
       state.currentUserRidesHistory = payload;
-    }
+    },
   },
   actions: {
     signOut({ commit }) {
       firebase
         .auth()
         .signOut()
-        .then(function() {
+        .then(function () {
           commit("setUser", null);
           commit("setloggedInUserData", null);
           router.push({ path: "/" });
         })
-        .catch(error => {
+        .catch((error) => {
           window.alert(error.message);
         });
     },
@@ -89,7 +89,7 @@ export default new Vuex.Store({
       firebase
         .auth()
         .signInWithEmailAndPassword(payload.email, payload.password)
-        .then(details => {
+        .then((details) => {
           commit("setUser", details.user.uid);
           console.log("test - ", details.user.uid);
           this.dispatch("readAllRidesDetailsByDriverID", details.user.uid);
@@ -99,21 +99,21 @@ export default new Vuex.Store({
             .ref("Users/" + details.user.uid)
             .on(
               "value",
-              snap => {
+              (snap) => {
                 commit("setloggedInUserData", snap.val());
               },
-              function(error) {
+              function (error) {
                 console.log("Error: " + error.message);
               }
             );
           router.push({ path: "/Home" });
         })
-        .catch(error => {
+        .catch((error) => {
           window.alert(error.message);
         });
     },
     AuthChange({ commit }) {
-      firebase.auth().onAuthStateChanged(details => {
+      firebase.auth().onAuthStateChanged((details) => {
         if (details) {
           commit("setUser", details.uid);
           this.dispatch("readAllRidesDetailsByDriverID", details.uid);
@@ -123,10 +123,10 @@ export default new Vuex.Store({
             .ref("Users/" + details.uid)
             .on(
               "value",
-              snap => {
+              (snap) => {
                 commit("setloggedInUserData", snap.val());
               },
-              function(error) {
+              function (error) {
                 console.log("Error: " + error.message);
               }
             );
@@ -139,27 +139,27 @@ export default new Vuex.Store({
       firebase
         .auth()
         .createUserWithEmailAndPassword(payload.email, payload.password)
-        .then(details => {
+        .then((details) => {
           commit("setUser", details.user.uid);
           this.dispatch("readAllRidesDetailsByDriverID", details.user.uid);
           this.dispatch("readAllRidesDetailsByUserID", details.user.uid);
-          router.push({ path: "/" });
+          router.push({ path: "/home" });
           firebase
             .database()
             .ref("/Users/" + details.user.uid)
             .set({
-              Name: payload.nume,
-              Surname: payload.prenume,
-              Locality: payload.localitate,
+              LastName: payload.lastname,
+              FirstName: payload.firstname,
+              Location: payload.location,
               BirthDate: payload.bday,
               Email: payload.email,
-              Collaborations: "",
+              // Collaborations: "",
               Admin: false,
-              GDPR: false,
-              phone: payload.phone
+              Phone: payload.phone,
+              Gender: payload.gender,
             });
         })
-        .catch(error => {
+        .catch((error) => {
           window.alert(error);
         });
     },
@@ -167,7 +167,7 @@ export default new Vuex.Store({
       firebase
         .database()
         .ref("/Drivers/" + payload)
-        .on("value", snap => {
+        .on("value", (snap) => {
           commit("setDriverData", snap.val());
         });
     },
@@ -175,7 +175,7 @@ export default new Vuex.Store({
       firebase
         .database()
         .ref("/Users/" + payload)
-        .on("value", snap => {
+        .on("value", (snap) => {
           commit("setUserData", snap.val());
         });
     },
@@ -183,10 +183,10 @@ export default new Vuex.Store({
       firebase
         .database()
         .ref("/Drivers/")
-        .on("value", snap => {
+        .on("value", (snap) => {
           let data = [];
           let keys = Object.keys(snap.val());
-          keys.forEach(item => {
+          keys.forEach((item) => {
             data.push(snap.val()[item]);
           });
           commit("setAllDriversData", data);
@@ -196,7 +196,7 @@ export default new Vuex.Store({
       firebase
         .database()
         .ref("/Rating/")
-        .on("value", snap => {
+        .on("value", (snap) => {
           commit("setAllRatingsData", snap.val());
         });
     },
@@ -204,11 +204,11 @@ export default new Vuex.Store({
       firebase
         .database()
         .ref("/Rides/")
-        .on("value", snap => {
+        .on("value", (snap) => {
           const myObj = snap.val();
           var rides = [];
           const keysRides = Object.keys(snap.val());
-          keysRides.forEach(key => {
+          keysRides.forEach((key) => {
             const ride = myObj[key];
             rides.push(ride);
           });
@@ -219,12 +219,12 @@ export default new Vuex.Store({
       firebase
         .database()
         .ref("/Rides/")
-        .on("value", snap => {
+        .on("value", (snap) => {
           console.log("driver", snap.val());
           const myObj = snap.val();
           var rides = [];
           const keysRides = Object.keys(snap.val());
-          keysRides.forEach(key => {
+          keysRides.forEach((key) => {
             if (myObj[key].idDriver === payload) {
               rides.push(myObj[key]);
             }
@@ -236,12 +236,12 @@ export default new Vuex.Store({
       firebase
         .database()
         .ref("/Rides/")
-        .on("value", snap => {
+        .on("value", (snap) => {
           console.log("user", snap.val());
           const myObj = snap.val();
           var rides = [];
           const keysRides = Object.keys(snap.val());
-          keysRides.forEach(key => {
+          keysRides.forEach((key) => {
             if (myObj[key].clientId === payload) {
               rides.push(myObj[key]);
             }
@@ -254,7 +254,7 @@ export default new Vuex.Store({
         firebase
           .database()
           .ref("/Rides/" + payload)
-          .on("value", snap => {
+          .on("value", (snap) => {
             commit("setActiveRideRequest", snap.val());
             const values = snap.val();
             values.rideId = snap.key;
@@ -270,19 +270,19 @@ export default new Vuex.Store({
         .ref("/Rides/" + payload.ride.rideId)
         .update({
           status: "driver on route",
-          idDriver: payload.idDriver
+          idDriver: payload.idDriver,
         })
         .then(() => {
           firebase
             .database()
             .ref("/Rides/" + payload.ride.rideId)
-            .on("value", snap => {
+            .on("value", (snap) => {
               const values = snap.val();
               values.rideId = snap.key;
               commit("setCurrentRideForDriver", values);
             });
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -291,38 +291,77 @@ export default new Vuex.Store({
         .database()
         .ref("/Rides/" + payload.ride.rideId)
         .update({
-          status: "ride cancelled by client"
+          status: "ride cancelled by client",
         })
         .then(() => {
           firebase
             .database()
             .ref("/Rides/" + payload.ride.rideId)
-            .on("value", snap => {
+            .on("value", (snap) => {
               commit("setCurrentRideForClient", snap.val());
             });
           commit("setCurrentRideForClient", null);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
-
     driverArrived({ commit }, payload) {
       firebase
         .database()
         .ref("/Rides/" + payload.ride.rideId)
         .update({
-          status: "driver arrived"
+          status: "driver arrived",
         })
         .then(() => {
           firebase
             .database()
             .ref("/Rides/" + payload.ride.rideId)
-            .on("value", snap => {
+            .on("value", (snap) => {
               commit("setCurrentRideForDriver", snap.val());
             });
         })
-        .catch(err => {
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    ratingForClientPopup({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Rides/" + payload.ride.rideId)
+        .update({
+          status: "client dropped at destination",
+          ratingForClient: "waiting the driver to rate client",
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Rides/" + payload.ride.rideId)
+            .on("value", (snap) => {
+              commit("setCurrentRideForDriver", snap.val());
+            });
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    sendRatingForDriver({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Rides/" + payload.ride.rideId)
+        .update({
+          ratingForDriver: payload.ratingForDriver,
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Rides/" + payload.ride.rideId)
+            .on("value", (snap) => {
+              commit("setCurrentRideForClient", snap.val());
+            });
+          commit("setCurrentRideForClient", null);
+        })
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -331,18 +370,19 @@ export default new Vuex.Store({
         .database()
         .ref("/Rides/" + payload.ride.rideId)
         .update({
-          status: "ride finished"
+          status: "ride finished",
+          ratingForClient: payload.ratingForClient,
         })
         .then(() => {
           firebase
             .database()
             .ref("/Rides/" + payload.ride.rideId)
-            .on("value", snap => {
+            .on("value", (snap) => {
               commit("setCurrentRideForDriver", snap.val());
             });
           commit("setCurrentRideForDriver", null);
         })
-        .catch(err => {
+        .catch((err) => {
           console.log(err);
         });
     },
@@ -350,7 +390,7 @@ export default new Vuex.Store({
       firebase
         .database()
         .ref("/Users/")
-        .on("value", snap => {
+        .on("value", (snap) => {
           commit("setAllUsersData", snap.val());
         });
     },
@@ -358,7 +398,7 @@ export default new Vuex.Store({
       firebase
         .database()
         .ref("/Texts/")
-        .on("value", snap => {
+        .on("value", (snap) => {
           commit("setAllTexts", snap.val());
         });
     },
@@ -366,31 +406,31 @@ export default new Vuex.Store({
       firebase
         .database()
         .ref("/Users/" + payload)
-        .on("value", snap => {
+        .on("value", (snap) => {
           firebase
             .database()
             .ref("/Drivers/" + snap.val()["idDriver"])
-            .on("value", snap => {
+            .on("value", (snap) => {
               commit("savePresentDriverData", snap.val());
             });
         });
-    }
+    },
   },
   getters: {
-    driverDataGetter: state => state.driverData,
-    userDataGetter: state => state.userData,
-    allDriversDataGetter: state => state.allDriversData,
-    allRatingsDataGetter: state => state.allRatingsData,
-    allRidesDataGetter: state => state.allRidesData,
-    allUsersDataGetter: state => state.allUsersData,
-    allTextsGetter: state => state.allTexts,
-    presentDriverDataGetter: state => state.presentDriverData,
-    user: state => state.user,
-    loggedInUserData: state => state.loggedInUserData,
-    activeRideRequest: state => state.activeRide,
-    currentRideDriverGetter: state => state.currentRideDriver,
-    currentRideClientGetter: state => state.currentRideClient,
-    currentDriverRidesHistoryGetter: state => state.currentDriverRidesHistory,
-    currentUserRidesHistoryGetter: state => state.currentUserRidesHistory
-  }
+    driverDataGetter: (state) => state.driverData,
+    userDataGetter: (state) => state.userData,
+    allDriversDataGetter: (state) => state.allDriversData,
+    allRatingsDataGetter: (state) => state.allRatingsData,
+    allRidesDataGetter: (state) => state.allRidesData,
+    allUsersDataGetter: (state) => state.allUsersData,
+    allTextsGetter: (state) => state.allTexts,
+    presentDriverDataGetter: (state) => state.presentDriverData,
+    user: (state) => state.user,
+    loggedInUserData: (state) => state.loggedInUserData,
+    activeRideRequest: (state) => state.activeRide,
+    currentRideDriverGetter: (state) => state.currentRideDriver,
+    currentRideClientGetter: (state) => state.currentRideClient,
+    currentDriverRidesHistoryGetter: (state) => state.currentDriverRidesHistory,
+    currentUserRidesHistoryGetter: (state) => state.currentUserRidesHistory,
+  },
 });

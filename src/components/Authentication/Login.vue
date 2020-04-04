@@ -38,22 +38,35 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 import router from "@/router";
 import firebase from "@/firebase";
 export default {
   name: "Login",
-  data: () => ({
-    email: "",
-    rules: {
-      required: value => !!value || "Required",
-      email: value => {
-        const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-        return pattern.test(value) || "Invalid email.";
-      }
-    },
-    e1: true,
-    password: ""
-  }),
+  data() {
+    return {
+      email: "",
+      rules: {
+        required: value => !!value || "Required",
+        email: value => {
+          const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+          return pattern.test(value) || "Invalid email.";
+        }
+      },
+      e1: true,
+      password: ""
+    };
+  },
+  computed: {
+    user() {
+      return this.$store.getters.user;
+    }
+  },
+  mounted() {
+    if (this.user) {
+      router.push("/home");
+    }
+  },
   methods: {
     userRecover() {
       const emailprompt = prompt(

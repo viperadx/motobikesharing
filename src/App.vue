@@ -112,7 +112,7 @@ export default {
     this.$store.dispatch("AuthChange");
   },
   mounted() {
-    router.push("/home");
+    // router.push("/home");
   }
 };
 </script>
