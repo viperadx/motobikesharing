@@ -500,10 +500,12 @@ export default {
             this.rideInfo.status = "requesting";
             this.$store.dispatch("activeRideRequest", null);
             this.rideInfo.distance = response.routes[0].legs[0].distance.text;
-            let price = 3;
+            let pricedistance = 2.5;
+            let priceduration = 0.3;
             this.rideInfo.price = (
-              (response.routes[0].legs[0].distance.value * price) /
-              1000
+              (response.routes[0].legs[0].distance.value * pricedistance) /
+                1000 +
+              (response.routes[0].legs[0].duration.value * priceduration) / 60
             ).toFixed(2);
             this.rideInfo.duration = response.routes[0].legs[0].duration.text;
             this.directions.display.setDirections(response);

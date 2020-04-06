@@ -68,6 +68,7 @@ import Login from "../components/Authentication/Login.vue";
 import AuthGuard from "../router/AuthGuard";
 import TermsandConditions from "../components/GDPR/Terms-and-Conditions.vue";
 import Becomedriver from "../components/Account/Become-driver.vue";
+import Presentation from "../components/Presentation.vue";
 
 Vue.use(VueRouter);
 
@@ -77,400 +78,405 @@ export default new VueRouter({
       path: "/help",
       name: "Help",
       component: Help,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
-      path: "/Home",
+      path: "/home",
       name: "Home",
       component: Home,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/admin",
       name: "Admin",
       component: Admin,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/rides",
       name: "Rides",
       component: Rides,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/listallnews",
       name: "List-all-news",
       component: Listallnews,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/campaigns",
       name: "Campaigns",
       component: Campaigns,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/helpwithrides",
       name: "Help-with-rides",
       component: Helpwithrides,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/earningshelp",
       name: "Earnings-help",
       component: Earningshelp,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/technicalproblems",
       name: "Technical-problems",
       component: Technicalproblems,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/usingmbs",
       name: "Using-MBS",
       component: Usingmbs,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/accounthelp",
       name: "Account-help",
       component: Accounthelp,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/seeallconversations",
       name: "See-all-conversations",
       component: Seeallconversations,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/changevehicle",
       name: "Change-vehicle",
       component: Changevehicle,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/paymentsandbonuses",
       name: "Payments-and-bonuses",
       component: Paymentsandbonuses,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/passengercampaigns",
       name: "Passenger-campaigns",
       component: Passengercampaigns,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/driverpaidwaittimefees",
       name: "Driver-paid-wait-time-fees",
       component: Driverpaidwaittimefees,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/cancellationfee",
       name: "Cancellation-fee",
       component: Cancellationfee,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/requestingapricereview",
       name: "Requesting-a-price-review",
       component: Requestingapricereview,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/weeklypayoutsandbonuses",
       name: "Weekly-payouts-and-bonuses",
       component: Weeklypayoutsandbonuses,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/understandingupfrontpricing",
       name: "Understanding-upfront-pricing",
       component: Understandingupfrontpricing,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/commissionfee",
       name: "Commission-fee",
       component: Commissionfee,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/parkingfeesandtolls",
       name: "Parking-fees-and-tolls",
       component: Parkingfeesandtolls,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/cursa/:id",
       name: "Cursa",
       component: Cursa,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/account",
       name: "Account",
       component: Account,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/passengerlostanitem",
       name: "Passenger-lost-an-item",
       component: Passengerlostanitem,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/passengermisconduct",
       name: "Passenger-misconduct",
       component: Passengermisconduct,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/reportinganaccidentorviolentbehaviour",
       name: "Reporting-an-accident-or-violent-behaviour",
       component: Reportinganaccidentorviolentbehaviour,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/havingatechnicalissue",
       name: "Having-a-technical-issue",
       component: Havingatechnicalissue,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/otherquestions",
       name: "Other-questions",
       component: Otherquestions,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/issueswithordernotification",
       name: "Issues-with-order-notification",
       component: Issueswithordernotification,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/updatesfordriverapp",
       name: "Updates-for-driver-app",
       component: Updatesfordriverapp,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/devicerequirements",
       name: "Device-requirements",
       component: Devicerequirements,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/finishedandcompletionratecalculation",
       name: "Finished-and-completion-rate-calculation",
       component: Finishedandcompletionratecalculation,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/outofradiusrides",
       name: "Out-of-radius-rides",
       component: Outofradiusrides,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/acceptanceratecalculation",
       name: "Acceptance-rate-calculation",
       component: Acceptanceratecalculation,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/callingapassenger",
       name: "Calling-a-passenger",
       component: Callingapassenger,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/activityscorecalculation",
       name: "Activity-score-calculation",
       component: Activityscorecalculation,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/usingdrivingradius",
       name: "Using-driving-radius",
       component: Usingdrivingradius,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/improvingyourratings",
       name: "Improving-your-ratings",
       component: Improvingyourratings,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/guidetobacktobackrides",
       name: "Guide-to-back-to-back-rides",
       component: Guidetobacktobackrides,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/disablingbacktobackrides",
       name: "Disabling-back-to-back-rides",
       component: Disablingbacktobackrides,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/getridestowardsyourdestination",
       name: "Get-rides-towards-your-destination",
       component: Getridestowardsyourdestination,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/tipstogetmorejourneyrequests",
       name: "Tips-to-get-more-journey-requests",
       component: Tipstogetmorejourneyrequests,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/waitingforpassenger",
       name: "Waiting-for-passenger",
       component: Waitingforpassenger,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/ratingapassenger",
       name: "Rating-a-passenger",
       component: Ratingapassenger,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/passengermadeamess",
       name: "Passenger-made-a-mess",
       component: Passengermadeamess,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/safetytips",
       name: "Safety-tips",
       component: Safetytips,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/understandingdriverfraud",
       name: "Understanding-driver-fraud",
       component: Understandingdriverfraud,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/reasonsforablockedaccount",
       name: "Reasons-for-a-blocked-account",
       component: Reasonsforablockedaccount,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/collectingandprocessingpersonaldata",
       name: "Collecting-and-processing-personal-data",
       component: Collectingandprocessingpersonaldata,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/requestingyourdata",
       name: "Requesting-your-data",
       component: Requestingyourdata,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/addingavehicle",
       name: "Adding-a-vehicle",
       component: Addingavehicle,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/selectingavehicleinapp",
       name: "Selecting-a-vehicle-in-app",
       component: Selectingavehicleinapp,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/resettingyourpassword",
       name: "Resetting-your-password",
       component: Resettingyourpassword,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/uploadingyourdocuments",
       name: "Uploading-your-documents",
       component: Uploadingyourdocuments,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/updatingyourbankdetails",
       name: "Updating-your-bank-details",
       component: Updatingyourbankdetails,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/updatingyouraccountdetails",
       name: "Updating-your-account-details",
       component: Updatingyouraccountdetails,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/yourprofilepicture",
       name: "Your-profile-picture",
       component: Yourprofilepicture,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/deletingyouraccount",
       name: "Deleting-your-account",
       component: Deletingyouraccount,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/documents",
       name: "Documents",
       component: Documents,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/accountdetails",
       name: "Account-details",
       component: Accountdetails,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/bankdetails",
       name: "Bank-details",
       component: Bankdetails,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/earnings",
       name: "Earnings",
       component: Earnings,
-      beforeEnter: AuthGuard
+      beforeEnter: AuthGuard,
     },
     {
       path: "/signup",
       name: "Sign-up",
-      component: Signup
+      component: Signup,
     },
     {
       path: "/login",
       name: "Login",
-      component: Login
+      component: Login,
     },
     {
       path: "/termsandconditions",
       name: "Terms-and-Conditions",
-      component: TermsandConditions
+      component: TermsandConditions,
     },
     {
       path: "/becomedriver",
       name: "Become-driver",
       component: Becomedriver,
-      beforeEnter: AuthGuard
-    }
-  ]
+      beforeEnter: AuthGuard,
+    },
+    {
+      path: "/presentation",
+      name: "Presentation",
+      component: Presentation,
+    },
+  ],
 });

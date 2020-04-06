@@ -79,7 +79,7 @@ export default new Vuex.Store({
         .then(function () {
           commit("setUser", null);
           commit("setloggedInUserData", null);
-          router.push({ path: "/" });
+          // router.push({ path: "/login" });
         })
         .catch((error) => {
           window.alert(error.message);
@@ -106,7 +106,7 @@ export default new Vuex.Store({
                 console.log("Error: " + error.message);
               }
             );
-          router.push({ path: "/Home" });
+          router.push({ path: "/home" });
         })
         .catch((error) => {
           window.alert(error.message);
@@ -359,7 +359,26 @@ export default new Vuex.Store({
             .on("value", (snap) => {
               commit("setCurrentRideForClient", snap.val());
             });
-          commit("setCurrentRideForClient", null);
+          // commit("setCurrentRideForClient", null);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
+    sendRatingForDriverFromHistory({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Rides/" + payload.id)
+        .update({
+          ratingForDriver: payload.ratingForDriver,
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Rides/" + payload.id)
+            .on("value", (snap) => {
+              commit("sendRatingForDriverFromHistory", snap.val());
+            });
         })
         .catch((err) => {
           console.log(err);

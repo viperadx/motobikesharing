@@ -11,51 +11,69 @@
     <v-text-field
       label="Date & time"
       outlined
-      readonly="true"
-      :value="rideDetails.timeStamp"
+      readonly
+      :value="rideDetails.timeStampFull"
     ></v-text-field>
     <v-text-field
       label="Pick up location"
       outlined
-      readonly="true"
+      readonly
       :value="rideDetails.price"
     ></v-text-field>
     <v-text-field
       label="Drop off location"
       outlined
-      readonly="true"
+      readonly
       :value="rideDetails.price"
     ></v-text-field>
     <v-text-field
       label="Cost"
       outlined
-      readonly="true"
+      readonly
       :value="rideDetails.price"
     ></v-text-field>
     <v-text-field
       label="Duration"
       outlined
-      readonly="true"
+      readonly
       :value="rideDetails.duration"
     ></v-text-field>
     <v-text-field
       label="Distance"
       outlined
-      readonly="true"
+      readonly
       :value="rideDetails.distance"
     ></v-text-field>
     <v-text-field
+      v-if="currentUserRidesHistoryGetter.length > 0"
       label="Your driver"
       outlined
-      readonly="true"
+      readonly
       :value="rideDetails.idDriver"
     ></v-text-field>
 
-    <v-layout text-center wrap>
-      Numele strazii(destinatia)
-      <br />An.luna.zi ora.minut <br />Tarif xx.xx LEI <br />Statusul
-      cursei(toate astea sa fie un link catre detaliile acestei curse)
-    </v-layout>
+    <div v-if="currentUserRidesHistoryGetter.length > 0">
+      <div v-if="rideDetails.ratingForDriver === 'no input at the moment'">
+        Select a rating for your driver
+        <v-rating v-model="ratingForDriver"></v-rating>
+        <v-btn
+          depressed
+          small
+          color="primary"
+          @click="sendRatingForDriverFromHistory()"
+          >Send rating</v-btn
+        >
+      </div>
+      <div v-else>
+        <v-text-field
+          label="Rating given to driver"
+          outlined
+          readonly
+          :value="rideDetails.ratingForDriver"
+        ></v-text-field>
+      </div>
+    </div>
+
     <v-layout text-center wrap>Need help?</v-layout>
     <v-layout text-center wrap>
       <router-link to="/passengerlostanitem"
@@ -101,7 +119,10 @@ export default {
   data() {
     return {
       rideDetails: null,
-      id: this.$route.params.id
+      readonlyData: true,
+      id: this.$route.params.id,
+      // rideId: this.$route.params.id,
+      ratingForDriver: 3,
     };
   },
   computed: {
@@ -131,9 +152,18 @@ export default {
       return this.$store.getters.currentUserRidesHistoryGetter
         ? this.$store.getters.currentUserRidesHistoryGetter
         : [];
-    }
+    },
   },
-  methods: {},
+  methods: {
+    sendRatingForDriverFromHistory() {
+      const payload = {
+        ratingForDriver: this.ratingForDriver,
+        id: this.id,
+        // rideId: this.rideDetails.rideId,
+      };
+      this.$store.dispatch("sendRatingForDriverFromHistory", payload);
+    },
+  },
   created() {
     this.$store.dispatch("readUserDataByUserID", "idUser");
     this.$store.dispatch("readDriverDetailsByUserID", "idUser");
@@ -142,10 +172,10 @@ export default {
     firebase
       .database()
       .ref("/Rides/" + this.id)
-      .on("value", snap => {
+      .on("value", (snap) => {
         this.rideDetails = snap.val();
       });
-  }
+  },
 };
 </script>
 
