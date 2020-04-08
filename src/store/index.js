@@ -76,7 +76,7 @@ export default new Vuex.Store({
       firebase
         .auth()
         .signOut()
-        .then(function () {
+        .then(function() {
           commit("setUser", null);
           commit("setloggedInUserData", null);
           // router.push({ path: "/login" });
@@ -102,7 +102,7 @@ export default new Vuex.Store({
               (snap) => {
                 commit("setloggedInUserData", snap.val());
               },
-              function (error) {
+              function(error) {
                 console.log("Error: " + error.message);
               }
             );
@@ -126,7 +126,7 @@ export default new Vuex.Store({
               (snap) => {
                 commit("setloggedInUserData", snap.val());
               },
-              function (error) {
+              function(error) {
                 console.log("Error: " + error.message);
               }
             );
@@ -359,7 +359,7 @@ export default new Vuex.Store({
             .on("value", (snap) => {
               commit("setCurrentRideForClient", snap.val());
             });
-          // commit("setCurrentRideForClient", null);
+          commit("setCurrentRideForClient", null);
         })
         .catch((err) => {
           console.log(err);
@@ -379,6 +379,7 @@ export default new Vuex.Store({
             .on("value", (snap) => {
               commit("sendRatingForDriverFromHistory", snap.val());
             });
+          commit("setCurrentRideForClient", null);
         })
         .catch((err) => {
           console.log(err);

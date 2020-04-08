@@ -26,9 +26,9 @@
         class="custom-send-rating-from-client"
         v-if="
           activeRideRequest &&
-          (activeRideRequest.status === 'client dropped at destination' ||
-            activeRideRequest.status === 'ride finished') &&
-          activeRideRequest.ratingForDriver === 'no input at the moment'
+            (activeRideRequest.status === 'client dropped at destination' ||
+              activeRideRequest.status === 'ride finished') &&
+            activeRideRequest.ratingForDriver === 'no input at the moment'
         "
       >
         <v-rating v-model="ratingForDriver"> </v-rating>
@@ -45,7 +45,7 @@
         class="custom-waiting-rating"
         v-if="
           activeRideRequest &&
-          activeRideRequest.ratingForDriver !== 'no input at the moment'
+            activeRideRequest.ratingForDriver !== 'no input at the moment'
         "
       >
         Thank you for your ride!
@@ -139,8 +139,8 @@
         dark
         v-if="
           driverIsConnected &&
-          currentRideDriver &&
-          currentRideDriver.status === 'driver on route'
+            currentRideDriver &&
+            currentRideDriver.status === 'driver on route'
         "
         @click="driverArrived()"
         >I have arrived
@@ -153,8 +153,8 @@
         dark
         v-if="
           driverIsConnected &&
-          currentRideDriver &&
-          currentRideDriver.status === 'driver arrived'
+            currentRideDriver &&
+            currentRideDriver.status === 'driver arrived'
         "
         @click="ratingForClientPopup()"
         >Finish ride
@@ -164,10 +164,10 @@
         class="custom-send-rating-from-driver"
         v-if="
           driverIsConnected &&
-          currentRideDriver &&
-          currentRideDriver.status === 'client dropped at destination' &&
-          currentRideDriver.ratingForClient ===
-            'waiting the driver to rate client'
+            currentRideDriver &&
+            currentRideDriver.status === 'client dropped at destination' &&
+            currentRideDriver.ratingForClient ===
+              'waiting the driver to rate client'
         "
       >
         <v-rating v-model="ratingForClient"> </v-rating>
@@ -252,6 +252,7 @@ export default {
   },
   data() {
     return {
+      startLocationAddress: null,
       address: {},
       defaultLocation: {
         lat: 44.4268006,
@@ -343,12 +344,32 @@ export default {
       this.incomingRequest = !this.incomingRequest;
     },
     searchRide() {
-      var day = new Date();
-      var dayWrapper = moment(day);
-      var fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
-      var dayString = dayWrapper.format("DD");
-      var monthString = dayWrapper.format("MM");
-      var yearString = dayWrapper.format("YYYY");
+      //get user start location address
+      const reverseStartLocationRequest = new XMLHttpRequest();
+      reverseStartLocationRequest.open(
+        "GET",
+        "https://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+          this.defaultLocation.lat +
+          "," +
+          this.defaultLocation.lng +
+          "&key=AIzaSyCnKJYJPDPPKIwcf8fnDC7FXvUhRgPg1Gc",
+        true
+      );
+      reverseStartLocationRequest.send();
+      reverseStartLocationRequest.onload = () => {
+        let startLocationResponse = JSON.parse(
+          reverseStartLocationRequest.responseText
+        );
+        this.startLocationAddress =
+          startLocationResponse.results[0].formatted_address;
+      };
+      // cod alex
+      let day = new Date();
+      let dayWrapper = moment(day);
+      let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
+      let dayString = dayWrapper.format("DD");
+      let monthString = dayWrapper.format("MM");
+      let yearString = dayWrapper.format("YYYY");
       const newRide = {
         userLocationLat: this.defaultLocation.lat,
         userLocationLng: this.defaultLocation.lng,
@@ -365,6 +386,8 @@ export default {
         timeStampYear: yearString,
         ratingForClient: "no input at the moment",
         ratingForDriver: "no input at the moment",
+        userStartPoint: this.startLocationAddress,
+        userFinishPoint: this.destination.formatted_address,
       };
       let rideId;
       firebase
@@ -559,7 +582,8 @@ export default {
   border: none;
   border-radius: 21px !important;
   background: none;
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(0, 0, 0, 0.9) !important;
+  color: white !important;
 }
 .form-control {
   width: -webkit-fill-available;

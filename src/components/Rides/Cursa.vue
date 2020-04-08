@@ -18,13 +18,13 @@
       label="Pick up location"
       outlined
       readonly
-      :value="rideDetails.price"
+      :value="rideDetails.userStartPoint"
     ></v-text-field>
     <v-text-field
       label="Drop off location"
       outlined
       readonly
-      :value="rideDetails.price"
+      :value="rideDetails.userFinishPoint"
     ></v-text-field>
     <v-text-field
       label="Cost"
