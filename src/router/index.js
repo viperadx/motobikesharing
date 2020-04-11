@@ -69,6 +69,7 @@ import AuthGuard from "../router/AuthGuard";
 import TermsandConditions from "../components/GDPR/Terms-and-Conditions.vue";
 import Becomedriver from "../components/Account/Become-driver.vue";
 import Presentation from "../components/Presentation.vue";
+import Faceapi from "../components/Face-api.vue";
 
 Vue.use(VueRouter);
 
@@ -477,6 +478,11 @@ export default new VueRouter({
       path: "/presentation",
       name: "Presentation",
       component: Presentation,
+    },
+    {
+      path: "/faceapi",
+      name: "Face-api",
+      component: Faceapi,
     },
   ],
 });
