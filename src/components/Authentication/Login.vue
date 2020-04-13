@@ -27,7 +27,8 @@
       </v-layout>
     </v-container>
     <v-card-actions>
-      <v-btn to="/signup">New account</v-btn>
+      <v-btn to="/signupclient">New account for client</v-btn>
+      <v-btn to="/signupdriver">New account for driver</v-btn>
       <v-spacer></v-spacer>
       <v-btn color="normal" type="submit" @click="userRecover"
         >Forgot password?</v-btn

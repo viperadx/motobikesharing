@@ -248,7 +248,7 @@ import moment from "moment";
 export default {
   name: "Home",
   components: {
-    VueGoogleAutocomplete,
+    VueGoogleAutocomplete
   },
   data() {
     return {
@@ -256,7 +256,7 @@ export default {
       address: {},
       defaultLocation: {
         lat: 44.4268006,
-        lng: 26.1025036,
+        lng: 26.1025036
       },
       destination: null,
       map: null,
@@ -264,20 +264,20 @@ export default {
         service: null,
         display: null,
         start: null,
-        end: null,
+        end: null
       },
       rideInfo: {
         status: false,
         distance: null,
         duration: null,
-        price: null,
+        price: null
       },
       currentRide: null,
       driverIsConnected: false,
       incomingRequest: true,
       ratingForClient: 3,
       ratingForDriver: 3,
-      showRides: true,
+      showRides: true
     };
   },
   created() {},
@@ -289,7 +289,7 @@ export default {
         if (newLocation && this.defaultLocation) {
           this.createMap();
         }
-      },
+      }
     },
     activeRideRequest: {
       deep: true,
@@ -299,8 +299,8 @@ export default {
           this.createMap();
           this.geolocate();
         }
-      },
-    },
+      }
+    }
   },
   computed: {
     currentRideDriver() {
@@ -325,7 +325,7 @@ export default {
     },
     userDetails() {
       return this.$store.getters.loggedInUserData;
-    },
+    }
   },
 
   mounted() {
@@ -357,12 +357,10 @@ export default {
       );
       reverseStartLocationRequest.send();
       reverseStartLocationRequest.onload = () => {
-        let startLocationResponse = JSON.parse(
-          reverseStartLocationRequest.responseText
-        );
-        this.startLocationAddress =
-          startLocationResponse.results[0].formatted_address;
+        let startLocationResponse = JSON.parse(reverseStartLocationRequest.responseText);
+        this.startLocationAddress = startLocationResponse.results[0].formatted_address;
       };
+      //TODO nu mai merge userStartPoint/startLocation response
       // cod alex
       let day = new Date();
       let dayWrapper = moment(day);
@@ -387,14 +385,14 @@ export default {
         ratingForClient: "no input at the moment",
         ratingForDriver: "no input at the moment",
         userStartPoint: this.startLocationAddress,
-        userFinishPoint: this.destination.formatted_address,
+        userFinishPoint: this.destination.formatted_address
       };
       let rideId;
       firebase
         .database()
         .ref("Rides/")
         .push(newRide)
-        .then((res) => {
+        .then(res => {
           rideId = res.key;
           firebase
             .database()
@@ -404,7 +402,7 @@ export default {
               this.$store.dispatch("activeRideRequest", rideId);
             });
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error);
         });
     },
@@ -417,7 +415,12 @@ export default {
       this.clearSearch();
     },
     acceptRide(ride) {
-      const payload = { ride, idDriver: this.user };
+      const payload = {
+        ride,
+        idDriver: this.user,
+        driverFullName:
+          this.userDetails.firstName + " " + this.userDetails.lastName
+      };
       this.$store.dispatch("acceptRide", payload);
       this.initRouteMap(
         new window.google.maps.LatLng(
@@ -438,7 +441,7 @@ export default {
 
       this.defaultLocation = {
         lat: this.currentRideDriver.userLocationLat,
-        lng: this.currentRideDriver.userLocationLng,
+        lng: this.currentRideDriver.userLocationLng
       };
     },
     ratingForClientPopup() {
@@ -449,7 +452,7 @@ export default {
       const payload = {
         ride: this.currentRideClient,
         clientId: this.user,
-        ratingForDriver: this.ratingForDriver,
+        ratingForDriver: this.ratingForDriver
       };
       this.$store.dispatch("sendRatingForDriver", payload);
     },
@@ -457,7 +460,7 @@ export default {
       const payload = {
         ride: this.currentRideDriver,
         idDriver: this.user,
-        ratingForClient: this.ratingForClient,
+        ratingForClient: this.ratingForClient
       };
       this.$store.dispatch("finishRide", payload);
       this.createMap();
@@ -470,10 +473,10 @@ export default {
       this.askGeolocation();
     },
     geolocate() {
-      navigator.geolocation.getCurrentPosition((position) => {
+      navigator.geolocation.getCurrentPosition(position => {
         this.defaultLocation = {
           lat: position.coords.latitude,
-          lng: position.coords.longitude,
+          lng: position.coords.longitude
         };
       });
     },
@@ -489,15 +492,15 @@ export default {
         zoom: 16,
         options: {
           disableDefaultUI: true,
-          enableHighAccuracy: true,
-        },
+          enableHighAccuracy: true
+        }
       });
       this.directions.display.setMap(this.map);
       // this.search();
       new window.google.maps.Marker({
         position: myLatLng,
         map: this.map,
-        title: "Your Position",
+        title: "Your Position"
       });
     },
     getAddressData(addressData, placeResultData) {
@@ -516,7 +519,7 @@ export default {
         const request = {
           origin: this.defaultLocation,
           destination: destination,
-          travelMode: "DRIVING",
+          travelMode: "DRIVING"
         };
         this.directions.service.route(request, (response, status) => {
           if (status === "OK") {
@@ -537,8 +540,8 @@ export default {
           }
         });
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

@@ -30,7 +30,7 @@ export default {
       video: {},
       canvas: {},
       captures: [],
-      testTimer: "",
+      testTimer: ""
     };
   },
   computed: {},
@@ -52,7 +52,7 @@ export default {
         uInt8Array[i] = raw.charCodeAt(i);
       }
       return new Blob([uInt8Array], { type: contentType });
-    },
+    }
   },
   created() {},
   mounted() {
@@ -61,7 +61,7 @@ export default {
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
       navigator.mediaDevices
         .getUserMedia({ audio: false, video: true })
-        .then((stream) => {
+        .then(stream => {
           this.video.srcObject = stream;
           this.video.play();
         });
@@ -75,7 +75,7 @@ export default {
       this.captures.push(this.canvas.toDataURL("image/png"));
       let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key
       let uriBase =
-        "https://northeurope.api.cognitive.microsoft.com/face/v1.0/detect";
+        "https://northeurope.api.cognitive.microsoft.com/face/v1.0/verify";
 
       //Convert the format of the image added at the end of the array and assign it to the imgURL format
       const imgURL = this.makeblob(this.captures[this.captures.length - 1]);
@@ -83,22 +83,23 @@ export default {
       console.log(imgURL);
       Axios.post(
         uriBase +
-          "?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,emotion",
-        imgURL,
+          // "?returnFaceId=true&returnFaceLandmarks=false&returnFaceAttributes=age,emotion",
+          imgURL,
         {
           headers: {
-            "Content-Type": "application/octet-stream",
-            "Ocp-Apim-Subscription-Key": subscriptionKey,
-          },
+            "Content-Type": "application/json",
+            "Ocp-Apim-Subscription-Key": subscriptionKey
+          }
         }
       )
-        .then((response) => {
-          console.log(response.data[0].faceAttributes.emotion);
+        .then(response => {
+          // console.log(response.data[0].faceAttributes.emotion);
+          console.log(response);
         })
-        .catch((error) => {
+        .catch(error => {
           console.log(error.response);
         });
     }, 5000);
-  },
+  }
 };
 </script>

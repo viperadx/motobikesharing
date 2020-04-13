@@ -196,7 +196,7 @@
     </v-container>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn type="submit" @click="userSignUp">Register</v-btn>
+      <v-btn type="submit" @click="clientSignUp">Register</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -204,7 +204,7 @@
 <script>
 import LocalitatiRO from "../../assets/LocalitatiRO";
 export default {
-  name: "Sign-up",
+  name: "Sign-up-client",
   data() {
     return {
       checkbox: false,
@@ -241,8 +241,8 @@ export default {
     }
   },
   methods: {
-    userSignUp() {
-      this.$store.dispatch("signUp", {
+    clientSignUp() {
+      this.$store.dispatch("signUpClient", {
         email: this.email,
         password: this.password,
         lastname: this.lastname,

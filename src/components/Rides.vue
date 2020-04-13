@@ -17,11 +17,8 @@
           :key="ride.rideId"
           :to="{
             name: 'Cursa',
-            params: {
-              id: ride.rideId
-            }
-          }"
-        >
+            params: {id: ride.rideId}
+          }">
           {{ ride.timeStampFull }}
         </v-list-item>
       </v-list>
@@ -34,11 +31,8 @@
           :key="ride.rideId"
           :to="{
             name: 'Cursa',
-            params: {
-              id: ride.rideId
-            }
-          }"
-        >
+            params: {id: ride.rideId}
+          }">
           {{ ride.timeStampFull }}
         </v-list-item>
       </v-list>

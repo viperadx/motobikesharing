@@ -3,9 +3,9 @@
     <v-layout text-center wrap>
       // TODO: aici tre sa mai adaug pie chart uri etc</v-layout
     >
-    <v-layout text-center wrap>Aplicatie navigare</v-layout>
-    <v-layout text-center wrap>Nr versiune</v-layout>
-    <v-layout text-center wrap>Logout</v-layout>
+    <v-layout text-center wrap>
+      <router-link to="/Driverrequests">Driver requests</router-link>
+    </v-layout>
   </v-container>
 </template>
 

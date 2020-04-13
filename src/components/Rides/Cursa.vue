@@ -49,7 +49,7 @@
       label="Your driver"
       outlined
       readonly
-      :value="rideDetails.idDriver"
+      :value="rideDetails.driverFullName"
     ></v-text-field>
 
     <div v-if="currentUserRidesHistoryGetter.length > 0">
@@ -122,7 +122,7 @@ export default {
       readonlyData: true,
       id: this.$route.params.id,
       // rideId: this.$route.params.id,
-      ratingForDriver: 3,
+      ratingForDriver: 3
     };
   },
   computed: {
@@ -152,17 +152,17 @@ export default {
       return this.$store.getters.currentUserRidesHistoryGetter
         ? this.$store.getters.currentUserRidesHistoryGetter
         : [];
-    },
+    }
   },
   methods: {
     sendRatingForDriverFromHistory() {
       const payload = {
         ratingForDriver: this.ratingForDriver,
-        id: this.id,
+        id: this.id
         // rideId: this.rideDetails.rideId,
       };
       this.$store.dispatch("sendRatingForDriverFromHistory", payload);
-    },
+    }
   },
   created() {
     this.$store.dispatch("readUserDataByUserID", "idUser");
@@ -172,10 +172,10 @@ export default {
     firebase
       .database()
       .ref("/Rides/" + this.id)
-      .on("value", (snap) => {
+      .on("value", snap => {
         this.rideDetails = snap.val();
       });
-  },
+  }
 };
 </script>
 
