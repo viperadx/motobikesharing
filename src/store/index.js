@@ -156,6 +156,7 @@ export default new Vuex.Store({
               // Collaborations: "",
               admin: false,
               phone: payload.phone,
+              creditCard: payload.creditcard,
               gender: payload.gender
               // idDriver: "not a driver"
             });
@@ -184,6 +185,7 @@ export default new Vuex.Store({
               email: payload.email,
               admin: false,
               phone: payload.phone,
+              creditCard: payload.creditcard,
               gender: payload.gender,
               expireDateID: null,
               expireDateITP: null,

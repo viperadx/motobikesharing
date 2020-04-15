@@ -11,15 +11,7 @@
             :rules="[rules.required, rules.email]"
           ></v-text-field>
         </v-flex>
-        <v-flex xs12 align-center justify-space-between>
-          <v-text-field
-            label="Phone number"
-            v-model="phone"
-            color="normal"
-            :type="'number'"
-            :rules="[rules.required]"
-          ></v-text-field>
-        </v-flex>
+        
         <v-flex xs6>
           <v-text-field
             label="Last Name"
@@ -36,6 +28,23 @@
             :rules="[rules.required]"
           ></v-text-field>
         </v-flex>
+        <v-flex xs12 align-center justify-space-between>
+          <v-text-field
+            label="Phone number"
+            v-model="phone"
+            color="normal"
+            :type="'number'"
+            :rules="[rules.required]"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs6 align-center justify-space-between>
+          <v-text-field
+            label="Credit card"
+            v-model="creditcard"
+            color="normal"
+            :type="'number'"
+            :rules="[rules.required]"
+          ></v-text-field>
         <v-flex xs12>
           <v-select
             :items="locations"
@@ -349,6 +358,7 @@ export default {
       checkbox: false,
       location: null,
       phone: null,
+      creditcard: null,
       lastname: null,
       firstname: null,
       e1: true,
@@ -398,6 +408,7 @@ export default {
         location: this.location,
         bday: this.bday,
         phone: this.phone,
+        creditcard: this.creditcard,
         gender: this.gender,
         expiredateid: this.expireID,
         expiredatelicense: this.expireLicense,
