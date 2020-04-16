@@ -72,6 +72,7 @@ import Presentation from "../components/Presentation.vue";
 import Faceapi from "../components/Admin/Face-api.vue";
 import Signupdriver from "../components/Authentication/Sign-up-driver.vue";
 import Driverrequests from "../components/Admin/Driver-requests.vue";
+import Searchforarideasadriver from "../components/Search-for-a-ride-as-a-driver.vue";
 
 Vue.use(VueRouter);
 
@@ -495,6 +496,12 @@ export default new VueRouter({
       path: "/driverrequests",
       name: "Driver-requests",
       component: Driverrequests,
+      beforeEnter: AuthGuard
+    },
+    {
+      path: "/searchforarideasadriver",
+      name: "Search-for-a-ride-as-a-driver",
+      component: Searchforarideasadriver,
       beforeEnter: AuthGuard
     }
   ]

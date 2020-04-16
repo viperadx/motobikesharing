@@ -1,21 +1,6 @@
 <template>
   <v-container>
     <v-layout text-center wrap>test Become-driver</v-layout>
-    <v-col cols="12" sm="6" md="3">
-      <div>Requests to be checked</div>
-      <v-list>
-        <v-list-item
-          v-for="checkStatus in allDriversDetails"
-          :key="checkStatus"
-          :to="{
-            name: 'Cursa',
-            params: {id: ride.rideId}
-          }">
-          {{ allDriversDetails.expireDateID }}
-          //TODO: de vazut de ce eroarea in consola si cum continui
-        </v-list-item>
-      </v-list>
-    </v-col>
   </v-container>
 </template>
 

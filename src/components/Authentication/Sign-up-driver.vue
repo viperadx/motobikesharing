@@ -10,8 +10,7 @@
             color="normal"
             :rules="[rules.required, rules.email]"
           ></v-text-field>
-        </v-flex>
-        
+        </v-flex>        
         <v-flex xs6>
           <v-text-field
             label="Last Name"
@@ -37,7 +36,7 @@
             :rules="[rules.required]"
           ></v-text-field>
         </v-flex>
-        <v-flex xs6 align-center justify-space-between>
+        <v-flex xs6>
           <v-text-field
             label="Credit card"
             v-model="creditcard"
@@ -45,7 +44,8 @@
             :type="'number'"
             :rules="[rules.required]"
           ></v-text-field>
-        <v-flex xs12>
+        </v-flex>
+        <v-flex xs6>
           <v-select
             :items="locations"
             v-model="location"

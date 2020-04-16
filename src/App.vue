@@ -10,6 +10,18 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item
+          v-if="user && this.userDetails.idDriver"
+          link
+          to="/searchforarideasadriver"
+        >
+          <v-list-item-action>
+            <v-icon>mdi-magnify</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>Search for a ride</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
         <v-list-item link to="/account">
           <v-list-item-action>
             <v-icon>mdi-account-circle</v-icon>
