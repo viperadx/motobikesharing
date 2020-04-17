@@ -63,14 +63,12 @@
         </v-progress-circular>
         <div class="custom-cancel-ride">
           <v-btn small color="primary" dark @click="cancelRide(ride)"
-            >Cancel ride</v-btn
-          >
+            >Cancel ride</v-btn>
         </div>
       </div>
       <div
         class="user-ride-info"
-        v-if="!userDetails.idDriver && !activeRideRequest"
-      >
+        v-if="!userDetails.idDriver && !activeRideRequest">
         <div class="justify-center-flex">
           <span class="user-ride-info-text bold-text">Ride Info</span>
         </div>
@@ -88,8 +86,7 @@
         </div>
         <div class="justify-center-flex">
           <v-btn class="button-margin-remover" @click="searchRide()"
-            >Search</v-btn
-          >
+            >Search</v-btn>
         </div>
       </div>
     </v-snackbar>
@@ -120,7 +117,7 @@
         <v-icon color="blue lighten-1">mdi-crosshairs-gps</v-icon>
       </v-btn>
     </div>
-    <div class="connect-driver" v-if="userDetails.idDriver">
+    <div class="connect-driver" v-if="userDetails.idDriver && currentDriverDetails.checkStatus === 'verified'">
       <v-btn
         color="green"
         fab
@@ -196,7 +193,7 @@
     </div>
     <div
       class="custom-rides-requests"
-      v-if="userDetails.idDriver && !currentRideDriver"
+      v-if="userDetails.idDriver && !currentRideDriver && currentDriverDetails.checkStatus === 'verified'"
     >
       <div v-for="(ride, index) in rides" :key="index">
         <v-card
@@ -280,7 +277,9 @@ export default {
       showRides: true
     };
   },
-  created() {},
+  created() {
+    this.$store.dispatch("readDriverDetailsByUserID", "idUser");
+  },
   watch: {
     defaultLocation: {
       deep: true,
@@ -325,6 +324,9 @@ export default {
     },
     userDetails() {
       return this.$store.getters.loggedInUserData;
+    },
+    currentDriverDetails(){
+      return this.$store.getters.presentDriverDataGetter;
     }
   },
 
