@@ -8,15 +8,14 @@
         <div>Requests to be checked</div>
         <v-list>
           <v-list-item
-            v-for="allDriversDataGetter  in allDriversDataGetter"
-            :key="allDriversDataGetter.checkStatus"
-            TODO aici tre sa mai fac ceva cu allDriversDataGetter.checkStatus.pending
+            v-for="filterPending in filterPending"
+            :key="filterPending.idUser"
             :to="{
               name: 'Driver-requests',
-              params: { id: allDriversDataGetter.idUser },
+              params: { id: filterPending.idUser },
             }"
           >
-            {{ allDriversDataGetter.idUser }}
+            {{ filterPending.idUser }}
           </v-list-item>
         </v-list>
       </v-col>
@@ -41,6 +40,12 @@ export default {
       return this.$store.getters.allDriversDataGetter
         ? this.$store.getters.allDriversDataGetter
         : [];
+    },
+    filterPending(){
+      return this.allDriversDataGetter.filter(allDriversDataGetter => {
+        return allDriversDataGetter.checkStatus === "pending";
+      }) 
+      
     },
     userData() {
       return this.$store.getters.userDataGetter
