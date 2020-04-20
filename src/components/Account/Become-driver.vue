@@ -4,7 +4,26 @@
     <v-container grid-list-sm class="pa-4">
       <v-layout wrap>
         <v-flex xs6>
-          <div>upload poza ID</div>
+          <v-btn raised class="primary" @click="onPickImageSelfie">Upload Selfie</v-btn>
+          <input type="file" 
+          style="display: none" 
+          ref="fileInputSelfie" 
+          accept="image/*"
+          @change="onPickedImageSelfie"/>
+        </v-flex>
+        <v-flex xs6>
+          <img :src ="imageUrlSelfie" height="70" width="200">
+        </v-flex>
+        <v-flex xs3>
+          <v-btn raised class="primary" @click="onPickImageID">Upload ID</v-btn>
+          <input type="file" 
+          style="display: none" 
+          ref="fileInputID" 
+          accept="image/*"
+          @change="onPickedImageID"/>
+        </v-flex>
+        <v-flex xs3>
+          <img :src ="imageUrlID" height="70" width="200">
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -14,8 +33,7 @@
             :return-value.sync="expireID"
             transition="scale-transition"
             offset-y
-            min-width="290px"
-          >
+            min-width="290px">
             <template v-slot:activator="{ on }">
               <v-text-field
                 v-model="expireID"
@@ -39,8 +57,16 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs6>
-          <div>upload poza license (permis)</div>
+        <v-flex xs3>
+          <v-btn raised class="primary" @click="onPickImageLicense">Upload License</v-btn>
+          <input type="file" 
+          style="display: none" 
+          ref="fileInputLicense" 
+          accept="image/*"
+          @change="onPickedImageLicense"/>
+        </v-flex>
+        <v-flex xs3>
+          <img :src ="imageUrlLicense" height="70" width="200">
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -80,8 +106,16 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs6>
-          <div>upload poza ITP</div>
+        <v-flex xs3>
+          <v-btn raised class="primary" @click="onPickImageITP">Upload ITP</v-btn>
+          <input type="file" 
+          style="display: none" 
+          ref="fileInputITP" 
+          accept="image/*"
+          @change="onPickedImageITP"/>
+        </v-flex>
+        <v-flex xs3>
+          <img :src ="imageUrlITP" height="70" width="200">
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -118,8 +152,16 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs6>
-          <div>upload poza RCA</div>
+        <v-flex xs3>
+          <v-btn raised class="primary" @click="onPickImageRCA">Upload RCA</v-btn>
+          <input type="file" 
+          style="display: none" 
+          ref="fileInputRCA" 
+          accept="image/*"
+          @change="onPickedImageRCA"/>
+        </v-flex>
+        <v-flex xs3>
+          <img :src ="imageUrlRCA" height="70" width="200">
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -156,8 +198,16 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs6>
-          <div>upload poza Insurance</div>
+        <v-flex xs3>
+          <v-btn raised class="primary" @click="onPickImageInsurance">Upload Insurance</v-btn>
+          <input type="file" 
+          style="display: none" 
+          ref="fileInputInsurance" 
+          accept="image/*"
+          @change="onPickedImageInsurance"/>
+        </v-flex>
+        <v-flex xs3>
+          <img :src ="imageUrlInsurance" height="70" width="200">
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -201,7 +251,7 @@
     </v-container>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn type="submit" @click="driverSignUp">Register</v-btn>
+      <v-btn type="submit" >Register</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -221,13 +271,122 @@ export default {
       menuitp: null,
       menulicense: null,
       menuinsurance: null,
+      imageID: null,
+      imageUrlID: null,
+      imageRCA: null,
+      imageUrlRCA: null,
+      imageLicense: null,
+      imageUrlLicense: null,
+      imageITP: null,
+      imageSelfie: null,
+      imageUrlSelfie: null,
+      imageUrlITP: null,
+      imageInsurance: null,
+      imageUrlInsurance: null,
       rules: {
         required: (value) => !!value || "Required.",
       },
     };
   },
   computed: {},
-  methods: {},
+  methods: {
+    onPickImageID(){
+      this.$refs.fileInputID.click()
+    },
+    onPickedImageID (event){
+      const filesID = event.target.files
+      let filenameID = filesID[0].name
+      if (filenameID.lastIndexOf('.') <=0){
+        return alert ('Please add a valid file!')
+      }
+      const fileReaderID = new FileReader()
+      fileReaderID.addEventListener('load', () =>{
+        this.imageUrlID = fileReaderID.result
+      })
+      fileReaderID.readAsDataURL(filesID[0])
+      this.imageID = filesID[0]
+    },
+    onPickImageRCA(){
+    this.$refs.fileInputRCA.click()
+    },
+    onPickedImageRCA (event){
+      const filesRCA = event.target.files
+      let filenameRCA = filesRCA[0].name
+      if (filenameRCA.lastIndexOf('.') <=0){
+        return alert ('Please add a valid file!')
+      }
+      const fileReaderRCA = new FileReader()
+      fileReaderRCA.addEventListener('load', () =>{
+        this.imageUrlRCA = fileReaderRCA.result
+      })
+      fileReaderRCA.readAsDataURL(filesRCA[0])
+      this.imageRCA = filesRCA[0]
+    },
+    onPickImageITP(){
+    this.$refs.fileInputITP.click()
+    },
+    onPickedImageITP (event){
+      const filesITP = event.target.files
+      let filenameITP = filesITP[0].name
+      if (filenameITP.lastIndexOf('.') <=0){
+        return alert ('Please add a valid file!')
+      }
+      const fileReaderITP = new FileReader()
+      fileReaderITP.addEventListener('load', () =>{
+        this.imageUrlITP = fileReaderITP.result
+      })
+      fileReaderITP.readAsDataURL(filesITP[0])
+      this.imageITP = filesITP[0]
+    },
+    onPickImageLicense(){
+    this.$refs.fileInputLicense.click()
+    },
+    onPickedImageLicense (event){
+      const filesLicense = event.target.files
+      let filenameLicense = filesLicense[0].name
+      if (filenameLicense.lastIndexOf('.') <=0){
+        return alert ('Please add a valid file!')
+      }
+      const fileReaderLicense = new FileReader()
+      fileReaderLicense.addEventListener('load', () =>{
+        this.imageUrlLicense = fileReaderLicense.result
+      })
+      fileReaderLicense.readAsDataURL(filesLicense[0])
+      this.imageLicense = filesLicense[0]
+    },
+    onPickImageInsurance(){
+    this.$refs.fileInputInsurance.click()
+    },
+    onPickedImageInsurance (event){
+      const filesInsurance = event.target.files
+      let filenameInsurance = filesInsurance[0].name
+      if (filenameInsurance.lastIndexOf('.') <=0){
+        return alert ('Please add a valid file!')
+      }
+      const fileReaderInsurance = new FileReader()
+      fileReaderInsurance.addEventListener('load', () =>{
+        this.imageUrlInsurance = fileReaderInsurance.result
+      })
+      fileReaderInsurance.readAsDataURL(filesInsurance[0])
+      this.imageInsurance = filesInsurance[0]
+    },        
+    onPickImageSelfie(){
+    this.$refs.fileInputSelfie.click()
+    },
+    onPickedImageSelfie (event){
+      const filesSelfie = event.target.files
+      let filenameSelfie = filesSelfie[0].name
+      if (filenameSelfie.lastIndexOf('.') <=0){
+        return alert ('Please add a valid file!')
+      }
+      const fileReaderSelfie = new FileReader()
+      fileReaderSelfie.addEventListener('load', () =>{
+        this.imageUrlSelfie = fileReaderSelfie.result
+      })
+      fileReaderSelfie.readAsDataURL(filesSelfie[0])
+      this.imageSelfie = filesSelfie[0]
+    },        
+  },
   created() {},
   mounted() {},
 };

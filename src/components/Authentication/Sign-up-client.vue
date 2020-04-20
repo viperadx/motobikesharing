@@ -182,26 +182,22 @@
           ></v-text-field>
         </v-flex>
       </v-layout>
-      <v-checkbox v-model="checkbox" :rules="[rules.required]">
-        <template v-slot:label>
-          <div>
-            I agree to
-            <v-tooltip bottom>
-              <template v-slot:activator="{ on }">
-                <a
-                  target="_blank"
-                  href="https://motobikesharing.web.app/#/termsandconditions"
-                  @click.stop
-                  v-on="on"
-                >
-                  Terms and conditions
-                </a>
-              </template>
-              Opens in new window
-            </v-tooltip>
-          </div>
-        </template>
-      </v-checkbox>
+      <div>
+        By registering, you agree to the
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <a
+              target="_blank"
+              href="https://motobikesharing.web.app/#/termsandconditions"
+              @click.stop
+              v-on="on"
+            >
+              Terms and conditions
+            </a>
+          </template>
+          Opens in new window
+        </v-tooltip>
+      </div>
     </v-container>
     <v-card-actions>
       <v-spacer></v-spacer>
