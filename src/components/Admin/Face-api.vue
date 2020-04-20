@@ -55,7 +55,8 @@ export default {
   methods: {
     faceCapture() {
       this.canvas.getContext("2d").drawImage(this.video, 0, 0, 400, 300); //Store the captured image in the "captures" array
-      this.captures.push(this.canvas.toDataURL("image/png"));
+      this.captures.push(this.canvas.toDataURL("image/jpeg"));
+      console.log(this.captures)
     },
     faceDetect() {
       let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key

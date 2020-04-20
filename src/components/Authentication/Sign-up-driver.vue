@@ -3,14 +3,6 @@
     <v-card-title>Create new account</v-card-title>
     <v-container grid-list-sm class="pa-4">
       <v-layout wrap>
-        <v-flex xs12 align-center justify-space-between>
-          <v-text-field
-            label="Email"
-            v-model="email"
-            color="normal"
-            :rules="[rules.required, rules.email]"
-          ></v-text-field>
-        </v-flex>
         <v-flex xs6>
           <v-text-field
             label="Last Name"
@@ -24,6 +16,23 @@
             label="First Name"
             color="normal"
             v-model="firstname"
+            :rules="[rules.required]"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs6>
+          <v-text-field
+            label="Email"
+            v-model="email"
+            color="normal"
+            :rules="[rules.required, rules.email]"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs6>
+          <v-text-field
+            label="Phone number"
+            v-model="phone"
+            color="normal"
+            :type="'number'"
             :rules="[rules.required]"
           ></v-text-field>
         </v-flex>
@@ -129,13 +138,8 @@
           <img :src ="imageUrlSelfie" height="70" width="200">
         </v-flex>
         <v-flex xs6>
-          <v-text-field
-            label="Phone number"
-            v-model="phone"
-            color="normal"
-            :type="'number'"
-            :rules="[rules.required]"
-          ></v-text-field>
+          <div>Upload a selfie and your a picture of your ID, then click on the button below to verify identity!</div>
+          <v-btn @click="testFace()">Verify Identity</v-btn>
         </v-flex>
         <v-flex xs3>
           <v-btn raised class="primary" @click="onPickImageID">Upload ID</v-btn>
@@ -427,17 +431,19 @@ export default {
       menuinsurance: null,
       modal: false,
       imageID: null,
-      imageUrlID: null,
+      imageUrlID: '',
       imageRCA: null,
-      imageUrlRCA: null,
+      imageUrlRCA: '',
       imageLicense: null,
-      imageUrlLicense: null,
+      imageUrlLicense: '',
       imageITP: null,
       imageSelfie: null,
-      imageUrlSelfie: null,
-      imageUrlITP: null,
+      imageUrlSelfie: '',
+      imageUrlITP: '',
       imageInsurance: null,
-      imageUrlInsurance: null,
+      imageUrlInsurance: '',
+      captures: [],
+      faceId: [],
       genders: ["Male", "Female", "Other", "Unspecified"],
       gender: null,
       rules: {
