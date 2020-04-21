@@ -19,8 +19,26 @@
           <img :src="imageUrlSelfie" height="70" width="200" />
         </v-flex>
         <v-flex xs6>
-          <div>Upload a selfie and your a picture of your ID, then click on the button below to verify identity!</div>
-          <v-btn @click="testFace()">Verify Identity</v-btn>
+          <div id="checkbox1">
+            <div class="checkbox1">
+              <input
+                type="checkbox"
+                v-model="checkbox1"
+                style="display: none"
+              />
+              <div
+                class="container"
+                id="app-container"
+                v-if="checkbox1 === false"
+              >
+                <div>
+                  Upload a selfie and your a picture of your ID, then click on
+                  the button below to verify identity!
+                  <br /><v-btn @click="testFace()">Verify Identity</v-btn>
+                </div>
+              </div>
+            </div>
+          </div>
         </v-flex>
         <v-flex xs3>
           <v-btn raised class="primary" @click="onPickImageID">Upload ID</v-btn>
@@ -277,24 +295,32 @@
       </v-layout>
     </v-container>
     <div>
-        By registering, you agree to the
-        <v-tooltip bottom>
-          <template v-slot:activator="{ on }">
-            <a
-              target="_blank"
-              href="https://motobikesharing.web.app/#/termsandconditions"
-              @click.stop
-              v-on="on"
-            >
-              Terms and conditions
-            </a>
-          </template>
-          Opens in new window
-        </v-tooltip>
-      </div>
+      By registering, you agree to the
+      <v-tooltip bottom>
+        <template v-slot:activator="{ on }">
+          <a
+            target="_blank"
+            href="https://motobikesharing.web.app/#/termsandconditions"
+            @click.stop
+            v-on="on"
+          >
+            Terms and conditions
+          </a>
+        </template>
+        Opens in new window
+      </v-tooltip>
+    </div>
     <v-card-actions>
+      <v-container fluid
+        >If you want to skip online face verification, you can come to our
+        headquarters. Just check the box below!
+        <v-checkbox
+          v-model="checkbox1"
+          :label="'Face to face verification'"
+        ></v-checkbox>
+      </v-container>
       <v-spacer></v-spacer>
-      <v-btn type="submit">Register</v-btn>
+      <v-btn type="submit" :disabled="f2fVerif">Register</v-btn>
     </v-card-actions>
   </v-card>
 </template>
@@ -335,12 +361,25 @@ export default {
       imageUrlInsurance: "",
       captures: [],
       faceId: [],
+      faceIdSelfie: null,
+      faceIdBuletin: null,
+      checkbox1: false,
+      faceVerification: false,
       rules: {
         required: (value) => !!value || "Required.",
       },
     };
   },
-  computed: {},
+  computed: {
+    f2fVerif() {
+      // if (this.checkbox1 === "true") {
+      //   return !this.checkbox1;
+      // } else {
+      //   return !this.faceVerification;
+      // }
+      return !(this.checkbox1 || this.faceVerification)
+    },
+  },
   methods: {
     onPickImageID() {
       this.$refs.fileInputID.click();
@@ -354,34 +393,31 @@ export default {
       const fileReaderID = new FileReader();
       fileReaderID.addEventListener("load", () => {
         this.imageUrlID = fileReaderID.result;
-      
-      let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key
-      let uriBase =
-        "https://northeurope.api.cognitive.microsoft.com/face/v1.0/detect";
 
-      //Convert the format of the image added at the end of the array and assign it to the imgURL format
-      const imgURL = this.makeblob(this.imageUrlID);
-      //Send imgURL image to Face API
-      console.log(imgURL);
-      Axios.post(
-        uriBase +
-          "?returnFaceId=true",
-        imgURL,
-        {
+        let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key
+        let uriBase =
+          "https://northeurope.api.cognitive.microsoft.com/face/v1.0/detect";
+
+        //Convert the format of the image added at the end of the array and assign it to the imgURL format
+        const imgURL = this.makeblob(this.imageUrlID);
+        //Send imgURL image to Face API
+        console.log(imgURL);
+        Axios.post(uriBase + "?returnFaceId=true", imgURL, {
           headers: {
             "Content-Type": "application/octet-stream",
             "Ocp-Apim-Subscription-Key": subscriptionKey,
           },
-        }
-      )
-        .then((response) => {
-          console.log(response.data[0].faceId);
-          this.faceId.push(response.data[0].faceId)
         })
-        .catch((error) => {
-          console.log(error.response);
-        });
-        });
+          .then((response) => {
+            if (this.faceIdBuletin) {
+              this.faceIdBuletin = null;
+            }
+            this.faceIdBuletin = response.data[0].faceId;
+          })
+          .catch((error) => {
+            console.log(error.response);
+          });
+      });
       fileReaderID.readAsDataURL(filesID[0]);
       this.imageID = filesID[0];
       console.log(this.imageID);
@@ -462,68 +498,67 @@ export default {
       const fileReaderSelfie = new FileReader();
       fileReaderSelfie.addEventListener("load", () => {
         this.imageUrlSelfie = fileReaderSelfie.result;
-              let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key
-      let uriBase =
-        "https://northeurope.api.cognitive.microsoft.com/face/v1.0/detect";
+        let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key
+        let uriBase =
+          "https://northeurope.api.cognitive.microsoft.com/face/v1.0/detect";
 
-      //Convert the format of the image added at the end of the array and assign it to the imgURL format
-      const imgURL = this.makeblob(this.imageUrlSelfie);
-      //Send imgURL image to Face API
-      console.log(imgURL);
-      Axios.post(
-        uriBase +
-          "?returnFaceId=true",
-        imgURL,
-        {
+        //Convert the format of the image added at the end of the array and assign it to the imgURL format
+        const imgURL = this.makeblob(this.imageUrlSelfie);
+        //Send imgURL image to Face API
+        console.log(imgURL);
+        Axios.post(uriBase + "?returnFaceId=true", imgURL, {
           headers: {
             "Content-Type": "application/octet-stream",
             "Ocp-Apim-Subscription-Key": subscriptionKey,
           },
-        }
-      )
-        .then((response) => {
-          console.log(response.data[0].faceId);
-          this.faceId.push(response.data[0].faceId)
         })
-        .catch((error) => {
-          console.log(error.response);
-        });
+          .then((response) => {
+            if (this.faceIdSelfie) {
+              this.faceIdSelfie = null;
+            }
+            this.faceIdSelfie = response.data[0].faceId;
+          })
+          .catch((error) => {
+            console.log(error.response);
+          });
       });
       fileReaderSelfie.readAsDataURL(filesSelfie[0]);
       this.imageSelfie = filesSelfie[0];
     },
     testFace() {
-       let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key
+      let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key
       let uriBase =
         "https://northeurope.api.cognitive.microsoft.com/face/v1.0/verify";
 
       //Convert the format of the image added at the end of the array and assign it to the imgURL format
       const faceId = {
-        faceId1: this.faceId[0],
-        faceId2: this.faceId[1]
-        }
-        console.log(faceId)
-        console.log(this.faceId[0])
-        console.log(this.faceId[1])
-      Axios.post(
-        uriBase,
-        faceId,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Ocp-Apim-Subscription-Key": subscriptionKey,
-          },
-        }
-      )
+        faceId1: this.faceIdSelfie,
+        faceId2: this.faceIdBuletin,
+      };
+      console.log(faceId);
+      Axios.post(uriBase, faceId, {
+        headers: {
+          "Content-Type": "application/json",
+          "Ocp-Apim-Subscription-Key": subscriptionKey,
+        },
+      })
         .then((response) => {
-          console.log(response.data.isIdentical)
-          console.log(response.data.confidence)
+          if (response.data.isIdentical === false) {
+            window.alert(
+              "Selfie and ID do not match. Please try again or select Face to Face verification"
+            );
+          } else {
+            this.faceVerification = true;
+          }
+          console.log(response.data.isIdentical);
+          console.log(response.data.confidence);
         })
         .catch((error) => {
           console.log(error.response);
+          console.log(this.faceVerification);
         });
     },
-    
+
     makeblob: function(dataURL) {
       let BASE64_MARKER = ";base64,";
       if (dataURL.indexOf(BASE64_MARKER) == -1) {

@@ -393,13 +393,28 @@
       </div>
     </v-container>
     <v-card-actions>
+      <v-container fluid
+        >If you want to skip online face verification, you can come to our
+        headquarters. Just check the box below!
+        <v-checkbox
+          v-model="checkbox1"
+          :label="'Face to face verification'"
+        ></v-checkbox>
+      </v-container>
       <v-spacer></v-spacer>
-      <v-btn type="submit" @click="driverSignUp">Register</v-btn>
+      <v-btn type="submit" :disabled="f2fVerif">Register</v-btn>
     </v-card-actions>
   </v-card>
 </template>
 
 <script>
+/* eslint-disable no-console */
+/*eslint no-unused-vars: "error"*/
+import Vue from "vue";
+import Axios from "axios";
+import VueAxios from "vue-axios";
+
+Vue.use(VueAxios, Axios);
 import LocalitatiRO from "../../assets/LocalitatiRO";
 export default {
   name: "Sign-up-driver",
@@ -444,6 +459,10 @@ export default {
       imageUrlInsurance: '',
       captures: [],
       faceId: [],
+      faceIdSelfie: null,
+      faceIdBuletin: null,
+      checkbox1: false,
+      faceVerification: false,
       genders: ["Male", "Female", "Other", "Unspecified"],
       gender: null,
       rules: {
@@ -460,6 +479,14 @@ export default {
       return this.password !== this.confirmPassword
         ? "Passwords do not match"
         : "";
+    },
+    f2fVerif() {
+      // if (this.checkbox1 === "true") {
+      //   return !this.checkbox1;
+      // } else {
+      //   return !this.faceVerification;
+      // }
+      return !(this.checkbox1 || this.faceVerification)
     },
   },
   methods: {
@@ -485,18 +512,43 @@ export default {
     onPickImageID(){
       this.$refs.fileInputID.click()
     },
-    onPickedImageID (event){
-      const filesID = event.target.files
-      let filenameID = filesID[0].name
-      if (filenameID.lastIndexOf('.') <=0){
-        return alert ('Please add a valid file!')
+    onPickedImageID(event) {
+      const filesID = event.target.files;
+      let filenameID = filesID[0].name;
+      if (filenameID.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid file!");
       }
-      const fileReaderID = new FileReader()
-      fileReaderID.addEventListener('load', () =>{
-        this.imageUrlID = fileReaderID.result
-      })
-      fileReaderID.readAsDataURL(filesID[0])
-      this.imageID = filesID[0]
+      const fileReaderID = new FileReader();
+      fileReaderID.addEventListener("load", () => {
+        this.imageUrlID = fileReaderID.result;
+
+        let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key
+        let uriBase =
+          "https://northeurope.api.cognitive.microsoft.com/face/v1.0/detect";
+
+        //Convert the format of the image added at the end of the array and assign it to the imgURL format
+        const imgURL = this.makeblob(this.imageUrlID);
+        //Send imgURL image to Face API
+        console.log(imgURL);
+        Axios.post(uriBase + "?returnFaceId=true", imgURL, {
+          headers: {
+            "Content-Type": "application/octet-stream",
+            "Ocp-Apim-Subscription-Key": subscriptionKey,
+          },
+        })
+          .then((response) => {
+            if (this.faceIdBuletin) {
+              this.faceIdBuletin = null;
+            }
+            this.faceIdBuletin = response.data[0].faceId;
+          })
+          .catch((error) => {
+            console.log(error.response);
+          });
+      });
+      fileReaderID.readAsDataURL(filesID[0]);
+      this.imageID = filesID[0];
+      console.log(this.imageID);
     },
     onPickImageRCA(){
     this.$refs.fileInputRCA.click()
@@ -565,19 +617,94 @@ export default {
     onPickImageSelfie(){
     this.$refs.fileInputSelfie.click()
     },
-    onPickedImageSelfie (event){
-      const filesSelfie = event.target.files
-      let filenameSelfie = filesSelfie[0].name
-      if (filenameSelfie.lastIndexOf('.') <=0){
-        return alert ('Please add a valid file!')
+    onPickedImageSelfie(event) {
+      const filesSelfie = event.target.files;
+      let filenameSelfie = filesSelfie[0].name;
+      if (filenameSelfie.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid file!");
       }
-      const fileReaderSelfie = new FileReader()
-      fileReaderSelfie.addEventListener('load', () =>{
-        this.imageUrlSelfie = fileReaderSelfie.result
+      const fileReaderSelfie = new FileReader();
+      fileReaderSelfie.addEventListener("load", () => {
+        this.imageUrlSelfie = fileReaderSelfie.result;
+        let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key
+        let uriBase =
+          "https://northeurope.api.cognitive.microsoft.com/face/v1.0/detect";
+
+        //Convert the format of the image added at the end of the array and assign it to the imgURL format
+        const imgURL = this.makeblob(this.imageUrlSelfie);
+        //Send imgURL image to Face API
+        console.log(imgURL);
+        Axios.post(uriBase + "?returnFaceId=true", imgURL, {
+          headers: {
+            "Content-Type": "application/octet-stream",
+            "Ocp-Apim-Subscription-Key": subscriptionKey,
+          },
+        })
+          .then((response) => {
+            if (this.faceIdSelfie) {
+              this.faceIdSelfie = null;
+            }
+            this.faceIdSelfie = response.data[0].faceId;
+          })
+          .catch((error) => {
+            console.log(error.response);
+          });
+      });
+      fileReaderSelfie.readAsDataURL(filesSelfie[0]);
+      this.imageSelfie = filesSelfie[0];
+    },
+    testFace() {
+      let subscriptionKey = "51fc2876d96a42e19d922c448dc19990"; //microsoft face api key
+      let uriBase =
+        "https://northeurope.api.cognitive.microsoft.com/face/v1.0/verify";
+
+      //Convert the format of the image added at the end of the array and assign it to the imgURL format
+      const faceId = {
+        faceId1: this.faceIdSelfie,
+        faceId2: this.faceIdBuletin,
+      };
+      console.log(faceId);
+      Axios.post(uriBase, faceId, {
+        headers: {
+          "Content-Type": "application/json",
+          "Ocp-Apim-Subscription-Key": subscriptionKey,
+        },
       })
-      fileReaderSelfie.readAsDataURL(filesSelfie[0])
-      this.imageSelfie = filesSelfie[0]
-    },        
+        .then((response) => {
+          if (response.data.isIdentical === false) {
+            window.alert(
+              "Selfie and ID do not match. Please try again or select Face to Face verification"
+            );
+          } else {
+            this.faceVerification = true;
+          }
+          console.log(response.data.isIdentical);
+          console.log(response.data.confidence);
+        })
+        .catch((error) => {
+          console.log(error.response);
+          console.log(this.faceVerification);
+        });
+    },
+
+    makeblob: function(dataURL) {
+      let BASE64_MARKER = ";base64,";
+      if (dataURL.indexOf(BASE64_MARKER) == -1) {
+        let parts = dataURL.split(",");
+        let contentType = parts[0].split(":")[1];
+        let raw = decodeURIComponent(parts[1]);
+        return new Blob([raw], { type: contentType });
+      }
+      let parts = dataURL.split(BASE64_MARKER);
+      let contentType = parts[0].split(":")[1];
+      let raw = window.atob(parts[1]);
+      let rawLength = raw.length;
+      let uInt8Array = new Uint8Array(rawLength);
+      for (let i = 0; i < rawLength; ++i) {
+        uInt8Array[i] = raw.charCodeAt(i);
+      }
+      return new Blob([uInt8Array], { type: contentType });
+    },
   },
   mounted() {
     this.locations = LocalitatiRO;
