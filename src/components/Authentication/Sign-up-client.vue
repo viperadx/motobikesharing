@@ -207,6 +207,7 @@
 </template>
 
 <script>
+/* eslint-disable no-console */
 import LocalitatiRO from "../../assets/LocalitatiRO";
 export default {
   name: "Sign-up-client",
@@ -231,12 +232,12 @@ export default {
       menu2: false,
       gender: null,
       rules: {
-        required: value => !!value || "Required.",
-        email: value => {
+        required: (value) => !!value || "Required.",
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Invalid email.";
-        }
-      }
+        },
+      },
     };
   },
   computed: {
@@ -244,7 +245,7 @@ export default {
       return this.password !== this.confirmPassword
         ? "Passwords do not match"
         : "";
-    }
+    },
   },
   methods: {
     clientSignUp() {
@@ -257,13 +258,13 @@ export default {
         bday: this.bday,
         phone: this.phone,
         creditcard: this.creditcard,
-        gender: this.gender
+        gender: this.gender,
       });
       this.signup = false;
-    }
+    },
   },
   mounted() {
     this.locations = LocalitatiRO;
-  }
+  },
 };
 </script>

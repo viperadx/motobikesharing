@@ -76,7 +76,7 @@ export default new Vuex.Store({
       firebase
         .auth()
         .signOut()
-        .then(function() {
+        .then(function () {
           commit("setUser", null);
           commit("setloggedInUserData", null);
           // router.push({ path: "/login" });
@@ -91,7 +91,6 @@ export default new Vuex.Store({
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(details => {
           commit("setUser", details.user.uid);
-          console.log("test - ", details.user.uid);
           this.dispatch("readAllRidesDetailsByDriverID", details.user.uid);
           this.dispatch("readAllRidesDetailsByUserID", details.user.uid);
           firebase
@@ -102,7 +101,7 @@ export default new Vuex.Store({
               snap => {
                 commit("setloggedInUserData", snap.val());
               },
-              function(error) {
+              function (error) {
                 console.log("Error: " + error.message);
               }
             );
@@ -126,7 +125,7 @@ export default new Vuex.Store({
               snap => {
                 commit("setloggedInUserData", snap.val());
               },
-              function(error) {
+              function (error) {
                 console.log("Error: " + error.message);
               }
             );

@@ -77,8 +77,8 @@ export default {
   },
   methods: {},
   created() {
-    this.$store.dispatch("readUserDataByUserID", "idUser");
-    this.$store.dispatch("readDriverDetailsByUserID", "idUser");
+    this.$store.dispatch("readUserDataByUserID", this.$store.getters.user);
+    this.$store.dispatch("readDriverDetailsByUserID", this.$store.getters.user);
   },
   mounted() {
     this.$store.dispatch("");

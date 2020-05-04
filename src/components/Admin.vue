@@ -55,7 +55,7 @@ export default {
   },
   methods: {},
   created() {
-    this.$store.dispatch("readAllDriversDetails");
+    this.$store.dispatch("readAllRidesDetailsByDriverID");
   },
   mounted() {},
 };
