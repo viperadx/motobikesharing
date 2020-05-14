@@ -1,12 +1,12 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>
+    <!-- <v-layout text-center wrap>
       Ultima cursa cu detaliile separate de; pe fiecare rand:
       <br />Numele strazii(destinatia); <br />An.luna.zi ora.minut;
       <br />tariful cursei LEI xx.xx; <br />Statusul cursei(toate astea sa fie
       un link catre detaliile acesteicurse)
     </v-layout>
-    <div>{{ user }}</div>
+    <div>{{ user }}</div> -->
     <v-col cols="12" sm="6" md="3">
       <div v-if="currentDriverRidesHistoryGetter.length > 0">
         Driver rides
@@ -17,8 +17,9 @@
           :key="ride.rideId"
           :to="{
             name: 'Cursa',
-            params: {id: ride.rideId}
-          }">
+            params: { id: ride.rideId },
+          }"
+        >
           {{ ride.timeStampFull }}
         </v-list-item>
       </v-list>
@@ -31,8 +32,9 @@
           :key="ride.rideId"
           :to="{
             name: 'Cursa',
-            params: {id: ride.rideId}
-          }">
+            params: { id: ride.rideId },
+          }"
+        >
           {{ ride.timeStampFull }}
         </v-list-item>
       </v-list>
@@ -73,7 +75,7 @@ export default {
       return this.$store.getters.currentUserRidesHistoryGetter
         ? this.$store.getters.currentUserRidesHistoryGetter
         : [];
-    }
+    },
   },
   methods: {},
   created() {
@@ -82,7 +84,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("");
-  }
+  },
 };
 </script>
 

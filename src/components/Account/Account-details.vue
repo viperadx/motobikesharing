@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div>{{ userData.email }}</div>
+    <!-- <div>{{ userData.email }}</div> -->
     <v-col cols="12" sm="6" md="3">
       <v-text-field
         label="First Name"
@@ -17,7 +17,6 @@
       <v-text-field
         label="Email"
         outlined
-        v-if="driverData"
         :readonly="readonlyData"
         :value="userData.email"
       ></v-text-field>
@@ -33,8 +32,9 @@
         :readonly="readonlyData"
         :value="userData.creditCard"
       ></v-text-field>
-      <v-text-field
+      <!-- <v-text-field
         label="Expire date ID"
+        v-if="driverData"
         outlined
         readonly="readonlyData"
         :value="driverData.expireDateID"
@@ -44,7 +44,7 @@
         outlined
         readonly="readonlyData"
         :value="driverData.expireDateITP"
-      ></v-text-field>
+      ></v-text-field> -->
     </v-col>
     <v-btn @click="faCeva()">{{ readonlyData ? "Edit" : "Save" }}</v-btn>
   </v-container>
@@ -57,7 +57,7 @@ export default {
     return {
       name: "",
       readonlyData: true,
-      email: ""
+      email: "",
     };
   },
   computed: {
@@ -70,12 +70,12 @@ export default {
       return this.$store.getters.presentDriverDataGetter
         ? this.$store.getters.presentDriverDataGetter
         : "";
-    }
+    },
   },
   methods: {
     faCeva() {
       this.readonlyData = !this.readonlyData;
-    }
+    },
   },
   created() {
     this.$store.dispatch("readUserDataByUserID", "idUser");
@@ -83,6 +83,6 @@ export default {
   },
   mounted() {
     // eslint-disable-next-line no-console
-  }
+  },
 };
 </script>

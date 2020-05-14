@@ -1,8 +1,8 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>
+    <!-- <v-layout text-center wrap>
       // TODO: aici tre sa mai adaug pie chart uri etc</v-layout
-    >
+    > -->
     <v-layout text-center wrap>
       <v-col cols="12" sm="6" md="3">
         <div>Requests to be checked</div>
@@ -41,11 +41,10 @@ export default {
         ? this.$store.getters.allDriversDataGetter
         : [];
     },
-    filterPending(){
-      return this.allDriversDataGetter.filter(allDriversDataGetter => {
+    filterPending() {
+      return this.allDriversDataGetter.filter((allDriversDataGetter) => {
         return allDriversDataGetter.checkStatus === "pending";
-      }) 
-      
+      });
     },
     userData() {
       return this.$store.getters.userDataGetter
@@ -55,7 +54,7 @@ export default {
   },
   methods: {},
   created() {
-    this.$store.dispatch("readAllRidesDetailsByDriverID");
+    this.$store.dispatch("readAllDriversDetails");
   },
   mounted() {},
 };

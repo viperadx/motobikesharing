@@ -413,7 +413,7 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    sendRatingForDriverFromHistory({ commit }, payload) {
+    sendRatingForDriverFromHistory({ commit }, payload) { //aici as putea sa pun dispatch in loc de commit sa mai scap de niste buguri
       firebase
         .database()
         .ref("/Rides/" + payload.id)

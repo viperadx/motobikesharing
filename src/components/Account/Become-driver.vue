@@ -377,7 +377,7 @@ export default {
       // } else {
       //   return !this.faceVerification;
       // }
-      return !(this.checkbox1 || this.faceVerification)
+      return !(this.checkbox1 || this.faceVerification);
     },
   },
   methods: {
