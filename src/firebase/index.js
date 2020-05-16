@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 import * as firebase from "firebase";
+import 'firebase/storage'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBS-6ewLr8i9EX5F1t4g88NWaJDOSru7vE",

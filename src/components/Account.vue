@@ -8,14 +8,14 @@
         readonly
         :value="userDetails.Name"
       ></v-text-field>
-      <!-- <v-text-field
+      <v-text-field
         label="Number of Rides"
         outlined
         readonly
-        :value="userData.noOfRides"
-      ></v-text-field> -->
+        :value="userDetails.Name"
+      ></v-text-field>
     </v-col>
-    <div v-if="!this.userDetails.idDriver && this.userDetails.Admin === false">
+    <div v-if="!this.userDetails.idDriver && this.userDetails.admin === false">
       <v-layout text-center wrap
         ><router-link to="/becomedriver">
           Do you want to become a driver on the platform?</router-link

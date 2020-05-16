@@ -431,7 +431,9 @@
         ></v-checkbox>
       </v-container>
       <v-spacer></v-spacer>
-      <v-btn type="submit" :disabled="f2fVerif">Register</v-btn>
+      <v-btn type="submit" :disabled="f2fVerif" @click="driverSignUp"
+        >Register</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -545,6 +547,12 @@ export default {
         expiredaterca: this.expireRCA,
         expiredateitp: this.expireITP,
         expiredateinsurance: this.expireInsurance,
+        imageID: this.imageID,
+        imageRCA: this.imageRCA,
+        imageLicense: this.imageLicense,
+        imageITP: this.imageITP,
+        imageInsurance: this.imageInsurance,
+        imageSelfie: this.imageSelfie,
       });
       this.signup = false;
     },

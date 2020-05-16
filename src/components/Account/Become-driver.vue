@@ -320,7 +320,9 @@
         ></v-checkbox>
       </v-container>
       <v-spacer></v-spacer>
-      <v-btn type="submit" :disabled="f2fVerif">Register</v-btn>
+      <v-btn type="submit" :disabled="f2fVerif" @click="becomeDriver"
+        >Register</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -371,6 +373,9 @@ export default {
     };
   },
   computed: {
+    userID() {
+      return this.$store.getters.user ? this.$store.getters.user : "";
+    },
     f2fVerif() {
       // if (this.checkbox1 === "true") {
       //   return !this.checkbox1;
@@ -381,6 +386,23 @@ export default {
     },
   },
   methods: {
+    becomeDriver() {
+      this.$store.dispatch("becomeDriver", {
+        expiredateid: this.expireID,
+        expiredatelicense: this.expireLicense,
+        expiredaterca: this.expireRCA,
+        expiredateitp: this.expireITP,
+        expiredateinsurance: this.expireInsurance,
+        imageID: this.imageID,
+        imageRCA: this.imageRCA,
+        imageLicense: this.imageLicense,
+        imageITP: this.imageITP,
+        imageInsurance: this.imageInsurance,
+        imageSelfie: this.imageSelfie,
+        userID: this.userID,
+      });
+      this.signup = false;
+    },
     onPickImageID() {
       this.$refs.fileInputID.click();
     },

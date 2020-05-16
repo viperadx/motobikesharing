@@ -155,7 +155,7 @@ export default new Vuex.Store({
           commit("setUser", details.user.uid);
           this.dispatch("readAllRidesDetailsByDriverID", details.user.uid);
           this.dispatch("readAllRidesDetailsByUserID", details.user.uid);
-          router.push({ path: "/home" });
+          // router.push({ path: "/home" });
           firebase
             .database()
             .ref("/Users/" + details.user.uid)
@@ -187,7 +187,6 @@ export default new Vuex.Store({
           commit("setUser", details.user.uid);
           this.dispatch("readAllRidesDetailsByDriverID", details.user.uid);
           this.dispatch("readAllRidesDetailsByUserID", details.user.uid);
-          router.push({ path: "/home" });
           firebase
             .database()
             .ref("/Users/" + details.user.uid)
@@ -220,11 +219,85 @@ export default new Vuex.Store({
               idUser: details.user.uid,
               checkStatus: "pending"
             });
+          // let fileName = payload.imageID.name + payload.imageID.name.slice(payload.imageID.name.lastIndexOf('.'))
+          let newDirectory = details.user.uid
+          let fileNameSelfie = "Selfie" + payload.imageSelfie.name.slice(payload.imageSelfie.name.lastIndexOf('.'))
+          let fileNameID = "ID" + payload.imageID.name.slice(payload.imageID.name.lastIndexOf('.'))
+          let fileNameITP = "ITP" + payload.imageITP.name.slice(payload.imageITP.name.lastIndexOf('.'))
+          let fileNameRCA = "RCA" + payload.imageRCA.name.slice(payload.imageRCA.name.lastIndexOf('.'))
+          let fileNameInsurance = "Insurance" + payload.imageInsurance.name.slice(payload.imageInsurance.name.lastIndexOf('.'))
+          let fileNameLicense = "License" + payload.imageLicense.name.slice(payload.imageLicense.name.lastIndexOf('.'))
+          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameSelfie}`).put(payload.imageSelfie)
+          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameID}`).put(payload.imageID)
+          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameITP}`).put(payload.imageITP)
+          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameRCA}`).put(payload.imageRCA)
+          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameInsurance}`).put(payload.imageInsurance)
+          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameLicense}`).put(payload.imageLicense)
+          // let key = details.user.uid
+          // let imageIDUrl
+          // const filenameID = payload.imageID.name
+          // const ext = filenameID.slice(filenameID.lastIndexOf('.'))
+          // .then(fileData => {
+          //   imageIDUrl = fileData.metadata.downloadURLs[0]
+          //   return firebase.database().ref('/Drivers/').child(key).update({ imageIDUrl: imageIDUrl })
+          // })
         })
+        // .then(details => {
+        //   firebase
+        //     .storage
+        //     .ref("/Drivers/" + details.user.uid)
+        //     .put({
+        //       imageID: payload.imageID,
+        //       imageRCA: payload.imageRCA,
+        //       imageLicense: payload.imageLicense,
+        //       imageITP: payload.imageITP,
+        //       imageSelfie: payload.imageSelfie
+        //     })
+        // })
         .catch(error => {
           window.alert(error);
         });
+      router.push({ path: "/home" });
     },
+    becomeDriver({ commit }, payload) {
+      commit("setUser", payload.userID);
+      this.dispatch("readAllRidesDetailsByDriverID", payload.userID);
+      this.dispatch("readAllRidesDetailsByUserID", payload.userID);
+      firebase
+        .database()
+        .ref("/Users/" + payload.userID)
+        .update({ idDriver: payload.userID })
+      firebase
+        .database()
+        .ref("/Drivers/" + payload.userID)
+        .set({
+          expireDateID: payload.expiredateid,
+          expireDateITP: payload.expiredateitp,
+          expireDateInsurance: payload.expiredateinsurance,
+          expireDateLicense: payload.expiredatelicense,
+          expireDateRCA: payload.expiredaterca,
+          idUser: payload.userID,
+          checkStatus: "pending"
+        });
+      let newDirectory = payload.userID
+      let fileNameSelfie = "Selfie" + payload.imageSelfie.name.slice(payload.imageSelfie.name.lastIndexOf('.'))
+      let fileNameID = "ID" + payload.imageID.name.slice(payload.imageID.name.lastIndexOf('.'))
+      let fileNameITP = "ITP" + payload.imageITP.name.slice(payload.imageITP.name.lastIndexOf('.'))
+      let fileNameRCA = "RCA" + payload.imageRCA.name.slice(payload.imageRCA.name.lastIndexOf('.'))
+      let fileNameInsurance = "Insurance" + payload.imageInsurance.name.slice(payload.imageInsurance.name.lastIndexOf('.'))
+      let fileNameLicense = "License" + payload.imageLicense.name.slice(payload.imageLicense.name.lastIndexOf('.'))
+      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameSelfie}`).put(payload.imageSelfie)
+      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameID}`).put(payload.imageID)
+      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameITP}`).put(payload.imageITP)
+      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameRCA}`).put(payload.imageRCA)
+      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameInsurance}`).put(payload.imageInsurance)
+      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameLicense}`).put(payload.imageLicense)
+        .catch(error => {
+          window.alert(error);
+        });
+      router.push({ path: "/home" });
+    },
+
     readDriverDataByDriverID({ commit }, payload) {
       firebase
         .database()
