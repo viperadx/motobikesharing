@@ -1,52 +1,56 @@
 <template>
   <v-container>
     <!-- <div>{{ userData.email }}</div> -->
+    <v-switch
+      v-model="readonly"
+      inset
+      :label="`Readonly: ${readonly.toString()}`"
+    ></v-switch>
     <v-col cols="12" sm="6" md="3">
       <v-text-field
         label="First Name"
         outlined
-        :readonly="readonlyData"
-        :value="userData.firstName"
+        :readonly="readonly"
+        :value="userDetails.firstName"
+        id="firstName"
       ></v-text-field>
       <v-text-field
         label="Last Name"
         outlined
-        :readonly="readonlyData"
-        :value="userData.lastName"
-      ></v-text-field>
-      <v-text-field
-        label="Email"
-        outlined
-        :readonly="readonlyData"
-        :value="userData.email"
+        :readonly="readonly"
+        :value="userDetails.lastName"
+        id="lastName"
       ></v-text-field>
       <v-text-field
         label="Phone number"
         outlined
-        :readonly="readonlyData"
-        :value="userData.phoneNumber"
+        :readonly="readonly"
+        :value="userDetails.phone"
+        id="phone"
       ></v-text-field>
       <v-text-field
-        label="Credit card"
+        label="Residency"
         outlined
-        :readonly="readonlyData"
-        :value="userData.creditCard"
+        :readonly="readonly"
+        :value="userDetails.location"
+        id="location"
       ></v-text-field>
-      <!-- <v-text-field
-        label="Expire date ID"
-        v-if="driverData"
-        outlined
-        readonly="readonlyData"
-        :value="driverData.expireDateID"
-      ></v-text-field>
-      <v-text-field
-        label="Expire date ITP"
-        outlined
-        readonly="readonlyData"
-        :value="driverData.expireDateITP"
-      ></v-text-field> -->
     </v-col>
-    <v-btn @click="faCeva()">{{ readonlyData ? "Edit" : "Save" }}</v-btn>
+    <div v-if="readonly === false">
+      <v-btn
+        :loading="loading3"
+        :disabled="loading3"
+        color="blue-grey"
+        class="ma-2 white--text"
+        @click="
+          loader = 'loading3';
+          updateAccountDetails();
+        "
+      >
+        Save changes
+        <v-icon right dark>mdi-cloud-upload</v-icon>
+      </v-btn>
+    </div>
   </v-container>
 </template>
 
@@ -56,15 +60,17 @@ export default {
   data() {
     return {
       name: "",
-      readonlyData: true,
-      email: "",
+      readonly: true,
+      loader: null,
+      loading3: false,
     };
   },
   computed: {
-    userData() {
-      return this.$store.getters.userDataGetter
-        ? this.$store.getters.userDataGetter
-        : "";
+    userDetails() {
+      return this.$store.getters.loggedInUserData;
+    },
+    userID() {
+      return this.$store.getters.user ? this.$store.getters.user : "";
     },
     driverData() {
       return this.$store.getters.presentDriverDataGetter
@@ -72,14 +78,32 @@ export default {
         : "";
     },
   },
+  watch: {
+    loader() {
+      const l = this.loader;
+      this[l] = !this[l];
+
+      setTimeout(() => (this[l] = false), 2000);
+
+      this.loader = null;
+      setTimeout(() => (this.readonly = true), 2010);
+    },
+  },
   methods: {
-    faCeva() {
-      this.readonlyData = !this.readonlyData;
+    updateAccountDetails() {
+      const payload = {
+        lastName: document.getElementById("lastName").value,
+        firstName: document.getElementById("firstName").value,
+        location: document.getElementById("location").value,
+        phone: document.getElementById("phone").value,
+        userID: this.userID,
+      };
+      this.$store.dispatch("updateAccountDetails", payload);
     },
   },
   created() {
-    this.$store.dispatch("readUserDataByUserID", "idUser");
-    this.$store.dispatch("readDriverDetailsByUserID", "idUser");
+    this.$store.dispatch("readUserDataByUserID", this.userID);
+    this.$store.dispatch("readDriverDetailsByUserID", this.userID);
   },
   mounted() {
     // eslint-disable-next-line no-console

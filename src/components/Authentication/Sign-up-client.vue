@@ -50,7 +50,7 @@
             :items="locations"
             v-model="location"
             color="normal"
-            label="Location"
+            label="Residency"
             autocomplete
             :rules="[rules.required]"
           ></v-select>
@@ -161,10 +161,11 @@
             label="Password"
             color="normal"
             hint="At least 8 characters"
-            v-model="password"
             min="8"
-            :append-icon-cb="() => (e1 = !e1)"
-            :type="'password'"
+            :type="passwordFieldType"
+            v-model="password"
+            append-icon="mdi-eye"
+            @click:append="switchVisibility"
             :rules="[rules.required]"
             counter
           ></v-text-field>
@@ -175,9 +176,11 @@
             label="Confirm password"
             hint="At least 8 characters"
             color="normal"
-            v-model="confirmPassword"
             min="8"
-            :type="'password'"
+            :type="confirmPasswordFieldType"
+            v-model="confirmPassword"
+            append-icon="mdi-eye"
+            @click:append="switchVisibilityConfirm"
             :rules="[comparePasswords]"
           ></v-text-field>
         </v-flex>
@@ -202,6 +205,7 @@
     <v-card-actions>
       <v-spacer></v-spacer>
       <v-btn type="submit" @click="clientSignUp">Register</v-btn>
+      <!-- :disabled="loading" -->
     </v-card-actions>
   </v-card>
 </template>
@@ -222,6 +226,8 @@ export default {
       e1: true,
       password: "",
       bdaymenu: false,
+      passwordFieldType: "password",
+      confirmPasswordFieldType: "password",
       email: "",
       locations: [],
       confirmPassword: "",
@@ -231,6 +237,7 @@ export default {
       genders: ["Male", "Female", "Other", "Unspecified"],
       menu2: false,
       gender: null,
+      alert: false,
       rules: {
         required: (value) => !!value || "Required.",
         email: (value) => {
@@ -246,8 +253,22 @@ export default {
         ? "Passwords do not match"
         : "";
     },
+    error() {
+      return this.$store.state.error;
+    },
+    loading() {
+      return this.$store.state.loading;
+    },
   },
   methods: {
+    switchVisibility() {
+      this.passwordFieldType =
+        this.passwordFieldType === "password" ? "text" : "password";
+    },
+    switchVisibilityConfirm() {
+      this.confirmPasswordFieldType =
+        this.confirmPasswordFieldType === "password" ? "text" : "password";
+    },
     clientSignUp() {
       this.$store.dispatch("signUpClient", {
         email: this.email,
@@ -261,6 +282,18 @@ export default {
         gender: this.gender,
       });
       this.signup = false;
+    },
+  },
+  watch: {
+    error(value) {
+      if (value) {
+        this.alert = true;
+      }
+    },
+    alert(value) {
+      if (!value) {
+        this.$store.commit("setError", null);
+      }
     },
   },
   mounted() {

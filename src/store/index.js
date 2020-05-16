@@ -17,6 +17,8 @@ export default new Vuex.Store({
     allUsersData: [],
     allTexts: null,
     user: null,
+    error: null,
+    loading: false,
     presentDriverData: null,
     activeRide: null,
     currentRideDriver: null,
@@ -27,6 +29,12 @@ export default new Vuex.Store({
   mutations: {
     setUser: (state, payload) => {
       state.user = payload;
+    },
+    setError(state, payload) {
+      state.error = payload
+    },
+    setLoading(state, payload) {
+      state.loading = payload
     },
     setDriverData(state, payload) {
       state.driverData = payload;
@@ -79,7 +87,7 @@ export default new Vuex.Store({
         .then(function () {
           commit("setUser", null);
           commit("setloggedInUserData", null);
-          // router.push({ path: "/login" });
+          router.push({ path: "/" });
         })
         .catch(error => {
           window.alert(error.message);
@@ -91,6 +99,8 @@ export default new Vuex.Store({
         .signInWithEmailAndPassword(payload.email, payload.password)
         .then(details => {
           commit("setUser", details.user.uid);
+          commit('setLoading', false);
+          commit('setError', null);
           this.dispatch("readAllRidesDetailsByDriverID", details.user.uid);
           this.dispatch("readAllRidesDetailsByUserID", details.user.uid);
           firebase
@@ -105,10 +115,12 @@ export default new Vuex.Store({
                 console.log("Error: " + error.message);
               }
             );
-          router.push({ path: "/home" });
+          // router.push({ path: "/home" });
         })
         .catch(error => {
           window.alert(error.message);
+          commit('setError', error.message)
+          commit('setLoading', false)
         });
     },
     AuthChange({ commit }) {
@@ -117,6 +129,7 @@ export default new Vuex.Store({
           commit("setUser", details.uid);
           this.dispatch("readAllRidesDetailsByDriverID", details.uid);
           this.dispatch("readAllRidesDetailsByUserID", details.uid);
+          router.push("/home");
           firebase
             .database()
             .ref("Users/" + details.uid)
@@ -162,6 +175,8 @@ export default new Vuex.Store({
         })
         .catch(error => {
           window.alert(error);
+          commit('setError', error.message);
+          commit('setLoading', false);
         });
     },
     signUpDriver({ commit }, payload) {
@@ -373,6 +388,107 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
+    updateAccountDetails({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Users/" + payload.userID)
+        .update({
+          lastName: payload.lastName,
+          firstName: payload.firstName,
+          location: payload.location,
+          phone: payload.phone,
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Users/" + payload.userID)
+            .on("value", snap => {
+              commit("setloggedInUserData", snap.val());
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    updateBankDetails({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Users/" + payload.userID)
+        .update({
+          creditCard: payload.creditCard,
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Users/" + payload.userID)
+            .on("value", snap => {
+              commit("setloggedInUserData", snap.val());
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    updateVehicleDocuments({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Drivers/" + payload.userID)
+        .update({
+          expireDateID: payload.expireDateID,
+          expireDateITP: payload.expireDateITP,
+          expireDateRCA: payload.expireDateRCA,
+          expireDateLicense: payload.expireDateLicense,
+          expireDateInsurance: payload.expireDateInsurance,
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Drivers/" + payload.userID)
+            .on("value", snap => {
+              commit("savePresentDriverData", snap.val());
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    updateAuthenticationDetails({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Users/" + payload.userID)
+      firebase.auth().signInWithEmailAndPassword(payload.oldEmail, payload.oldPassword).then(function () {
+        if (payload.password !== null) {
+          firebase.auth().currentUser.updatePassword(payload.password).then(function () {
+            console.log("Parola a fost schimbată")
+          }).catch(function (error) {
+            console.log(error.message)
+          })
+        }
+        if (payload.email !== null)
+          firebase.auth().currentUser.updateEmail(payload.email).then(function () {
+            console.log('Emailul a fost schimbat')
+          }).catch(function (error) {
+            console.log(error.message)
+          })
+        firebase
+          .database()
+          .ref("/Users/" + payload.userID)
+          .update({
+            email: payload.email
+          })
+          .then(() => {
+            firebase
+              .database()
+              .ref("/Users/" + payload.userID)
+              .on("value", snap => {
+                commit("setloggedInUserData", snap.val());
+              });
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      })
+    },
     ratingForClientPopup({ commit }, payload) {
       firebase
         .database()
@@ -470,18 +586,14 @@ export default new Vuex.Store({
           commit("setAllTexts", snap.val());
         });
     },
-    readDriverDetailsByUserID({ commit }, payload) {
+    readDriverDetailsByUserID({ commit }, payload) { //TODO: de verificat +snap.val()[] ala
       firebase
         .database()
-        .ref("/Users/" + payload)
+        .ref("/Drivers/" + payload)
         .on("value", snap => {
-          firebase
-            .database()
-            .ref("/Drivers/" + snap.val()["idDriver"])
-            .on("value", snap => {
-              commit("savePresentDriverData", snap.val());
-            });
+          commit("savePresentDriverData", snap.val());
         });
+
     }
   },
   getters: {

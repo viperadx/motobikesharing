@@ -31,7 +31,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-item
-          v-if="user && this.userDetails.idDriver"
+          v-show="user && this.userDetails.idDriver"
           link
           to="/earnings"
         >
@@ -93,14 +93,14 @@
 </template>
 
 <script>
-import router from "@/router";
+// import router from "@/router";
 export default {
   props: {
-    source: String
+    source: String,
   },
   data() {
     return {
-      drawer: null
+      drawer: null,
     };
   },
   computed: {
@@ -109,14 +109,14 @@ export default {
     },
     userDetails() {
       return this.$store.getters.loggedInUserData;
-    }
+    },
   },
   methods: {
     onSignOut() {
       this.$store.dispatch("signOut");
       window.location.reload();
-      router.push("/login");
-    }
+      // router.push("/");
+    },
   },
   created() {
     this.$vuetify.theme.dark = true;
@@ -125,7 +125,7 @@ export default {
   },
   mounted() {
     // router.push("/home");
-  }
+  },
 };
 </script>
 

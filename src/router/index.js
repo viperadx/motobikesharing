@@ -12,7 +12,7 @@ import Technicalproblems from "../components/Help/Technical-problems.vue";
 import Usingmbs from "../components/Help/Using-MBS.vue";
 import Accounthelp from "../components/Help/Account-help.vue";
 import Seeallconversations from "../components/Help/See-all-conversations.vue";
-import Changevehicle from "../components/Account/Change-vehicle.vue";
+import Vehicledocuments from "../components/Account/Vehicle-documents.vue";
 import Paymentsandbonuses from "../components/Help/Earnings_help/Payments-and-bonuses.vue";
 import Passengercampaigns from "../components/Help/Earnings_help/Passenger-campaigns.vue";
 import Driverpaidwaittimefees from "../components/Help/Earnings_help/Driver-paid-wait-time-fees.vue";
@@ -73,6 +73,8 @@ import Faceapi from "../components/Admin/Face-api.vue";
 import Signupdriver from "../components/Authentication/Sign-up-driver.vue";
 import Driverrequests from "../components/Admin/Driver-requests.vue";
 import Searchforarideasadriver from "../components/Search-for-a-ride-as-a-driver.vue";
+import Landing from "../components/Landing.vue";
+import Authenticationdetails from "../components/Account/Authentication-details.vue";
 
 Vue.use(VueRouter);
 
@@ -151,9 +153,9 @@ export default new VueRouter({
       beforeEnter: AuthGuard
     },
     {
-      path: "/changevehicle",
-      name: "Change-vehicle",
-      component: Changevehicle,
+      path: "/vehicledocuments",
+      name: "Vehicle-documents",
+      component: Vehicledocuments,
       beforeEnter: AuthGuard
     },
     {
@@ -462,7 +464,7 @@ export default new VueRouter({
       component: Signupclient
     },
     {
-      path: "/login",
+      path: "/",
       name: "Login",
       component: Login
     },
@@ -502,6 +504,17 @@ export default new VueRouter({
       path: "/searchforarideasadriver",
       name: "Search-for-a-ride-as-a-driver",
       component: Searchforarideasadriver,
+      beforeEnter: AuthGuard
+    },
+    {
+      path: "/landing",
+      name: "Landing",
+      component: Landing
+    },
+    {
+      path: "/authenticationdetails",
+      name: "Authentication-details",
+      component: Authenticationdetails,
       beforeEnter: AuthGuard
     }
   ]

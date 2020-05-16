@@ -50,7 +50,7 @@
             :items="locations"
             v-model="location"
             color="normal"
-            label="Location"
+            label="Residency"
             autocomplete
             :rules="[rules.required]"
           ></v-select>
@@ -106,10 +106,11 @@
             label="Password"
             color="normal"
             hint="At least 8 characters"
-            v-model="password"
             min="8"
-            :append-icon-cb="() => (e1 = !e1)"
-            :type="'password'"
+            :type="passwordFieldType"
+            v-model="password"
+            append-icon="mdi-eye"
+            @click:append="switchVisibility"
             :rules="[rules.required]"
             counter
           ></v-text-field>
@@ -120,37 +121,48 @@
             label="Confirm password"
             hint="At least 8 characters"
             color="normal"
-            v-model="confirmPassword"
             min="8"
-            :type="'password'"
+            :type="confirmPasswordFieldType"
+            v-model="confirmPassword"
+            append-icon="mdi-eye"
+            @click:append="switchVisibilityConfirm"
             :rules="[comparePasswords]"
           ></v-text-field>
         </v-flex>
         <v-flex xs3>
-          <v-btn raised class="primary" @click="onPickImageSelfie">Upload Selfie</v-btn>
-          <input type="file" 
-          style="display: none" 
-          ref="fileInputSelfie" 
-          accept="image/*"
-          @change="onPickedImageSelfie"/>
+          <v-btn raised class="primary" @click="onPickImageSelfie"
+            >Upload Selfie</v-btn
+          >
+          <input
+            type="file"
+            style="display: none"
+            ref="fileInputSelfie"
+            accept="image/*"
+            @change="onPickedImageSelfie"
+          />
         </v-flex>
         <v-flex xs3>
-          <img :src ="imageUrlSelfie" height="70" width="200">
+          <img :src="imageUrlSelfie" height="70" width="200" />
         </v-flex>
         <v-flex xs6>
-          <div>Upload a selfie and your a picture of your ID, then click on the button below to verify identity!</div>
+          <div>
+            Upload a selfie and your a picture of your ID, then click on the
+            button below to verify identity!
+          </div>
           <v-btn @click="testFace()">Verify Identity</v-btn>
         </v-flex>
         <v-flex xs3>
           <v-btn raised class="primary" @click="onPickImageID">Upload ID</v-btn>
-          <input type="file" 
-          style="display: none" 
-          ref="fileInputID" 
-          accept="image/*"
-          @change="onPickedImageID"/>
+          <input
+            type="file"
+            style="display: none"
+            ref="fileInputID"
+            accept="image/*"
+            @change="onPickedImageID"
+          />
         </v-flex>
         <v-flex xs3>
-          <img :src ="imageUrlID" height="70" width="200">
+          <img :src="imageUrlID" height="70" width="200" />
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -160,7 +172,8 @@
             :return-value.sync="expireID"
             transition="scale-transition"
             offset-y
-            min-width="290px">
+            min-width="290px"
+          >
             <template v-slot:activator="{ on }">
               <v-text-field
                 v-model="expireID"
@@ -185,15 +198,19 @@
           </v-menu>
         </v-flex>
         <v-flex xs3>
-          <v-btn raised class="primary" @click="onPickImageLicense">Upload License</v-btn>
-          <input type="file" 
-          style="display: none" 
-          ref="fileInputLicense" 
-          accept="image/*"
-          @change="onPickedImageLicense"/>
+          <v-btn raised class="primary" @click="onPickImageLicense"
+            >Upload License</v-btn
+          >
+          <input
+            type="file"
+            style="display: none"
+            ref="fileInputLicense"
+            accept="image/*"
+            @change="onPickedImageLicense"
+          />
         </v-flex>
         <v-flex xs3>
-          <img :src ="imageUrlLicense" height="70" width="200">
+          <img :src="imageUrlLicense" height="70" width="200" />
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -234,15 +251,19 @@
           </v-menu>
         </v-flex>
         <v-flex xs3>
-          <v-btn raised class="primary" @click="onPickImageITP">Upload ITP</v-btn>
-          <input type="file" 
-          style="display: none" 
-          ref="fileInputITP" 
-          accept="image/*"
-          @change="onPickedImageITP"/>
+          <v-btn raised class="primary" @click="onPickImageITP"
+            >Upload ITP</v-btn
+          >
+          <input
+            type="file"
+            style="display: none"
+            ref="fileInputITP"
+            accept="image/*"
+            @change="onPickedImageITP"
+          />
         </v-flex>
         <v-flex xs3>
-          <img :src ="imageUrlITP" height="70" width="200">
+          <img :src="imageUrlITP" height="70" width="200" />
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -280,15 +301,19 @@
           </v-menu>
         </v-flex>
         <v-flex xs3>
-          <v-btn raised class="primary" @click="onPickImageRCA">Upload RCA</v-btn>
-          <input type="file" 
-          style="display: none" 
-          ref="fileInputRCA" 
-          accept="image/*"
-          @change="onPickedImageRCA"/>
+          <v-btn raised class="primary" @click="onPickImageRCA"
+            >Upload RCA</v-btn
+          >
+          <input
+            type="file"
+            style="display: none"
+            ref="fileInputRCA"
+            accept="image/*"
+            @change="onPickedImageRCA"
+          />
         </v-flex>
         <v-flex xs3>
-          <img :src ="imageUrlRCA" height="70" width="200">
+          <img :src="imageUrlRCA" height="70" width="200" />
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -326,15 +351,19 @@
           </v-menu>
         </v-flex>
         <v-flex xs3>
-          <v-btn raised class="primary" @click="onPickImageInsurance">Upload Insurance</v-btn>
-          <input type="file" 
-          style="display: none" 
-          ref="fileInputInsurance" 
-          accept="image/*"
-          @change="onPickedImageInsurance"/>
+          <v-btn raised class="primary" @click="onPickImageInsurance"
+            >Upload Insurance</v-btn
+          >
+          <input
+            type="file"
+            style="display: none"
+            ref="fileInputInsurance"
+            accept="image/*"
+            @change="onPickedImageInsurance"
+          />
         </v-flex>
         <v-flex xs3>
-          <img :src ="imageUrlInsurance" height="70" width="200">
+          <img :src="imageUrlInsurance" height="70" width="200" />
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -420,6 +449,8 @@ export default {
   name: "Sign-up-driver",
   data() {
     return {
+      passwordFieldType: "password",
+      confirmPasswordFieldType: "password",
       checkbox: false,
       location: null,
       phone: null,
@@ -446,17 +477,17 @@ export default {
       menuinsurance: null,
       modal: false,
       imageID: null,
-      imageUrlID: '',
+      imageUrlID: "",
       imageRCA: null,
-      imageUrlRCA: '',
+      imageUrlRCA: "",
       imageLicense: null,
-      imageUrlLicense: '',
+      imageUrlLicense: "",
       imageITP: null,
       imageSelfie: null,
-      imageUrlSelfie: '',
-      imageUrlITP: '',
+      imageUrlSelfie: "",
+      imageUrlITP: "",
       imageInsurance: null,
-      imageUrlInsurance: '',
+      imageUrlInsurance: "",
       captures: [],
       faceId: [],
       faceIdSelfie: null,
@@ -486,10 +517,18 @@ export default {
       // } else {
       //   return !this.faceVerification;
       // }
-      return !(this.checkbox1 || this.faceVerification)
+      return !(this.checkbox1 || this.faceVerification);
     },
   },
   methods: {
+    switchVisibility() {
+      this.passwordFieldType =
+        this.passwordFieldType === "password" ? "text" : "password";
+    },
+    switchVisibilityConfirm() {
+      this.confirmPasswordFieldType =
+        this.confirmPasswordFieldType === "password" ? "text" : "password";
+    },
     driverSignUp() {
       this.$store.dispatch("signUpDriver", {
         email: this.email,
@@ -509,8 +548,8 @@ export default {
       });
       this.signup = false;
     },
-    onPickImageID(){
-      this.$refs.fileInputID.click()
+    onPickImageID() {
+      this.$refs.fileInputID.click();
     },
     onPickedImageID(event) {
       const filesID = event.target.files;
@@ -550,72 +589,72 @@ export default {
       this.imageID = filesID[0];
       console.log(this.imageID);
     },
-    onPickImageRCA(){
-    this.$refs.fileInputRCA.click()
+    onPickImageRCA() {
+      this.$refs.fileInputRCA.click();
     },
-    onPickedImageRCA (event){
-      const filesRCA = event.target.files
-      let filenameRCA = filesRCA[0].name
-      if (filenameRCA.lastIndexOf('.') <=0){
-        return alert ('Please add a valid file!')
+    onPickedImageRCA(event) {
+      const filesRCA = event.target.files;
+      let filenameRCA = filesRCA[0].name;
+      if (filenameRCA.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid file!");
       }
-      const fileReaderRCA = new FileReader()
-      fileReaderRCA.addEventListener('load', () =>{
-        this.imageUrlRCA = fileReaderRCA.result
-      })
-      fileReaderRCA.readAsDataURL(filesRCA[0])
-      this.imageRCA = filesRCA[0]
+      const fileReaderRCA = new FileReader();
+      fileReaderRCA.addEventListener("load", () => {
+        this.imageUrlRCA = fileReaderRCA.result;
+      });
+      fileReaderRCA.readAsDataURL(filesRCA[0]);
+      this.imageRCA = filesRCA[0];
     },
-    onPickImageITP(){
-    this.$refs.fileInputITP.click()
+    onPickImageITP() {
+      this.$refs.fileInputITP.click();
     },
-    onPickedImageITP (event){
-      const filesITP = event.target.files
-      let filenameITP = filesITP[0].name
-      if (filenameITP.lastIndexOf('.') <=0){
-        return alert ('Please add a valid file!')
+    onPickedImageITP(event) {
+      const filesITP = event.target.files;
+      let filenameITP = filesITP[0].name;
+      if (filenameITP.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid file!");
       }
-      const fileReaderITP = new FileReader()
-      fileReaderITP.addEventListener('load', () =>{
-        this.imageUrlITP = fileReaderITP.result
-      })
-      fileReaderITP.readAsDataURL(filesITP[0])
-      this.imageITP = filesITP[0]
+      const fileReaderITP = new FileReader();
+      fileReaderITP.addEventListener("load", () => {
+        this.imageUrlITP = fileReaderITP.result;
+      });
+      fileReaderITP.readAsDataURL(filesITP[0]);
+      this.imageITP = filesITP[0];
     },
-    onPickImageLicense(){
-    this.$refs.fileInputLicense.click()
+    onPickImageLicense() {
+      this.$refs.fileInputLicense.click();
     },
-    onPickedImageLicense (event){
-      const filesLicense = event.target.files
-      let filenameLicense = filesLicense[0].name
-      if (filenameLicense.lastIndexOf('.') <=0){
-        return alert ('Please add a valid file!')
+    onPickedImageLicense(event) {
+      const filesLicense = event.target.files;
+      let filenameLicense = filesLicense[0].name;
+      if (filenameLicense.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid file!");
       }
-      const fileReaderLicense = new FileReader()
-      fileReaderLicense.addEventListener('load', () =>{
-        this.imageUrlLicense = fileReaderLicense.result
-      })
-      fileReaderLicense.readAsDataURL(filesLicense[0])
-      this.imageLicense = filesLicense[0]
+      const fileReaderLicense = new FileReader();
+      fileReaderLicense.addEventListener("load", () => {
+        this.imageUrlLicense = fileReaderLicense.result;
+      });
+      fileReaderLicense.readAsDataURL(filesLicense[0]);
+      this.imageLicense = filesLicense[0];
     },
-    onPickImageInsurance(){
-    this.$refs.fileInputInsurance.click()
+    onPickImageInsurance() {
+      this.$refs.fileInputInsurance.click();
     },
-    onPickedImageInsurance (event){
-      const filesInsurance = event.target.files
-      let filenameInsurance = filesInsurance[0].name
-      if (filenameInsurance.lastIndexOf('.') <=0){
-        return alert ('Please add a valid file!')
+    onPickedImageInsurance(event) {
+      const filesInsurance = event.target.files;
+      let filenameInsurance = filesInsurance[0].name;
+      if (filenameInsurance.lastIndexOf(".") <= 0) {
+        return alert("Please add a valid file!");
       }
-      const fileReaderInsurance = new FileReader()
-      fileReaderInsurance.addEventListener('load', () =>{
-        this.imageUrlInsurance = fileReaderInsurance.result
-      })
-      fileReaderInsurance.readAsDataURL(filesInsurance[0])
-      this.imageInsurance = filesInsurance[0]
-    },        
-    onPickImageSelfie(){
-    this.$refs.fileInputSelfie.click()
+      const fileReaderInsurance = new FileReader();
+      fileReaderInsurance.addEventListener("load", () => {
+        this.imageUrlInsurance = fileReaderInsurance.result;
+      });
+      fileReaderInsurance.readAsDataURL(filesInsurance[0]);
+      this.imageInsurance = filesInsurance[0];
+    },
+    onPickImageSelfie() {
+      this.$refs.fileInputSelfie.click();
     },
     onPickedImageSelfie(event) {
       const filesSelfie = event.target.files;

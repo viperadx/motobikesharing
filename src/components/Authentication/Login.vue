@@ -10,7 +10,7 @@
             color="normal"
             :rules="[rules.required, rules.email]"
           ></v-text-field>
-          <v-text-field
+          <!-- <v-text-field
             name="input-10-1"
             label="Password"
             hint="At least 8 characters"
@@ -22,6 +22,13 @@
             :type="e1 ? 'password' : 'text'"
             :rules="[rules.required]"
             counter
+          ></v-text-field> -->
+          <v-text-field
+            label="Password"
+            :type="passwordFieldType"
+            v-model="password"
+            append-icon="mdi-eye"
+            @click:append="switchVisibility"
           ></v-text-field>
         </v-flex>
       </v-layout>
@@ -48,27 +55,51 @@ export default {
     return {
       email: "",
       rules: {
-        required: value => !!value || "Required",
-        email: value => {
+        required: (value) => !!value || "Required",
+        email: (value) => {
           const pattern = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
           return pattern.test(value) || "Invalid email.";
-        }
+        },
       },
       e1: true,
-      password: ""
+      password: "",
+      passwordFieldType: "password",
+      alert: false,
     };
   },
   computed: {
     user() {
       return this.$store.getters.user;
-    }
+    },
+    error() {
+      return this.$store.state.error;
+    },
+    loading() {
+      return this.$store.state.loading;
+    },
+  },
+  watch: {
+    error(value) {
+      if (value) {
+        this.alert = true;
+      }
+    },
+    alert(value) {
+      if (!value) {
+        this.$store.commit("setError", null);
+      }
+    },
   },
   mounted() {
-    if (this.user) {
-      router.push("/home");
-    }
+    // if (this.user) {
+    //   router.push("/home");
+    // }
   },
   methods: {
+    switchVisibility() {
+      this.passwordFieldType =
+        this.passwordFieldType === "password" ? "text" : "password";
+    },
     userRecover() {
       const emailprompt = prompt(
         "Enter the email you wish to recover the password from",
@@ -89,11 +120,11 @@ export default {
     userSignin() {
       this.$store.dispatch("signIn", {
         email: this.email,
-        password: this.password
+        password: this.password,
       });
       this.signin = false;
       router.push("/home");
-    }
-  }
+    },
+  },
 };
 </script>
