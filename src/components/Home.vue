@@ -120,7 +120,11 @@
         <v-icon color="blue lighten-1">mdi-crosshairs-gps</v-icon>
       </v-btn>
     </div>
-    <div class="connect-driver" v-if="userDetails.idDriver">
+    <!-- de aici e driverul -->
+    <div
+      class="connect-driver"
+      v-if="currentDriverDetails.checkStatus === 'verified'"
+    >
       <v-btn
         color="green"
         fab
@@ -281,7 +285,7 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("readDriverDetailsByUserID", "idUser");
+    this.$store.dispatch("readDriverDetailsByUserID", this.user);
   },
   watch: {
     defaultLocation: {
@@ -323,13 +327,17 @@ export default {
       return this.$store.getters.activeRideRequest;
     },
     user() {
-      return this.$store.getters.user;
+      return this.$store.getters.user ? this.$store.getters.user : "";
     },
     userDetails() {
-      return this.$store.getters.loggedInUserData;
+      return this.$store.getters.loggedInUserData
+        ? this.$store.getters.loggedInUserData
+        : "";
     },
     currentDriverDetails() {
-      return this.$store.getters.presentDriverDataGetter;
+      return this.$store.getters.presentDriverDataGetter
+        ? this.$store.getters.presentDriverDataGetter
+        : "";
     },
   },
 
@@ -337,6 +345,7 @@ export default {
     this.createMap();
     this.geolocate();
     this.$store.dispatch("readAllRidesDetails");
+    this.$store.dispatch("readDriverDetailsByUserID", this.user);
   },
   methods: {
     connectDriver() {

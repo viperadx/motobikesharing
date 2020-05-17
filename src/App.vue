@@ -97,12 +97,11 @@ export default {
   data() {
     return {
       drawer: null,
-      idDriver: null,
     };
   },
   computed: {
     user() {
-      return this.$store.getters.user;
+      return this.$store.getters.user ? this.$store.getters.user : "";
     },
     userDetails() {
       return this.$store.getters.loggedInUserData;
@@ -119,8 +118,10 @@ export default {
     this.$vuetify.theme.dark = true;
     this.$store.dispatch("readAllTexts");
     this.$store.dispatch("AuthChange");
+    this.$store.dispatch("readUserDataByUserID", this.user);
   },
   mounted() {
+    this.$store.dispatch("readUserDataByUserID", this.user);
     // router.push("/home");
   },
 };

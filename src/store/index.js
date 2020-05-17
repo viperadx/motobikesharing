@@ -105,7 +105,7 @@ export default new Vuex.Store({
           this.dispatch("readAllRidesDetailsByUserID", details.user.uid);
           firebase
             .database()
-            .ref("Users/" + details.user.uid)
+            .ref("/Users/" + details.user.uid)
             .on(
               "value",
               snap => {
@@ -114,7 +114,20 @@ export default new Vuex.Store({
               function (error) {
                 console.log("Error: " + error.message);
               }
+            )
+          firebase
+            .database()
+            .ref("/Drivers/" + details.user.uid)
+            .on(
+              "value",
+              snap => {
+                commit("savePresentDriverData", snap.val());
+              },
+              function (error) {
+                console.log("Error: " + error.message);
+              }
             );
+
           // router.push({ path: "/home" });
         })
         .catch(error => {
@@ -508,7 +521,6 @@ export default new Vuex.Store({
         .database()
         .ref("/Rides/")
         .on("value", snap => {
-          console.log("driver", snap.val());
           const myObj = snap.val();
           var rides = [];
           const keysRides = Object.keys(snap.val());
@@ -525,7 +537,6 @@ export default new Vuex.Store({
         .database()
         .ref("/Rides/")
         .on("value", snap => {
-          console.log("user", snap.val());
           const myObj = snap.val();
           var rides = [];
           const keysRides = Object.keys(snap.val());
