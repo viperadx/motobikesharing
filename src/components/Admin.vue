@@ -46,7 +46,10 @@ export default {
     },
     filterPending() {
       return this.allDriversDataGetter.filter((allDriversDataGetter) => {
-        return allDriversDataGetter.checkStatus === "pending";
+        return (
+          allDriversDataGetter.checkStatus === "pending" ||
+          allDriversDataGetter.checkStatus === "need more info"
+        );
       });
     },
     userData() {

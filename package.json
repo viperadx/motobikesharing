@@ -12,6 +12,7 @@
     "firebase": "^7.8.2",
     "moment": "^2.24.0",
     "vue": "^2.6.10",
+    "vue-expandable-image": "^0.1.0",
     "vue-google-autocomplete": "^1.1.0",
     "vue-google-charts": "^0.3.2",
     "vue-router": "^3.1.5",

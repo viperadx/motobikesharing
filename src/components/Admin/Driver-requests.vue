@@ -1,52 +1,105 @@
 <template>
   <v-container grid-list-sm class="pa-4">
-    <v-text-field
-      label="Driver/User ID"
-      outlined
-      readonly
-      :value="driverDetails.idUser"
-    ></v-text-field>
-    <v-text-field
-      label="Expire date ID"
-      outlined
-      readonly
-      :value="driverDetails.expireDateID"
-    ></v-text-field>
-    <v-text-field
-      label="Expire date ITP"
-      outlined
-      readonly
-      :value="driverDetails.expireDateITP"
-    ></v-text-field>
-    <v-text-field
-      label="Expire date Insurance"
-      outlined
-      readonly
-      :value="driverDetails.expireDateInsurance"
-    ></v-text-field>
-    <v-text-field
-      label="Expire date License"
-      outlined
-      readonly
-      :value="driverDetails.expireDateLicense"
-    ></v-text-field>
-    <v-text-field
-      label="Expire date RCA"
-      outlined
-      readonly
-      :value="driverDetails.expireDateRCA"
-    ></v-text-field>
-    <v-select
-      :items="checkStatuses"
-      v-model="checkStatusInitial"
-      color="normal"
-      label="Verification status"
-    ></v-select>
+    <v-layout wrap>
+      <v-flex xs6>
+        <v-text-field
+          label="Driver/User ID"
+          outlined
+          readonly
+          :value="driverDetails.idUser"
+        ></v-text-field>
+      </v-flex>
+      <expandable-image
+        :src="driverDetails.imageSelfieURL"
+        height="70"
+        width="70"
+      />
+      <v-flex xs6>
+        <v-text-field
+          label="Expire date ID"
+          outlined
+          readonly
+          :value="driverDetails.expireDateID"
+        ></v-text-field>
+      </v-flex>
+      <expandable-image
+        :src="driverDetails.imageIDURL"
+        height="70"
+        width="70"
+      />
+      <v-flex xs6>
+        <v-text-field
+          label="Expire date ITP"
+          outlined
+          readonly
+          :value="driverDetails.expireDateITP"
+        ></v-text-field>
+      </v-flex>
+      <expandable-image
+        :src="driverDetails.imageITPURL"
+        height="70"
+        width="70"
+      />
+      <v-flex xs6>
+        <v-text-field
+          label="Expire date Insurance"
+          outlined
+          readonly
+          :value="driverDetails.expireDateInsurance"
+        ></v-text-field>
+      </v-flex>
+      <expandable-image
+        :src="driverDetails.imageInsuranceURL"
+        height="70"
+        width="70"
+      />
+      <v-flex xs6>
+        <v-text-field
+          label="Expire date License"
+          outlined
+          readonly
+          :value="driverDetails.expireDateLicense"
+        ></v-text-field>
+      </v-flex>
+      <expandable-image
+        :src="driverDetails.imageLicenseURL"
+        height="70"
+        width="70"
+      />
+      <v-flex xs6>
+        <v-text-field
+          label="Expire date RCA"
+          outlined
+          readonly
+          :value="driverDetails.expireDateRCA"
+        ></v-text-field>
+      </v-flex>
+      <expandable-image
+        :src="driverDetails.imageRCAURL"
+        height="70"
+        width="70"
+      />
+      <v-flex xs6>
+        <v-select
+          :items="checkStatuses"
+          v-model="checkStatusFinal"
+          :placeholder="driverDetails.checkStatus"
+          color="normal"
+          label="Verification status"
+          id="checkStatusUpdated"
+        ></v-select>
+      </v-flex>
+      <v-spacer></v-spacer>
+      <v-btn type="submit" @click="updateCheckStatus()">Register</v-btn>
+    </v-layout>
   </v-container>
 </template>
 
 <script>
 /* eslint-disable no-console */
+import Vue from "vue";
+import VueExpandableImage from "vue-expandable-image";
+Vue.use(VueExpandableImage);
 import * as firebase from "firebase";
 export default {
   name: "Driver-requests",
@@ -54,7 +107,7 @@ export default {
     return {
       driverDetails: null,
       id: this.$route.params.id,
-      checkStatusInitial: "pending",
+      checkStatusFinal: null,
       checkStatuses: ["verified", "pending", "need more info", "declined"],
     };
   },
@@ -68,11 +121,23 @@ export default {
         : "";
     },
   },
-  methods: {},
+  methods: {
+    updateCheckStatus() {
+      const payload = {
+        checkStatus: this.checkStatusFinal,
+        userID: this.id,
+      };
+      this.$store.dispatch("updateCheckStatus", payload);
+    },
+  },
   created() {
     this.$store.dispatch("readAllDriversDetails", this.id);
   },
   mounted() {
+    const viewportMeta = document.createElement("meta");
+    viewportMeta.name = "viewport";
+    viewportMeta.content = "width=device-width, initial-scale=1";
+    document.head.appendChild(viewportMeta);
     firebase
       .database()
       .ref("/Drivers/" + this.id)

@@ -444,6 +444,21 @@ export default new Vuex.Store({
           commit("setDriverData", snap.val());
         });
     },
+    updateCheckStatus({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Drivers/" + payload.userID)
+        .update({
+          checkStatus: payload.checkStatus
+        })
+        .then
+      firebase
+        .database()
+        .ref("/Drivers/" + payload.userID)
+        .on("value", snap => {
+          commit("setDriverData", snap.val());
+        });
+    },
     readUserDataByUserID({ commit }, payload) {
       firebase
         .database()
