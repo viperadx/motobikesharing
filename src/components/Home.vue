@@ -12,7 +12,15 @@
           activeRideRequest && activeRideRequest.status === 'driver on route'
         "
       >
-        Driver is on route
+        <div>Driver is on route</div>
+        <div>
+          <v-text-field
+            label="Driver phone"
+            :readonly="readonly"
+            outlined
+            :value="activeRideRequest.phoneDriver"
+          ></v-text-field>
+        </div>
       </div>
       <div
         class="custom-driver-arrived"
@@ -20,7 +28,15 @@
           activeRideRequest && activeRideRequest.status === 'driver arrived'
         "
       >
-        Meet your driver outside
+        <div>Meet your driver outside</div>
+        <div>
+          <v-text-field
+            label="Driver phone"
+            outlined
+            :readonly="readonly"
+            :value="activeRideRequest.phoneDriver"
+          ></v-text-field>
+        </div>
       </div>
       <div
         class="custom-send-rating-from-client"
@@ -121,6 +137,15 @@
       </v-btn>
     </div>
     <!-- de aici e driverul -->
+    <v-snackbar
+      v-model="snackbarForUnverifiedDriver"
+      :timeout="0"
+      class="custom-snackbar-unverified-driver"
+    >
+      <div>
+        Account under verification. Contact support for further questions
+      </div>
+    </v-snackbar>
     <div
       class="connect-driver"
       v-if="currentDriverDetails.checkStatus === 'verified'"
@@ -135,7 +160,7 @@
       >
         <v-icon>mdi-motorbike</v-icon>
       </v-btn>
-
+      <!-- //TODO de adaugat nr clientului la driverArrived si optiune de cancel la sofer si client pentru neprezentare -->
       <v-btn
         color="orange"
         rounded
@@ -256,6 +281,7 @@ export default {
   },
   data() {
     return {
+      readonly: true,
       startLocationAddress: null,
       address: {},
       defaultLocation: {
@@ -314,6 +340,12 @@ export default {
     },
     currentRideClient() {
       return this.$store.getters.currentRideClientGetter;
+    },
+    snackbarForUnverifiedDriver() {
+      return (
+        this.userDetails.idDriver &&
+        this.currentDriverDetails.checkStatus !== "verified"
+      );
     },
     showSnackbarForUser() {
       return (
@@ -394,6 +426,7 @@ export default {
         price: this.rideInfo.price,
         distance: this.rideInfo.distance,
         duration: this.rideInfo.duration,
+        phoneClient: this.userDetails.phone,
         clientId: this.user,
         timeStampFull: fullString,
         timeStampDay: dayString,
@@ -437,6 +470,7 @@ export default {
         idDriver: this.user,
         driverFullName:
           this.userDetails.firstName + " " + this.userDetails.lastName,
+        phoneDriver: this.userDetails.phone,
       };
       this.$store.dispatch("acceptRide", payload);
       this.initRouteMap(
@@ -714,6 +748,10 @@ export default {
 }
 
 .custom-snackbar {
+  min-height: 220px;
+}
+
+.custom-snackbar-unverified-driver {
   min-height: 220px;
 }
 

@@ -570,7 +570,8 @@ export default new Vuex.Store({
         .update({
           status: "driver on route",
           idDriver: payload.idDriver,
-          driverFullName: payload.driverFullName
+          driverFullName: payload.driverFullName,
+          phoneDriver: payload.phoneDriver
         })
         .then(() => {
           firebase
