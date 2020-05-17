@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container grid-list-sm class="pa-4">
     <v-text-field
       label="Driver/User ID"
       outlined
@@ -70,7 +70,7 @@ export default {
   },
   methods: {},
   created() {
-    this.$store.dispatch("readAllDriversDetails");
+    this.$store.dispatch("readAllDriversDetails", this.id);
   },
   mounted() {
     firebase

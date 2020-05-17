@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "Landing",
+  name: "Reports",
   data() {
     return {};
   },

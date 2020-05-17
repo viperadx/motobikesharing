@@ -11,7 +11,7 @@
           </v-list-item-content>
         </v-list-item>
         <v-list-item
-          v-if="user && this.userDetails.idDriver"
+          v-if="user && userDetails.idDriver"
           link
           to="/searchforarideasadriver"
         >
@@ -30,11 +30,7 @@
             <v-list-item-title>Account</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item
-          v-show="user && this.userDetails.idDriver"
-          link
-          to="/earnings"
-        >
+        <v-list-item v-show="user && userDetails.idDriver" link to="/earnings">
           <v-list-item-action>
             <v-icon>mdi-cash</v-icon>
           </v-list-item-action>
@@ -58,7 +54,7 @@
             <v-list-item-title>Help</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item v-if="user && this.userDetails.Admin" link to="/admin">
+        <v-list-item v-if="user && userDetails.admin" link to="/admin">
           <v-list-item-action>
             <v-icon>mdi-head-minus</v-icon>
           </v-list-item-action>
@@ -101,6 +97,7 @@ export default {
   data() {
     return {
       drawer: null,
+      idDriver: null,
     };
   },
   computed: {

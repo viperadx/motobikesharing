@@ -4,6 +4,9 @@
       // TODO: aici tre sa mai adaug pie chart uri etc</v-layout
     > -->
     <v-layout text-center wrap>
+      <router-link to="/reports">Reports</router-link>
+    </v-layout>
+    <v-layout text-center wrap>
       <v-col cols="12" sm="6" md="3">
         <div>Requests to be checked</div>
         <v-list>

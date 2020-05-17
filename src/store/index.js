@@ -219,7 +219,6 @@ export default new Vuex.Store({
               idUser: details.user.uid,
               checkStatus: "pending"
             });
-          // let fileName = payload.imageID.name + payload.imageID.name.slice(payload.imageID.name.lastIndexOf('.'))
           let newDirectory = details.user.uid
           let fileNameSelfie = "Selfie" + payload.imageSelfie.name.slice(payload.imageSelfie.name.lastIndexOf('.'))
           let fileNameID = "ID" + payload.imageID.name.slice(payload.imageID.name.lastIndexOf('.'))
@@ -227,33 +226,92 @@ export default new Vuex.Store({
           let fileNameRCA = "RCA" + payload.imageRCA.name.slice(payload.imageRCA.name.lastIndexOf('.'))
           let fileNameInsurance = "Insurance" + payload.imageInsurance.name.slice(payload.imageInsurance.name.lastIndexOf('.'))
           let fileNameLicense = "License" + payload.imageLicense.name.slice(payload.imageLicense.name.lastIndexOf('.'))
-          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameSelfie}`).put(payload.imageSelfie)
-          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameID}`).put(payload.imageID)
-          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameITP}`).put(payload.imageITP)
-          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameRCA}`).put(payload.imageRCA)
-          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameInsurance}`).put(payload.imageInsurance)
-          firebase.storage().ref(`Drivers/${newDirectory}/${fileNameLicense}`).put(payload.imageLicense)
-          // let key = details.user.uid
-          // let imageIDUrl
-          // const filenameID = payload.imageID.name
-          // const ext = filenameID.slice(filenameID.lastIndexOf('.'))
-          // .then(fileData => {
-          //   imageIDUrl = fileData.metadata.downloadURLs[0]
-          //   return firebase.database().ref('/Drivers/').child(key).update({ imageIDUrl: imageIDUrl })
-          // })
+          let fullPathSelfie = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameSelfie}`).put(payload.imageSelfie)
+          let fullPathID = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameID}`).put(payload.imageID)
+          let fullPathITP = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameITP}`).put(payload.imageITP)
+          let fullPathRCA = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameRCA}`).put(payload.imageRCA)
+          let fullPathInsurance = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameInsurance}`).put(payload.imageInsurance)
+          let fullPathLicense = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameLicense}`).put(payload.imageLicense)
+          fullPathSelfie.on('state_changed', snapshot => {
+            let percentageSelfie = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueSelfie = percentageSelfie;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueSelfie = 100;
+              fullPathSelfie.snapshot.ref.getDownloadURL().then((downloadURLSelfie) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageSelfieURL: downloadURLSelfie
+                  })
+              })
+            }
+          );
+          fullPathID.on('state_changed', snapshot => {
+            let percentageID = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueID = percentageID;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueID = 100;
+              fullPathID.snapshot.ref.getDownloadURL().then((downloadURLID) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageIDURL: downloadURLID
+                  })
+              })
+            });
+          fullPathITP.on('state_changed', snapshot => {
+            let percentageITP = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueITP = percentageITP;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueITP = 100;
+              fullPathITP.snapshot.ref.getDownloadURL().then((downloadURLITP) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageITPURL: downloadURLITP
+                  })
+              })
+            });
+          fullPathRCA.on('state_changed', snapshot => {
+            let percentageRCA = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueRCA = percentageRCA;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueRCA = 100;
+              fullPathRCA.snapshot.ref.getDownloadURL().then((downloadURLRCA) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageRCAURL: downloadURLRCA
+                  })
+              })
+            });
+          fullPathInsurance.on('state_changed', snapshot => {
+            let percentageInsurance = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueInsurance = percentageInsurance;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueInsurance = 100;
+              fullPathInsurance.snapshot.ref.getDownloadURL().then((downloadURLInsurance) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageInsuranceURL: downloadURLInsurance
+                  })
+              })
+            });
+          fullPathLicense.on('state_changed', snapshot => {
+            let percentageLicense = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueLicense = percentageLicense;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueLicense = 100;
+              fullPathLicense.snapshot.ref.getDownloadURL().then((downloadURLLicense) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageLicenseURL: downloadURLLicense
+                  })
+              })
+            });
         })
-        // .then(details => {
-        //   firebase
-        //     .storage
-        //     .ref("/Drivers/" + details.user.uid)
-        //     .put({
-        //       imageID: payload.imageID,
-        //       imageRCA: payload.imageRCA,
-        //       imageLicense: payload.imageLicense,
-        //       imageITP: payload.imageITP,
-        //       imageSelfie: payload.imageSelfie
-        //     })
-        // })
         .catch(error => {
           window.alert(error);
         });
@@ -267,37 +325,117 @@ export default new Vuex.Store({
         .database()
         .ref("/Users/" + payload.userID)
         .update({ idDriver: payload.userID })
-      firebase
-        .database()
-        .ref("/Drivers/" + payload.userID)
-        .set({
-          expireDateID: payload.expiredateid,
-          expireDateITP: payload.expiredateitp,
-          expireDateInsurance: payload.expiredateinsurance,
-          expireDateLicense: payload.expiredatelicense,
-          expireDateRCA: payload.expiredaterca,
-          idUser: payload.userID,
-          checkStatus: "pending"
-        });
-      let newDirectory = payload.userID
-      let fileNameSelfie = "Selfie" + payload.imageSelfie.name.slice(payload.imageSelfie.name.lastIndexOf('.'))
-      let fileNameID = "ID" + payload.imageID.name.slice(payload.imageID.name.lastIndexOf('.'))
-      let fileNameITP = "ITP" + payload.imageITP.name.slice(payload.imageITP.name.lastIndexOf('.'))
-      let fileNameRCA = "RCA" + payload.imageRCA.name.slice(payload.imageRCA.name.lastIndexOf('.'))
-      let fileNameInsurance = "Insurance" + payload.imageInsurance.name.slice(payload.imageInsurance.name.lastIndexOf('.'))
-      let fileNameLicense = "License" + payload.imageLicense.name.slice(payload.imageLicense.name.lastIndexOf('.'))
-      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameSelfie}`).put(payload.imageSelfie)
-      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameID}`).put(payload.imageID)
-      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameITP}`).put(payload.imageITP)
-      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameRCA}`).put(payload.imageRCA)
-      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameInsurance}`).put(payload.imageInsurance)
-      firebase.storage().ref(`Drivers/${newDirectory}/${fileNameLicense}`).put(payload.imageLicense)
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Drivers/" + payload.userID)
+            .set({
+              expireDateID: payload.expiredateid,
+              expireDateITP: payload.expiredateitp,
+              expireDateInsurance: payload.expiredateinsurance,
+              expireDateLicense: payload.expiredatelicense,
+              expireDateRCA: payload.expiredaterca,
+              idUser: payload.userID,
+              checkStatus: "pending"
+            });
+          let newDirectory = payload.userID
+          let fileNameSelfie = "Selfie" + payload.imageSelfie.name.slice(payload.imageSelfie.name.lastIndexOf('.'))
+          let fileNameID = "ID" + payload.imageID.name.slice(payload.imageID.name.lastIndexOf('.'))
+          let fileNameITP = "ITP" + payload.imageITP.name.slice(payload.imageITP.name.lastIndexOf('.'))
+          let fileNameRCA = "RCA" + payload.imageRCA.name.slice(payload.imageRCA.name.lastIndexOf('.'))
+          let fileNameInsurance = "Insurance" + payload.imageInsurance.name.slice(payload.imageInsurance.name.lastIndexOf('.'))
+          let fileNameLicense = "License" + payload.imageLicense.name.slice(payload.imageLicense.name.lastIndexOf('.'))
+          let fullPathSelfie = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameSelfie}`).put(payload.imageSelfie)
+          let fullPathID = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameID}`).put(payload.imageID)
+          let fullPathITP = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameITP}`).put(payload.imageITP)
+          let fullPathRCA = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameRCA}`).put(payload.imageRCA)
+          let fullPathInsurance = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameInsurance}`).put(payload.imageInsurance)
+          let fullPathLicense = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameLicense}`).put(payload.imageLicense)
+          fullPathSelfie.on('state_changed', snapshot => {
+            let percentageSelfie = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueSelfie = percentageSelfie;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueSelfie = 100;
+              fullPathSelfie.snapshot.ref.getDownloadURL().then((downloadURLSelfie) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageSelfieURL: downloadURLSelfie
+                  })
+              })
+            }
+          );
+          fullPathID.on('state_changed', snapshot => {
+            let percentageID = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueID = percentageID;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueID = 100;
+              fullPathID.snapshot.ref.getDownloadURL().then((downloadURLID) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageIDURL: downloadURLID
+                  })
+              })
+            });
+          fullPathITP.on('state_changed', snapshot => {
+            let percentageITP = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueITP = percentageITP;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueITP = 100;
+              fullPathITP.snapshot.ref.getDownloadURL().then((downloadURLITP) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageITPURL: downloadURLITP
+                  })
+              })
+            });
+          fullPathRCA.on('state_changed', snapshot => {
+            let percentageRCA = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueRCA = percentageRCA;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueRCA = 100;
+              fullPathRCA.snapshot.ref.getDownloadURL().then((downloadURLRCA) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageRCAURL: downloadURLRCA
+                  })
+              })
+            });
+          fullPathInsurance.on('state_changed', snapshot => {
+            let percentageInsurance = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueInsurance = percentageInsurance;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueInsurance = 100;
+              fullPathInsurance.snapshot.ref.getDownloadURL().then((downloadURLInsurance) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageInsuranceURL: downloadURLInsurance
+                  })
+              })
+            });
+          fullPathLicense.on('state_changed', snapshot => {
+            let percentageLicense = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueLicense = percentageLicense;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueLicense = 100;
+              fullPathLicense.snapshot.ref.getDownloadURL().then((downloadURLLicense) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageLicenseURL: downloadURLLicense
+                  })
+              })
+            });
+        })
         .catch(error => {
           window.alert(error);
         });
       router.push({ path: "/home" });
     },
-
     readDriverDataByDriverID({ commit }, payload) {
       firebase
         .database()

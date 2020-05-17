@@ -73,7 +73,7 @@ import Faceapi from "../components/Admin/Face-api.vue";
 import Signupdriver from "../components/Authentication/Sign-up-driver.vue";
 import Driverrequests from "../components/Admin/Driver-requests.vue";
 import Searchforarideasadriver from "../components/Search-for-a-ride-as-a-driver.vue";
-import Landing from "../components/Landing.vue";
+import Reports from "../components/Admin/Reports.vue";
 import Authenticationdetails from "../components/Account/Authentication-details.vue";
 
 Vue.use(VueRouter);
@@ -507,9 +507,9 @@ export default new VueRouter({
       beforeEnter: AuthGuard
     },
     {
-      path: "/landing",
-      name: "Landing",
-      component: Landing
+      path: "/reports",
+      name: "Reports",
+      component: Reports
     },
     {
       path: "/authenticationdetails",
