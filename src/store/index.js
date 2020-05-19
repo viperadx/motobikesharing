@@ -587,7 +587,7 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
-    cancelRide({ commit }, payload) {
+    cancelRideClient({ commit }, payload) {
       firebase
         .database()
         .ref("/Rides/" + payload.ride.rideId)
@@ -602,6 +602,50 @@ export default new Vuex.Store({
               commit("setCurrentRideForClient", snap.val());
             });
           commit("setCurrentRideForClient", null);
+          commit("setCurrentRideForDriver", null);
+          commit("setActiveRideRequest", null);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    driverDidntShow({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Rides/" + payload.ride.rideId)
+        .update({
+          status: "driver didn't show"
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Rides/" + payload.ride.rideId)
+            .on("value", snap => {
+              commit("setCurrentRideForClient", snap.val());
+            });
+          commit("setCurrentRideForClient", null);
+          commit("setCurrentRideForDriver", null);
+          commit("setActiveRideRequest", null);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    cancelRideDriver({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Rides/" + payload.ride.rideId)
+        .update({
+          status: "client didn't show"
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Rides/" + payload.ride.rideId)
+            .on("value", snap => {
+              commit("setCurrentRideForDriver", snap.val());
+            });
+          commit("setCurrentRideForDriver", null);
         })
         .catch(err => {
           console.log(err);
@@ -803,6 +847,7 @@ export default new Vuex.Store({
               commit("setCurrentRideForDriver", snap.val());
             });
           commit("setCurrentRideForDriver", null);
+          commit("setCurrentRideForClient", null);
         })
         .catch(err => {
           console.log(err);

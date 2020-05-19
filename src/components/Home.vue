@@ -21,6 +21,11 @@
             :value="activeRideRequest.phoneDriver"
           ></v-text-field>
         </div>
+        <div class="custom-cancel-ride-client">
+          <v-btn small color="primary" dark @click="driverDidntShow()"
+            >Cancel ride</v-btn
+          >
+        </div>
       </div>
       <div
         class="custom-driver-arrived"
@@ -77,8 +82,8 @@
         </div>
         <v-progress-circular indeterminate color="primary">
         </v-progress-circular>
-        <div class="custom-cancel-ride">
-          <v-btn small color="primary" dark @click="cancelRide(ride)"
+        <div class="custom-cancel-ride-client">
+          <v-btn small color="primary" dark @click="cancelRideClient()"
             >Cancel ride</v-btn
           >
         </div>
@@ -146,6 +151,45 @@
         Account under verification. Contact support for further questions
       </div>
     </v-snackbar>
+    <div v-if="currentDriverDetails.checkStatus === 'verified'">
+      <v-snackbar
+        v-model="snackbarForDriverArrived"
+        :timeout="0"
+        class="custom-snackbar-unverified-driver"
+        ><div class="custom-cancel-ride-driver">
+          <!-- //TODO de adaugat nr clientului la driverArrived si optiune de cancel la sofer si client pentru neprezentare -->
+          <v-btn
+            color="orange"
+            rounded
+            large
+            dark
+            v-if="
+              driverIsConnected &&
+                currentRideDriver &&
+                currentRideDriver.status === 'driver on route'
+            "
+            @click="driverArrived()"
+            >I have arrived
+          </v-btn>
+          <br />
+          <v-text-field
+            v-if="
+              driverIsConnected &&
+                currentRideDriver &&
+                currentRideDriver.status === 'driver on route'
+            "
+            label="Client phone"
+            outlined
+            :readonly="readonly"
+            :value="currentRideDriver.phoneClient"
+          ></v-text-field>
+
+          <v-btn small color="primary" dark @click="cancelRideDriver()"
+            >Cancel ride</v-btn
+          >
+        </div>
+      </v-snackbar>
+    </div>
     <div
       class="connect-driver"
       v-if="currentDriverDetails.checkStatus === 'verified'"
@@ -159,20 +203,6 @@
         @click="connectDriver()"
       >
         <v-icon>mdi-motorbike</v-icon>
-      </v-btn>
-      <!-- //TODO de adaugat nr clientului la driverArrived si optiune de cancel la sofer si client pentru neprezentare -->
-      <v-btn
-        color="orange"
-        rounded
-        x-large
-        dark
-        v-if="
-          driverIsConnected &&
-            currentRideDriver &&
-            currentRideDriver.status === 'driver on route'
-        "
-        @click="driverArrived()"
-        >I have arrived
       </v-btn>
 
       <v-btn
@@ -327,7 +357,12 @@ export default {
       deep: true,
       immediate: false,
       handler(newValue) {
-        if (newValue.status === "ride finished") {
+        if (
+          newValue.status === "ride finished" ||
+          newValue.status === "ride cancelled by client" ||
+          newValue.status === "client didn't show" ||
+          newValue.status === "driver didn't show"
+        ) {
           this.createMap();
           this.geolocate();
         }
@@ -341,6 +376,13 @@ export default {
     currentRideClient() {
       return this.$store.getters.currentRideClientGetter;
     },
+    snackbarForDriverArrived() {
+      return (
+        this.currentRideDriver &&
+        this.currentRideDriver.status === "driver on route"
+      );
+    },
+
     snackbarForUnverifiedDriver() {
       return (
         this.userDetails.idDriver &&
@@ -456,13 +498,30 @@ export default {
           console.log(error);
         });
     },
-    cancelRide() {
+    cancelRideClient() {
       const payload = { ride: this.currentRideClient };
-      this.$store.dispatch("cancelRide", payload);
+      this.$store.dispatch("cancelRideClient", payload);
       this.rideInfo.status = "not requesting";
       this.createMap();
       this.geolocate();
       this.clearSearch();
+    },
+    driverDidntShow() {
+      const payload = { ride: this.currentRideClient };
+      this.$store.dispatch("driverDidntShow", payload);
+      this.rideInfo.status = "not requesting";
+      this.createMap();
+      this.geolocate();
+      this.clearSearch();
+      this.driverIsConnected = false;
+    },
+    cancelRideDriver() {
+      const payload = { ride: this.currentRideDriver };
+      this.$store.dispatch("cancelRideDriver", payload);
+      this.rideInfo.status = "not requesting";
+      this.createMap();
+      this.geolocate();
+      this.driverIsConnected = true;
     },
     acceptRide(ride) {
       const payload = {
@@ -690,7 +749,13 @@ export default {
   flex-flow: column;
 }
 
-.custom-cancel-ride {
+.custom-cancel-ride-client {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-flow: column;
+}
+.custom-cancel-ride-driver {
   display: flex;
   width: 100%;
   align-items: center;

@@ -104,7 +104,9 @@ export default {
       return this.$store.getters.user ? this.$store.getters.user : "";
     },
     userDetails() {
-      return this.$store.getters.loggedInUserData;
+      return this.$store.getters.loggedInUserData
+        ? this.$store.getters.loggedInUserData
+        : "";
     },
   },
   methods: {
