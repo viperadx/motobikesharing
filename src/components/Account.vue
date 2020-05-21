@@ -72,6 +72,9 @@ export default {
     userDetails() {
       return this.$store.getters.loggedInUserData;
     },
+    userID() {
+      return this.$store.getters.user ? this.$store.getters.user : "";
+    },
   },
   methods: {
     faCeva() {
@@ -79,8 +82,8 @@ export default {
     },
   },
   created() {
-    this.$store.dispatch("readUserDataByUserID", "idUser");
-    this.$store.dispatch("readDriverDetailsByUserID", "idUser");
+    this.$store.dispatch("readUserDataByUserID", this.userID);
+    this.$store.dispatch("readDriverDetailsByUserID", this.userID);
   },
   mounted() {},
 };

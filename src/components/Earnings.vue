@@ -7,12 +7,13 @@
       label="Select year"
     ></v-select>
     <v-list v-if="currentDriverRidesHistoryGetter.length > 0">
-        <v-list-item
-          v-for="ride in currentDriverRidesHistoryGetter"
-          :key="ride.rideId">
-          {{ ride.timeStampYear }}
-        </v-list-item>
-      </v-list>
+      <v-list-item
+        v-for="ride in currentDriverRidesHistoryGetter"
+        :key="ride.rideId"
+      >
+        {{ ride.timeStampYear }}
+      </v-list-item>
+    </v-list>
     <v-layout text-center wrap>test Earnings normal/test passed</v-layout>
     <GChart type="ColumnChart" :data="chartData" :options="chartOptions" />test
   </v-container>
@@ -75,7 +76,7 @@ export default {
   },
   methods: {},
   created() {
-    // this.$store.dispatch("readAllRidesDetailsByDriverID", "idUser");
+    // this.$store.dispatch("readAllRidesDetailsByDriverID", this.user);
     this.$store.dispatch(
       "readAllRidesDetailsByDriverID",
       this.$store.getters.user

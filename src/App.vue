@@ -67,7 +67,7 @@
             <v-icon>mdi-comment-processing</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <v-list-item-title>Chat support</v-list-item-title>
+            <v-list-item-title>Support</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
         <v-list-item @click="onSignOut" v-if="user">

@@ -580,7 +580,6 @@ export default {
           console.log(this.faceVerification);
         });
     },
-
     makeblob: function(dataURL) {
       let BASE64_MARKER = ";base64,";
       if (dataURL.indexOf(BASE64_MARKER) == -1) {
