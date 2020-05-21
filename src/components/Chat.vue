@@ -12,7 +12,7 @@
 
 <script>
 export default {
-  name: "Presentation",
+  name: "Chat",
   data() {
     return {};
   },
