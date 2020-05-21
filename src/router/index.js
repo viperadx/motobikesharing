@@ -68,7 +68,7 @@ import Login from "../components/Authentication/Login.vue";
 import AuthGuard from "../router/AuthGuard";
 import TermsandConditions from "../components/GDPR/Terms-and-Conditions.vue";
 import Becomedriver from "../components/Account/Become-driver.vue";
-import Chat from "../components/Chat.vue";
+import Presentation from "../components/Presentation.vue";
 import Faceapi from "../components/Admin/Face-api.vue";
 import Signupdriver from "../components/Authentication/Sign-up-driver.vue";
 import Driverrequests from "../components/Admin/Driver-requests.vue";
@@ -480,10 +480,9 @@ export default new VueRouter({
       beforeEnter: AuthGuard
     },
     {
-      path: "/chat",
-      name: "Chat",
-      component: Chat,
-      beforeEnter: AuthGuard
+      path: "/presentation",
+      name: "Presentation",
+      component: Presentation
     },
     {
       path: "/faceapi",
