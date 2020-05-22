@@ -7,18 +7,21 @@
       <router-link to="/reports">Reports</router-link>
     </v-layout>
     <v-layout text-center wrap>
+      <router-link to="/supporttickets">Support tickets</router-link>
+    </v-layout>
+    <v-layout text-center wrap>
       <v-col cols="12" sm="6" md="3">
         <div>Requests to be checked</div>
         <v-list>
           <v-list-item
-            v-for="filterPending in filterPending"
-            :key="filterPending.idUser"
+            v-for="driverRequestsFilterPending in driverRequestsFilterPending"
+            :key="driverRequestsFilterPending.idUser"
             :to="{
               name: 'Driver-requests',
-              params: { id: filterPending.idUser },
+              params: { id: driverRequestsFilterPending.idUser },
             }"
           >
-            {{ filterPending.idUser }}
+            {{ driverRequestsFilterPending.idUser }}
           </v-list-item>
         </v-list>
       </v-col>
@@ -44,11 +47,19 @@ export default {
         ? this.$store.getters.allDriversDataGetter
         : [];
     },
-    filterPending() {
+    driverRequestsFilterPending() {
       return this.allDriversDataGetter.filter((allDriversDataGetter) => {
         return (
           allDriversDataGetter.checkStatus === "pending" ||
           allDriversDataGetter.checkStatus === "need more info"
+        );
+      });
+    },
+    supportTicketsFilterPending() {
+      return this.allTicketsDataGetter.filter((allTicketsDataGetter) => {
+        return (
+          allTicketsDataGetter.status === "pending" ||
+          allTicketsDataGetter.status === "need more info"
         );
       });
     },

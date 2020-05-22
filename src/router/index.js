@@ -75,6 +75,7 @@ import Driverrequests from "../components/Admin/Driver-requests.vue";
 import Searchforarideasadriver from "../components/Search-for-a-ride-as-a-driver.vue";
 import Reports from "../components/Admin/Reports.vue";
 import Authenticationdetails from "../components/Account/Authentication-details.vue";
+import Supporttickets from "../components/Admin/Support-tickets.vue";
 
 Vue.use(VueRouter);
 
@@ -516,6 +517,12 @@ export default new VueRouter({
       path: "/authenticationdetails",
       name: "Authentication-details",
       component: Authenticationdetails,
+      beforeEnter: AuthGuard
+    },
+    {
+      path: "/supporttickets",
+      name: "Support-tickets",
+      component: Supporttickets,
       beforeEnter: AuthGuard
     }
   ]

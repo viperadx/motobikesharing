@@ -3,6 +3,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import firebase from "firebase/app";
 import router from "@/router";
+import moment from "moment";
 
 Vue.use(Vuex);
 
@@ -14,9 +15,11 @@ export default new Vuex.Store({
     allDriversData: [],
     allRatingsData: [],
     allRidesData: [],
+    allTicketsData: [],
     allUsersData: [],
     allTexts: null,
     user: null,
+    ticketID: null,
     error: null,
     loading: false,
     presentDriverData: null,
@@ -29,6 +32,9 @@ export default new Vuex.Store({
   mutations: {
     setUser: (state, payload) => {
       state.user = payload;
+    },
+    setSupportTicketID: (state, payload) => {
+      state.ticketID = payload;
     },
     setError(state, payload) {
       state.error = payload
@@ -53,6 +59,9 @@ export default new Vuex.Store({
     },
     setAllRidesData(state, payload) {
       state.allRidesData = payload;
+    },
+    setAllTicketsData(state, payload) {
+      state.allTicketsData = payload;
     },
     setAllUsersData(state, payload) {
       state.allUsersData = payload;
@@ -330,6 +339,62 @@ export default new Vuex.Store({
         });
       router.push({ path: "/home" });
     },
+    supportRequest({ commit }, payload) {
+      let day = new Date();
+      let dayWrapper = moment(day);
+      let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
+      let supportFileName = "(" + fullString + ")" + " " + payload.filenameSupport;
+      let ticketID;
+      firebase
+        .database()
+        .ref("Tickets/")
+        .push(payload)
+        .then((res) => {
+          ticketID = res.key;
+          commit("setSupportTicketID", res.key);
+          firebase
+            .database()
+            .ref("Tickets/" + ticketID)
+            .update({
+              ticketID: res.key,
+              date: fullString
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      //TODO tre sa gasesc cum sa schimb numele folderului din Tickets in id ul generat
+      let fullPathSupportFile = firebase
+        .storage()
+        .ref(`Tickets/${payload.userID}/${supportFileName}`)
+        .put(payload.supportFile);
+      fullPathSupportFile.on(
+        "state_changed",
+        (snapshot) => {
+          let percentageSupportFile =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          this.uploadValueSupportFile = percentageSupportFile;
+        },
+        (error) => {
+          console.log(error.message);
+        },
+        () => {
+          this.uploadValueSupportFile = 100;
+          fullPathSupportFile.snapshot.ref
+            .getDownloadURL()
+            .then((downloadURLSupportFile) => {
+              firebase
+                .database()
+                .ref("/Tickets/" + ticketID)
+                .update({
+                  supportFileURL: downloadURLSupportFile,
+                });
+            });
+        }
+      );
+      window.alert("Your request has been submitted.");
+      router.push({ path: "/home" });
+    },
     becomeDriver({ commit }, payload) {
       commit("setUser", payload.userID);
       this.dispatch("readAllRidesDetailsByDriverID", payload.userID);
@@ -499,6 +564,21 @@ export default new Vuex.Store({
         .ref("/Rating/")
         .on("value", snap => {
           commit("setAllRatingsData", snap.val());
+        });
+    },
+    readAllTicketsDetails({ commit }) {
+      firebase
+        .database()
+        .ref("/Tickets/")
+        .on("value", snap => {
+          const myObj = snap.val();
+          var tickets = [];
+          const keysTickets = Object.keys(snap.val());
+          keysTickets.forEach(key => {
+            const ticket = myObj[key];
+            tickets.push(ticket);
+          });
+          commit("setAllTicketsData", tickets);
         });
     },
     readAllRidesDetails({ commit }) {
@@ -883,8 +963,10 @@ export default new Vuex.Store({
     driverDataGetter: state => state.driverData,
     userDataGetter: state => state.userData,
     allDriversDataGetter: state => state.allDriversData,
+    ticketIDGetter: state => state.ticketID,
     allRatingsDataGetter: state => state.allRatingsData,
     allRidesDataGetter: state => state.allRidesData,
+    allTicketsDataGetter: state => state.allTicketsData,
     allUsersDataGetter: state => state.allUsersData,
     allTextsGetter: state => state.allTexts,
     presentDriverDataGetter: state => state.presentDriverData,

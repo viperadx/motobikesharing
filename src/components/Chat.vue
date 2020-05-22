@@ -29,8 +29,6 @@
 
 <script>
 /* eslint-disable no-console */
-import * as firebase from "firebase";
-import router from "@/router";
 export default {
   name: "Chat",
   data() {
@@ -50,7 +48,7 @@ export default {
   },
   methods: {
     supportRequest() {
-      const newTicket = {
+      this.$store.dispatch("supportRequest", {
         subject: document.getElementById("subject").value,
         query: document.getElementById("query").value,
         status: "pending",
@@ -59,56 +57,9 @@ export default {
           this.userDetails.firstName + " " + this.userDetails.lastName,
         email: this.userDetails.email,
         phone: this.userDetails.phone,
-      };
-      // this.$store.dispatch("supportRequest", payload);
-      let ticketID;
-      let filenameSupport = this.fileSupportFinal.name;
-      firebase
-        .database()
-        .ref("Tickets/")
-        .push(newTicket)
-        .then((res) => {
-          ticketID = res.key;
-          firebase
-            .database()
-            .ref("Tickets/" + ticketID)
-            .update({ ticketID: res.key });
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      //TODO
-      let ticketIDStorage = "TODO";
-      let fullPathSupportFile = firebase
-        .storage()
-        .ref(`Tickets/${ticketIDStorage}/${filenameSupport}`)
-        .put(this.fileSupportFinal);
-      fullPathSupportFile.on(
-        "state_changed",
-        (snapshot) => {
-          let percentageSupportFile =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadValueSupportFile = percentageSupportFile;
-        },
-        (error) => {
-          console.log(error.message);
-        },
-        () => {
-          this.uploadValueSupportFile = 100;
-          fullPathSupportFile.snapshot.ref
-            .getDownloadURL()
-            .then((downloadURLSupportFile) => {
-              firebase
-                .database()
-                .ref("/Tickets/" + ticketID)
-                .update({
-                  supportFileURL: downloadURLSupportFile,
-                });
-            });
-        }
-      );
-      window.alert("Your request has been submitted.");
-      router.push({ path: "/home" });
+        supportFile: this.fileSupportFinal,
+        filenameSupport: this.fileSupportFinal.name,
+      });
     },
     onPickedSupportFile(event) {
       const fileSupport = event.target.files;
