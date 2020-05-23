@@ -10,6 +10,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     driverData: null,
+    ticketData: null,
     userData: null,
     loggedInUserData: null,
     allDriversData: [],
@@ -44,6 +45,9 @@ export default new Vuex.Store({
     },
     setDriverData(state, payload) {
       state.driverData = payload;
+    },
+    setTicketData(state, payload) {
+      state.ticketData = payload;
     },
     setUserData(state, payload) {
       state.userData = payload;
@@ -209,6 +213,9 @@ export default new Vuex.Store({
           commit("setUser", details.user.uid);
           this.dispatch("readAllRidesDetailsByDriverID", details.user.uid);
           this.dispatch("readAllRidesDetailsByUserID", details.user.uid);
+          let day = new Date();
+          let dayWrapper = moment(day);
+          let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
           firebase
             .database()
             .ref("/Users/" + details.user.uid)
@@ -239,7 +246,8 @@ export default new Vuex.Store({
               expireDateLicense: payload.expiredatelicense,
               expireDateRCA: payload.expiredaterca,
               idUser: details.user.uid,
-              checkStatus: "pending"
+              checkStatus: "pending",
+              createdDate: fullString
             });
           let newDirectory = details.user.uid
           let fileNameSelfie = "Selfie" + payload.imageSelfie.name.slice(payload.imageSelfie.name.lastIndexOf('.'))
@@ -357,7 +365,7 @@ export default new Vuex.Store({
             .ref("Tickets/" + ticketID)
             .update({
               ticketID: res.key,
-              date: fullString
+              createdDate: fullString
             });
         })
         .catch((error) => {
@@ -399,6 +407,9 @@ export default new Vuex.Store({
       commit("setUser", payload.userID);
       this.dispatch("readAllRidesDetailsByDriverID", payload.userID);
       this.dispatch("readAllRidesDetailsByUserID", payload.userID);
+      let day = new Date();
+      let dayWrapper = moment(day);
+      let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
       firebase
         .database()
         .ref("/Users/" + payload.userID)
@@ -414,7 +425,8 @@ export default new Vuex.Store({
               expireDateLicense: payload.expiredatelicense,
               expireDateRCA: payload.expiredaterca,
               idUser: payload.userID,
-              checkStatus: "pending"
+              checkStatus: "pending",
+              createdDate: fullString
             });
           let newDirectory = payload.userID
           let fileNameSelfie = "Selfie" + payload.imageSelfie.name.slice(payload.imageSelfie.name.lastIndexOf('.'))
@@ -522,6 +534,14 @@ export default new Vuex.Store({
           commit("setDriverData", snap.val());
         });
     },
+    readTicketDataByTicketID({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Tickets/" + payload)
+        .on("value", snap => {
+          commit("setTicketData", snap.val());
+        });
+    },
     updateCheckStatus({ commit }, payload) {
       firebase
         .database()
@@ -536,6 +556,23 @@ export default new Vuex.Store({
         .on("value", snap => {
           commit("setDriverData", snap.val());
         });
+      router.push({ path: "/admin" });
+    },
+    updateTicketStatus({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Tickets/" + payload.ticketID)
+        .update({
+          ticketStatus: payload.ticketStatus
+        })
+        .then
+      firebase
+        .database()
+        .ref("/Tickets/" + payload.ticketID)
+        .on("value", snap => {
+          commit("setTicketData", snap.val());
+        });
+      router.push({ path: "/admin" });
     },
     readUserDataByUserID({ commit }, payload) {
       firebase
@@ -571,14 +608,12 @@ export default new Vuex.Store({
         .database()
         .ref("/Tickets/")
         .on("value", snap => {
-          const myObj = snap.val();
-          var tickets = [];
-          const keysTickets = Object.keys(snap.val());
-          keysTickets.forEach(key => {
-            const ticket = myObj[key];
-            tickets.push(ticket);
+          let data = [];
+          let keys = Object.keys(snap.val());
+          keys.forEach(item => {
+            data.push(snap.val()[item]);
           });
-          commit("setAllTicketsData", tickets);
+          commit("setAllTicketsData", data);
         });
     },
     readAllRidesDetails({ commit }) {
@@ -961,6 +996,7 @@ export default new Vuex.Store({
   },
   getters: {
     driverDataGetter: state => state.driverData,
+    ticketDataGetter: state => state.ticketData,
     userDataGetter: state => state.userData,
     allDriversDataGetter: state => state.allDriversData,
     ticketIDGetter: state => state.ticketID,

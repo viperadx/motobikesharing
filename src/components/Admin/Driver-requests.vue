@@ -90,7 +90,7 @@
         ></v-select>
       </v-flex>
       <v-spacer></v-spacer>
-      <v-btn type="submit" @click="updateCheckStatus()">Register</v-btn>
+      <v-btn type="submit" @click="updateCheckStatus()">Submit</v-btn>
     </v-layout>
   </v-container>
 </template>

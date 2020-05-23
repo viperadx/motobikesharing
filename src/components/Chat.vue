@@ -51,7 +51,7 @@ export default {
       this.$store.dispatch("supportRequest", {
         subject: document.getElementById("subject").value,
         query: document.getElementById("query").value,
-        status: "pending",
+        ticketStatus: "pending",
         userID: this.userID,
         userFullName:
           this.userDetails.firstName + " " + this.userDetails.lastName,

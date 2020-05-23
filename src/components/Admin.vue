@@ -1,31 +1,49 @@
 <template>
-  <v-container>
+  <v-container grid-list-sm class="pa-4">
     <!-- <v-layout text-center wrap>
-      // TODO: aici tre sa mai adaug pie chart uri etc</v-layout
+      // TODO: tre sa separ cumva astea in 2 coloane (driver requests & support tickets)
     > -->
     <v-layout text-center wrap>
       <router-link to="/reports">Reports</router-link>
     </v-layout>
-    <v-layout text-center wrap>
-      <router-link to="/supporttickets">Support tickets</router-link>
-    </v-layout>
-    <v-layout text-center wrap>
-      <v-col cols="12" sm="6" md="3">
-        <div>Requests to be checked</div>
-        <v-list>
-          <v-list-item
-            v-for="driverRequestsFilterPending in driverRequestsFilterPending"
-            :key="driverRequestsFilterPending.idUser"
-            :to="{
-              name: 'Driver-requests',
-              params: { id: driverRequestsFilterPending.idUser },
-            }"
-          >
-            {{ driverRequestsFilterPending.idUser }}
-          </v-list-item>
-        </v-list>
-      </v-col>
-    </v-layout>
+    <v-flex xs6 align-center justify-space-between>
+      <v-layout text-center wrap>
+        <v-col cols="12" sm="6" md="3">
+          <div>Driver requests to be checked</div>
+          <v-list>
+            <v-list-item
+              v-for="driverRequestsFilterPending in driverRequestsFilterPending"
+              :key="driverRequestsFilterPending.idUser"
+              :to="{
+                name: 'Driver-requests',
+                params: { id: driverRequestsFilterPending.idUser },
+              }"
+            >
+              {{ driverRequestsFilterPending.createdDate }}
+            </v-list-item>
+          </v-list>
+        </v-col>
+      </v-layout>
+    </v-flex>
+    <v-flex xs6 align-center justify-space-between>
+      <v-layout text-center wrap>
+        <v-col cols="12" sm="6" md="3">
+          <div>Support tickets to be checked</div>
+          <v-list>
+            <v-list-item
+              v-for="supportTicketsFilterPending in supportTicketsFilterPending"
+              :key="supportTicketsFilterPending.ticketID"
+              :to="{
+                name: 'Support-tickets',
+                params: { id: supportTicketsFilterPending.ticketID },
+              }"
+            >
+              {{ supportTicketsFilterPending.createdDate }}
+            </v-list-item>
+          </v-list>
+        </v-col>
+      </v-layout>
+    </v-flex>
   </v-container>
 </template>
 
@@ -47,6 +65,11 @@ export default {
         ? this.$store.getters.allDriversDataGetter
         : [];
     },
+    allTicketsDataGetter() {
+      return this.$store.getters.allTicketsDataGetter
+        ? this.$store.getters.allTicketsDataGetter
+        : [];
+    },
     driverRequestsFilterPending() {
       return this.allDriversDataGetter.filter((allDriversDataGetter) => {
         return (
@@ -58,8 +81,8 @@ export default {
     supportTicketsFilterPending() {
       return this.allTicketsDataGetter.filter((allTicketsDataGetter) => {
         return (
-          allTicketsDataGetter.status === "pending" ||
-          allTicketsDataGetter.status === "need more info"
+          allTicketsDataGetter.ticketStatus === "pending" ||
+          allTicketsDataGetter.ticketStatus === "need more info"
         );
       });
     },
@@ -72,6 +95,7 @@ export default {
   methods: {},
   created() {
     this.$store.dispatch("readAllDriversDetails");
+    this.$store.dispatch("readAllTicketsDetails");
   },
   mounted() {},
 };
