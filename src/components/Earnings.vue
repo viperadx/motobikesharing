@@ -6,14 +6,6 @@
       color="normal"
       label="Select year"
     ></v-select>
-    <v-list v-if="currentDriverRidesHistoryGetter.length > 0">
-      <v-list-item
-        v-for="ride in currentDriverRidesHistoryGetter"
-        :key="ride.rideId"
-      >
-        {{ ride.timeStampYear }}
-      </v-list-item>
-    </v-list>
     <v-layout text-center wrap>test Earnings normal/test passed</v-layout>
     <GChart type="ColumnChart" :data="chartData" :options="chartOptions" />test
   </v-container>
@@ -32,7 +24,7 @@ export default {
       //   ["2016", 660, 1120, 300],
       //   ["2017", 1030, 540, 350]
       // ],
-      years: [],
+      years: this.chartDataRows,
       year: null,
       chartDataHeader: ["Year", "Earning"],
       // chartDataRows: [1994, 200],
@@ -76,13 +68,10 @@ export default {
   },
   methods: {},
   created() {
-    // this.$store.dispatch("readAllRidesDetailsByDriverID", this.user);
-    this.$store.dispatch(
-      "readAllRidesDetailsByDriverID",
-      this.$store.getters.user
-    );
-    this.$store.dispatch("readDriverDetailsByUserID", this.$store.getters.user);
-    this.rides.push(this.$store.getters.currentDriverRidesHistoryGetter);
+    this.$store.dispatch("readAllRidesDetailsByDriverID", this.user);
+    // this.$store.dispatch("readAllRidesDetailsByDriverID",this.$store.getters.user);
+    this.$store.dispatch("readDriverDetailsByUserID", this.user);
+    // this.rides.push(this.$store.getters.currentDriverRidesHistoryGetter);
   },
   mounted() {},
 };

@@ -283,7 +283,7 @@
             <div class="justify-start-flex">
               <v-icon class="green-color">mdi-cash</v-icon>
               <span class="driver-ride-info-text ml-1"
-                >{{ ride.price }} RON</span
+                >{{ ride.earningDriver }} RON</span
               >
             </div>
             <div class="justify-center-flex">
@@ -331,6 +331,7 @@ export default {
         distance: null,
         duration: null,
         price: null,
+        earningDriver: null,
       },
       currentRide: null,
       driverIsConnected: false,
@@ -466,6 +467,7 @@ export default {
         userDestinationLat: this.destination.geometry.location.lat(),
         userDestinationLng: this.destination.geometry.location.lng(),
         price: this.rideInfo.price,
+        earningDriver: this.rideInfo.earningDriver,
         distance: this.rideInfo.distance,
         duration: this.rideInfo.duration,
         phoneClient: this.userDetails.phone,
@@ -642,6 +644,10 @@ export default {
               (response.routes[0].legs[0].distance.value * pricedistance) /
                 1000 +
               (response.routes[0].legs[0].duration.value * priceduration) / 60
+            ).toFixed(2);
+            this.rideInfo.earningDriver = (
+              this.rideInfo.price -
+              this.rideInfo.price * 0.1
             ).toFixed(2);
             this.rideInfo.duration = response.routes[0].legs[0].duration.text;
             this.directions.display.setDirections(response);
