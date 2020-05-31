@@ -191,7 +191,6 @@ export default new Vuex.Store({
               location: payload.location,
               birthDate: payload.bday,
               email: payload.email,
-              // Collaborations: "",
               admin: false,
               phone: payload.phone,
               creditCard: payload.creditcard,
@@ -861,29 +860,30 @@ export default new Vuex.Store({
             console.log(error.message)
           })
         }
-        if (payload.email !== null)
+        if (payload.email !== null) {
           firebase.auth().currentUser.updateEmail(payload.email).then(function () {
             console.log('Emailul a fost schimbat')
           }).catch(function (error) {
             console.log(error.message)
           })
-        firebase
-          .database()
-          .ref("/Users/" + payload.userID)
-          .update({
-            email: payload.email
-          })
-          .then(() => {
-            firebase
-              .database()
-              .ref("/Users/" + payload.userID)
-              .on("value", snap => {
-                commit("setloggedInUserData", snap.val());
-              });
-          })
-          .catch(err => {
-            console.log(err);
-          });
+          firebase
+            .database()
+            .ref("/Users/" + payload.userID)
+            .update({
+              email: payload.email
+            })
+            .then(() => {
+              firebase
+                .database()
+                .ref("/Users/" + payload.userID)
+                .on("value", snap => {
+                  commit("setloggedInUserData", snap.val());
+                });
+            })
+            .catch(err => {
+              console.log(err);
+            });
+        }
       })
     },
     ratingForClientPopup({ commit }, payload) {
@@ -901,6 +901,22 @@ export default new Vuex.Store({
             .on("value", snap => {
               commit("setCurrentRideForDriver", snap.val());
             });
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/UsersDestinationsHistory/" + payload.ride.clientId + "/" + payload.ride.rideId)
+            .set({
+              userFinishPoint: payload.ride.userFinishPoint
+            })
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/DriversRidesHistory/" + payload.ride.idDriver + "/" + payload.ride.rideId)
+            .set({
+              userFinishPoint: payload.ride.userFinishPoint
+            })
         })
         .catch(err => {
           console.log(err);

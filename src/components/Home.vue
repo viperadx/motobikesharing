@@ -383,7 +383,6 @@ export default {
         this.currentRideDriver.status === "driver on route"
       );
     },
-
     snackbarForUnverifiedDriver() {
       return (
         this.userDetails.idDriver &&

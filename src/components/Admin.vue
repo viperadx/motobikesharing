@@ -1,50 +1,56 @@
 <template>
-  <v-container grid-list-sm class="pa-4">
-    <!-- <v-layout text-center wrap>
-      // TODO: tre sa separ cumva astea in 2 coloane (driver requests & support tickets)
-    > -->
+  <v-layout column>
     <v-layout text-center wrap>
       <router-link to="/reports">Reports</router-link>
     </v-layout>
-    <v-flex xs6 align-center justify-space-between>
-      <v-layout text-center wrap>
-        <v-col cols="12" sm="6" md="3">
-          <div>Driver requests to be checked</div>
-          <v-list>
-            <v-list-item
-              v-for="driverRequestsFilterPending in driverRequestsFilterPending"
-              :key="driverRequestsFilterPending.idUser"
-              :to="{
-                name: 'Driver-requests',
-                params: { id: driverRequestsFilterPending.idUser },
-              }"
+    <v-container fluid grid-list-md>
+      <v-layout row wrap>
+        <v-flex xs6>
+          <v-card>
+            <v-card-title text-center wrap
+              >Driver requests to be checked</v-card-title
             >
-              {{ driverRequestsFilterPending.createdDate }}
-            </v-list-item>
-          </v-list>
-        </v-col>
-      </v-layout>
-    </v-flex>
-    <v-flex xs6 align-center justify-space-between>
-      <v-layout text-center wrap>
-        <v-col cols="12" sm="6" md="3">
-          <div>Support tickets to be checked</div>
-          <v-list>
-            <v-list-item
-              v-for="supportTicketsFilterPending in supportTicketsFilterPending"
-              :key="supportTicketsFilterPending.ticketID"
-              :to="{
-                name: 'Support-tickets',
-                params: { id: supportTicketsFilterPending.ticketID },
-              }"
+            <v-card-text>
+              <v-list>
+                <v-list-item
+                  v-for="driverRequestsFilterPending in driverRequestsFilterPending"
+                  :key="driverRequestsFilterPending.idUser"
+                  :to="{
+                    name: 'Driver-requests',
+                    params: { id: driverRequestsFilterPending.idUser },
+                  }"
+                >
+                  {{ driverRequestsFilterPending.createdDate }}
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title text-center wrap
+              >Support tickets to be checked</v-card-title
             >
-              {{ supportTicketsFilterPending.createdDate }}
-            </v-list-item>
-          </v-list>
-        </v-col>
+            <v-card-text>
+              <v-list>
+                <v-list-item
+                  v-for="supportTicketsFilterPending in supportTicketsFilterPending"
+                  :key="supportTicketsFilterPending.ticketID"
+                  :to="{
+                    name: 'Support-tickets',
+                    params: { id: supportTicketsFilterPending.ticketID },
+                  }"
+                >
+                  {{ supportTicketsFilterPending.createdDate }}
+                </v-list-item>
+              </v-list>
+            </v-card-text>
+          </v-card>
+        </v-flex>
       </v-layout>
-    </v-flex>
-  </v-container>
+    </v-container>
+  </v-layout>
 </template>
 
 <script>
