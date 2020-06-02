@@ -129,11 +129,97 @@
 
         <v-flex xs4>
           <v-card>
+            <v-card-title>Top residency clients</v-card-title>
+            <v-card-text>
+              <v-card>
+                <v-list>
+                  <v-list-item
+                    v-for="(item, index) in clientsLocations"
+                    :key="index"
+                  >
+                    <v-list-item-action>
+                      <v-icon v-if="index === 0">mdi-star</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="item"></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs4>
+          <v-card>
+            <v-card-title>Top residency drivers</v-card-title>
+            <v-card-text>
+              <v-card>
+                <v-list>
+                  <v-list-item
+                    v-for="(item, index) in driversLocations"
+                    :key="index"
+                  >
+                    <v-list-item-action>
+                      <v-icon v-if="index === 0">mdi-star</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="item"></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs4>
+          <v-card>
             <v-card-title>Top age users</v-card-title>
             <v-card-text>
               <v-card>
                 <v-list>
                   <v-list-item v-for="(item, index) in userAges" :key="index">
+                    <v-list-item-action>
+                      <v-icon v-if="index === 0">mdi-star</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="item"></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs4>
+          <v-card>
+            <v-card-title>Top age clients</v-card-title>
+            <v-card-text>
+              <v-card>
+                <v-list>
+                  <v-list-item v-for="(item, index) in clientAges" :key="index">
+                    <v-list-item-action>
+                      <v-icon v-if="index === 0">mdi-star</v-icon>
+                    </v-list-item-action>
+                    <v-list-item-content>
+                      <v-list-item-title v-text="item"></v-list-item-title>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
+              </v-card>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs4>
+          <v-card>
+            <v-card-title>Top age drivers</v-card-title>
+            <v-card-text>
+              <v-card>
+                <v-list>
+                  <v-list-item v-for="(item, index) in driverAges" :key="index">
                     <v-list-item-action>
                       <v-icon v-if="index === 0">mdi-star</v-icon>
                     </v-list-item-action>
@@ -192,13 +278,19 @@ export default {
   data() {
     return {
       usersLocations: [],
+      clientsLocations: [],
+      driversLocations: [],
       topusersHistory: [],
       topdriversHistory: [],
       topDestination: [],
       allDestinations: [],
       allUniqueDestinations: [],
       userAges: [],
+      clientAges: [],
+      driverAges: [],
       allUsersAges: [],
+      allClientsAges: [],
+      allDriversAges: [],
       items: [],
       headers: [
         { text: "Key", align: "left", value: "key" },
@@ -386,6 +478,94 @@ export default {
           }
         );
     },
+    topClientsLocations() {
+      return firebase
+        .database()
+        .ref("Users")
+        .on(
+          "value",
+          (snap) => {
+            let allLocations = [];
+            const myObj = snap.val();
+            const keysClients = Object.keys(snap.val());
+            keysClients.forEach((key) => {
+              if (myObj[key].idDriver == null) {
+                allLocations.push(myObj[key].location);
+              }
+            });
+            allLocations.sort();
+            for (let j = 0; j < 3; j++) {
+              if (allLocations.length == 0)
+                console.log("empty topClientsLocations");
+              let modeMap = {};
+              let maxEl = allLocations[0],
+                maxCount = 1;
+              for (let i = 0; i < allLocations.length; i++) {
+                let el = allLocations[i];
+                if (modeMap[el] == null) modeMap[el] = 1;
+                else modeMap[el]++;
+                if (modeMap[el] > maxCount) {
+                  maxEl = el;
+                  maxCount = modeMap[el];
+                }
+              }
+              for (let i = 0; i < allLocations.length; i++) {
+                if (maxEl.localeCompare(allLocations[i]) == 0) {
+                  allLocations.splice(i, maxCount);
+                }
+              }
+              this.clientsLocations.push(maxEl);
+            }
+          },
+          (error) => {
+            console.log("topClientsLocations Error: " + error.message);
+          }
+        );
+    },
+    topDriversLocations() {
+      return firebase
+        .database()
+        .ref("Users")
+        .on(
+          "value",
+          (snap) => {
+            let allLocations = [];
+            const myObj = snap.val();
+            const keysDrivers = Object.keys(snap.val());
+            keysDrivers.forEach((key) => {
+              if (myObj[key].idDriver != null) {
+                allLocations.push(myObj[key].location);
+              }
+            });
+            allLocations.sort();
+            for (let j = 0; j < 3; j++) {
+              if (allLocations.length == 0)
+                console.log("empty topDriversLocations");
+              let modeMap = {};
+              let maxEl = allLocations[0],
+                maxCount = 1;
+              for (let i = 0; i < allLocations.length; i++) {
+                let el = allLocations[i];
+                if (modeMap[el] == null) modeMap[el] = 1;
+                else modeMap[el]++;
+                if (modeMap[el] > maxCount) {
+                  maxEl = el;
+                  maxCount = modeMap[el];
+                }
+              }
+              for (let i = 0; i < allLocations.length; i++) {
+                if (maxEl.localeCompare(allLocations[i]) == 0) {
+                  allLocations.splice(i, maxCount);
+                }
+              }
+              this.driversLocations.push(maxEl);
+            }
+          },
+          (error) => {
+            console.log("topDriversLocations Error: " + error.message);
+          }
+        );
+    },
     allUsersDestinations() {
       return firebase
         .database()
@@ -464,6 +644,112 @@ export default {
           }
         );
     },
+    clientsAges() {
+      return firebase
+        .database()
+        .ref("Users")
+        .on(
+          "value",
+          (snap) => {
+            // let allAgesinNumber = [];
+            let allAges = [];
+            const myObj = snap.val();
+            const keysClients = Object.keys(snap.val());
+            keysClients.forEach((key) => {
+              if (myObj[key].idDriver == null) {
+                let x = myObj[key].birthDate;
+                allAges.push(moment(x).format());
+              }
+            });
+            for (let i = 0; i < allAges.length; i++) {
+              allAges[i] = Math.round(
+                moment
+                  .duration(moment(new Date()).diff(moment(allAges[i])))
+                  .asYears()
+              );
+              this.allClientsAges.push(allAges[i]);
+            }
+            allAges.sort();
+            for (let j = 0; j < 3; j++) {
+              if (allAges.length == 0) console.log("empty: clientsAges");
+              let modeMap = {};
+              let maxEl = allAges[0],
+                maxCount = 1;
+              for (let i = 0; i < allAges.length; i++) {
+                let el = allAges[i];
+                if (modeMap[el] == null) modeMap[el] = 1;
+                else modeMap[el]++;
+                if (modeMap[el] > maxCount) {
+                  maxEl = el;
+                  maxCount = modeMap[el];
+                }
+              }
+              for (let i = 0; i < allAges.length; i++) {
+                if (maxEl === allAges[i]) {
+                  allAges.splice(i, maxCount);
+                }
+              }
+              this.clientAges.push(maxEl);
+            }
+          },
+          (error) => {
+            console.log("clientsAges Error: " + error.message);
+          }
+        );
+    },
+    driversAges() {
+      return firebase
+        .database()
+        .ref("Users")
+        .on(
+          "value",
+          (snap) => {
+            // let allAgesinNumber = [];
+            let allAges = [];
+            const myObj = snap.val();
+            const keysDrivers = Object.keys(snap.val());
+            keysDrivers.forEach((key) => {
+              if (myObj[key].idDriver != null) {
+                let x = myObj[key].birthDate;
+                allAges.push(moment(x).format());
+              }
+            });
+            for (let i = 0; i < allAges.length; i++) {
+              allAges[i] = Math.round(
+                moment
+                  .duration(moment(new Date()).diff(moment(allAges[i])))
+                  .asYears()
+              );
+              this.allDriversAges.push(allAges[i]);
+            }
+            allAges.sort();
+            for (let j = 0; j < 3; j++) {
+              if (allAges.length == 0) console.log("empty: driversAges");
+              let modeMap = {};
+              let maxEl = allAges[0],
+                maxCount = 1;
+              for (let i = 0; i < allAges.length; i++) {
+                let el = allAges[i];
+                if (modeMap[el] == null) modeMap[el] = 1;
+                else modeMap[el]++;
+                if (modeMap[el] > maxCount) {
+                  maxEl = el;
+                  maxCount = modeMap[el];
+                }
+              }
+              for (let i = 0; i < allAges.length; i++) {
+                if (maxEl === allAges[i]) {
+                  allAges.splice(i, maxCount);
+                }
+              }
+              this.driverAges.push(maxEl);
+            }
+          },
+          (error) => {
+            console.log("driversAges Error: " + error.message);
+          }
+        );
+    },
     barchart() {
       let a = [];
       let b = [];
@@ -520,12 +806,16 @@ export default {
   created() {},
   mounted() {
     this.topUsersLocations();
+    this.topClientsLocations();
+    this.topDriversLocations();
     this.userdetails();
     this.topUsersbyRides();
     this.allUsersDestinations();
     this.topDriversbyRides();
     this.topDestinations();
     this.usersAges();
+    this.clientsAges();
+    this.driversAges();
     this.barchart();
   },
 };
