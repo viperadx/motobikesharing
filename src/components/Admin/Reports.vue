@@ -104,6 +104,44 @@
           </v-card>
         </v-flex>
 
+        <v-flex xs12>
+          <v-card>
+            <v-card-title>Drivers details</v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headersdrivers"
+                :items="itemsdrivers"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                    <span>
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">{{ props.item.key }}</td>
+                  <td class="text-xs-left">{{ props.item.checkStatus }}</td>
+                  <td class="text-xs-left">{{ props.item.expireDateID }}</td>
+                  <td class="text-xs-left">{{ props.item.expireDateITP }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.expireDateInsurance }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.expireDateLicense }}
+                  </td>
+                  <td class="text-xs-left">{{ props.item.expireDateRCA }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
         <v-flex xs4>
           <v-card>
             <v-card-title>Top residency users</v-card-title>
@@ -269,6 +307,7 @@
 </template>
 
 <script>
+//TODO: o lista cu toate tichetele, (as putea sa adaug un topic la ticket submission si sa fac un top/grafic cu topicurile tichetelor), top 3 cei mai cheltuitori clienti, top 3 cei mai castigatori soferi,
 /* eslint-disable no-console */
 // eslint-disable-next-line no-unused-vars
 import * as firebase from "firebase";
@@ -292,6 +331,7 @@ export default {
       allClientsAges: [],
       allDriversAges: [],
       items: [],
+      itemsdrivers: [],
       headers: [
         { text: "Key", align: "left", value: "key" },
         { text: "Last Name", value: "lastName" },
@@ -299,6 +339,15 @@ export default {
         { text: "Birth Date", value: "birthDate" },
         { text: "Email", value: "email" },
         { text: "Residency", value: "location" },
+      ],
+      headersdrivers: [
+        { text: "Key", align: "left", value: "key" },
+        { text: "Verification Status", value: "checkStatus" },
+        { text: "Expiration Date ID", value: "expireDateID" },
+        { text: "Expiration Date ITP", value: "expireDateITP" },
+        { text: "Expiration Date Insurance", value: "expireDateInsurance" },
+        { text: "Expiration Date License", value: "expireDateLicense" },
+        { text: "Expiration Date RCA", value: "expireDateRCA" },
       ],
       headersUniqueDestination: [{ text: "Address", value: "uniqueArray" }],
     };
@@ -433,6 +482,35 @@ export default {
           },
           (error) => {
             console.log("topDestinations Error: " + error.message);
+          }
+        );
+    },
+    driverdetails() {
+      return firebase
+        .database()
+        .ref("Drivers")
+        .on(
+          "value",
+          (snap) => {
+            const myObj = snap.val();
+            let alldriverdetails = [];
+            const keysDrivers = Object.keys(snap.val());
+            keysDrivers.forEach((key) => {
+              const driverdetails = {};
+              driverdetails.checkStatus = myObj[key].checkStatus;
+              driverdetails.expireDateID = myObj[key].expireDateID;
+              driverdetails.expireDateITP = myObj[key].expireDateITP;
+              driverdetails.expireDateInsurance =
+                myObj[key].expireDateInsurance;
+              driverdetails.expireDateLicense = myObj[key].expireDateLicense;
+              driverdetails.expireDateRCA = myObj[key].expireDateRCA;
+              driverdetails.key = key;
+              alldriverdetails.push(driverdetails);
+            });
+            this.itemsdrivers = alldriverdetails;
+          },
+          function(error) {
+            console.log("driverdetails Error: " + error.message);
           }
         );
     },
@@ -809,6 +887,7 @@ export default {
     this.topClientsLocations();
     this.topDriversLocations();
     this.userdetails();
+    this.driverdetails();
     this.topUsersbyRides();
     this.allUsersDestinations();
     this.topDriversbyRides();
