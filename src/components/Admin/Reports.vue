@@ -211,6 +211,39 @@
           </v-card>
         </v-flex>
 
+        <v-flex xs12>
+          <v-card>
+            <v-card-title>Tickets details</v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headerstickets"
+                :items="itemstickets"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                    <span>
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">{{ props.item.key }}</td>
+                  <td class="text-xs-left">{{ props.item.userFullName }}</td>
+                  <td class="text-xs-left">{{ props.item.userID }}</td>
+                  <td class="text-xs-left">{{ props.item.email }}</td>
+                  <td class="text-xs-left">{{ props.item.subject }}</td>
+                  <td class="text-xs-left">{{ props.item.query }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
         <v-flex xs4>
           <v-card>
             <v-card-title>Top age users</v-card-title>
@@ -273,6 +306,39 @@
 
         <v-flex xs12>
           <v-card>
+            <v-card-title>Rides details</v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headersrides"
+                :items="itemsrides"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                    <span>
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">{{ props.item.key }}</td>
+                  <td class="text-xs-left">{{ props.item.status }}</td>
+                  <td class="text-xs-left">{{ props.item.clientId }}</td>
+                  <td class="text-xs-left">{{ props.item.idDriver }}</td>
+                  <td class="text-xs-left">{{ props.item.price }}</td>
+                  <td class="text-xs-left">{{ props.item.timeStampFull }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs12>
+          <v-card>
             <v-card-title>All searched destinations </v-card-title>
             <v-card-text>
               <v-data-table
@@ -287,6 +353,9 @@
                       {{ props.header.text }}
                     </span>
                   </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">{{ props.item.userFinishPoint }}</td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -307,7 +376,7 @@
 </template>
 
 <script>
-//TODO: o lista cu toate tichetele, (as putea sa adaug un topic la ticket submission si sa fac un top/grafic cu topicurile tichetelor), top 3 cei mai cheltuitori clienti, top 3 cei mai castigatori soferi,
+//TODO:(as putea sa adaug un topic la ticket submission si sa fac un top/grafic cu topicurile tichetelor), top 3 cei mai cheltuitori clienti, top 3 cei mai castigatori soferi
 /* eslint-disable no-console */
 // eslint-disable-next-line no-unused-vars
 import * as firebase from "firebase";
@@ -332,8 +401,10 @@ export default {
       allDriversAges: [],
       items: [],
       itemsdrivers: [],
+      itemstickets: [],
+      itemsrides: [],
       headers: [
-        { text: "Key", align: "left", value: "key" },
+        { text: "User Key", align: "left", value: "key" },
         { text: "Last Name", value: "lastName" },
         { text: "First Name", value: "firstName" },
         { text: "Birth Date", value: "birthDate" },
@@ -341,7 +412,7 @@ export default {
         { text: "Residency", value: "location" },
       ],
       headersdrivers: [
-        { text: "Key", align: "left", value: "key" },
+        { text: "Driver Key", align: "left", value: "key" },
         { text: "Verification Status", value: "checkStatus" },
         { text: "Expiration Date ID", value: "expireDateID" },
         { text: "Expiration Date ITP", value: "expireDateITP" },
@@ -349,7 +420,23 @@ export default {
         { text: "Expiration Date License", value: "expireDateLicense" },
         { text: "Expiration Date RCA", value: "expireDateRCA" },
       ],
-      headersUniqueDestination: [{ text: "Address", value: "uniqueArray" }],
+      headerstickets: [
+        { text: "Ticket Key", align: "left", value: "key" },
+        { text: "User ID", value: "userID" },
+        { text: "User Full Name", value: "userFullName" },
+        { text: "User Email", value: "email" },
+        { text: "Subject", value: "subject" },
+        { text: "Query", value: "query" },
+      ],
+      headersrides: [
+        { text: "Ride Key", align: "left", value: "key" },
+        { text: "Status", value: "status" },
+        { text: "Client ID", value: "clientId" },
+        { text: "Driver ID", value: "idDriver" },
+        { text: "Price", value: "price" },
+        { text: "Time Stamp", value: "timeStampFull" },
+      ],
+      headersUniqueDestination: [{ text: "Address", value: "userFinishPoint" }],
     };
   },
   computed: {},
@@ -514,6 +601,60 @@ export default {
           }
         );
     },
+    ticketdetails() {
+      return firebase
+        .database()
+        .ref("Tickets")
+        .on(
+          "value",
+          (snap) => {
+            const myObj = snap.val();
+            let allticketdetails = [];
+            const keysTickets = Object.keys(snap.val());
+            keysTickets.forEach((key) => {
+              const ticketdetails = {};
+              ticketdetails.userFullName = myObj[key].userFullName;
+              ticketdetails.userID = myObj[key].userID;
+              ticketdetails.email = myObj[key].email;
+              ticketdetails.subject = myObj[key].subject;
+              ticketdetails.query = myObj[key].query;
+              ticketdetails.key = key;
+              allticketdetails.push(ticketdetails);
+            });
+            this.itemstickets = allticketdetails;
+          },
+          function(error) {
+            console.log("ticketdetails Error: " + error.message);
+          }
+        );
+    },
+    ridedetails() {
+      return firebase
+        .database()
+        .ref("Rides")
+        .on(
+          "value",
+          (snap) => {
+            const myObj = snap.val();
+            let allridedetails = [];
+            const keysRides = Object.keys(snap.val());
+            keysRides.forEach((key) => {
+              const ridedetails = {};
+              ridedetails.status = myObj[key].status;
+              ridedetails.clientId = myObj[key].clientId;
+              ridedetails.idDriver = myObj[key].idDriver;
+              ridedetails.price = myObj[key].price;
+              ridedetails.timeStampFull = myObj[key].timeStampFull;
+              ridedetails.key = key;
+              allridedetails.push(ridedetails);
+            });
+            this.itemsrides = allridedetails;
+          },
+          function(error) {
+            console.log("ridedetails Error: " + error.message);
+          }
+        );
+    },
     topUsersLocations() {
       return firebase
         .database()
@@ -657,7 +798,11 @@ export default {
             keysUsers.forEach((key) => {
               const keysHistory = Object.keys(myObj[key]);
               keysHistory.forEach((key1) => {
-                allDest.push(myObj[key][key1].userFinishPoint);
+                const allDestinationsArtificiu = {};
+                allDestinationsArtificiu.userFinishPoint =
+                  myObj[key][key1].userFinishPoint;
+                // allDest.push(myObj[key][key1].userFinishPoint);
+                allDest.push(allDestinationsArtificiu);
               });
             });
             this.allDestinations = allDest;
@@ -888,6 +1033,8 @@ export default {
     this.topDriversLocations();
     this.userdetails();
     this.driverdetails();
+    this.ticketdetails();
+    this.ridedetails();
     this.topUsersbyRides();
     this.allUsersDestinations();
     this.topDriversbyRides();
