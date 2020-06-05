@@ -8,6 +8,7 @@
             <v-card-text>
               <v-data-table
                 :headers="headers"
+                :options.sync="pagination"
                 :items="items"
                 item-key="name"
                 class="elevation-1"
@@ -110,6 +111,7 @@
             <v-card-text>
               <v-data-table
                 :headers="headersdrivers"
+                :options.sync="pagination"
                 :items="itemsdrivers"
                 item-key="name"
                 class="elevation-1"
@@ -217,6 +219,7 @@
             <v-card-text>
               <v-data-table
                 :headers="headerstickets"
+                :options.sync="pagination"
                 :items="itemstickets"
                 item-key="name"
                 class="elevation-1"
@@ -311,6 +314,7 @@
               <v-data-table
                 :headers="headersrides"
                 :items="itemsrides"
+                :options.sync="pagination"
                 item-key="name"
                 class="elevation-1"
               >
@@ -343,6 +347,7 @@
             <v-card-text>
               <v-data-table
                 :headers="headersUniqueDestination"
+                :options.sync="pagination"
                 :items="allUniqueDestinations"
                 item-key="name"
                 class="elevation-1"
@@ -362,11 +367,52 @@
           </v-card>
         </v-flex>
 
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>All clients spendings </v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headersAllClientsSpendings"
+                :options.sync="pagination"
+                :items="itemsallspendings2"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
+                  <td class="text-xs-left">{{ props.item.price }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
         <v-flex>
           <v-card>
             <v-card-title>Frecvența vârstelor utilizatorilor</v-card-title>
             <v-card-text>
               <div id="barchart1"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>
+              <v-icon style="color: #f86c5c;">
+                history
+              </v-icon>
+              Utilizatori cu/fără istoric
+            </v-card-title>
+            <v-card-text>
+              <div id="piechart2"></div>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -376,9 +422,11 @@
 </template>
 
 <script>
-//TODO:(as putea sa adaug un topic la ticket submission si sa fac un top/grafic cu topicurile tichetelor), top 3 cei mai cheltuitori clienti, top 3 cei mai castigatori soferi
+//TODO: top 3 cei mai cheltuitori clienti, top 3 cei mai castigatori soferi, o lista cu toate cheltuielile/client, o lista cu toate castigurile/sofer
+//TODO optionale: sa adaug un topic la ticket submission si sa fac un top/grafic cu topicurile tichetelor
 /* eslint-disable no-console */
 // eslint-disable-next-line no-unused-vars
+import Vue from "vue";
 import * as firebase from "firebase";
 import moment from "moment";
 export default {
@@ -403,6 +451,11 @@ export default {
       itemsdrivers: [],
       itemstickets: [],
       itemsrides: [],
+      itemsallspendings: [],
+      itemsallspendings2: [],
+      pagination: {
+        itemsPerPage: 5,
+      },
       headers: [
         { text: "User Key", align: "left", value: "key" },
         { text: "Last Name", value: "lastName" },
@@ -437,6 +490,10 @@ export default {
         { text: "Time Stamp", value: "timeStampFull" },
       ],
       headersUniqueDestination: [{ text: "Address", value: "userFinishPoint" }],
+      headersAllClientsSpendings: [
+        { text: "User ID", value: "keyUser" },
+        { text: "Value", value: "price" },
+      ],
     };
   },
   computed: {},
@@ -816,6 +873,82 @@ export default {
           }
         );
     },
+    // allClientsSpendings() {
+    //   return firebase
+    //     .database()
+    //     .ref("UsersDestinationsHistory")
+    //     .on(
+    //       "value",
+    //       (snap) => {
+    //         let allSpend = [];
+    //         let allSpend2 = [];
+    //         const myObj = snap.val();
+    //         const keysUsers = Object.keys(snap.val());
+    //         keysUsers.forEach((key) => {
+    //           const allSpendings2 = {};
+    //           const keysHistory = Object.keys(myObj[key]);
+    //           keysHistory.forEach((key1) => {
+    //             // allSpendings.push(myObj[key][key1].price);
+    //             const allSpendings = {};
+    //             allSpendings.price = myObj[key][key1].price;
+    //             allSpendings.key = key1;
+    //             allSpend.push(allSpendings);
+    //           });
+    //           allSpendings2.finalPrice += allSpend.price;
+    //           allSpendings2.key = key;
+    //           allSpend2.push(allSpendings2);
+    //         });
+    //         this.itemsallspendings = allSpend2;
+    //       },
+    //       (error) => {
+    //         console.log("allClientsSpendings Error: " + error.message);
+    //       }
+    //     );
+    // },
+    allClientsSpendings() {
+      return firebase
+        .database()
+        .ref("UsersDestinationsHistory")
+        .on(
+          "value",
+          (snap) => {
+            let sumsArray = {};
+            let allSpend = [];
+            let allSpend2 = [];
+            const myObj = snap.val();
+            const keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              const keysHistory = Object.keys(myObj[key]);
+              keysHistory.forEach((key1) => {
+                // allSpendings.push(myObj[key][key1].price);
+                const allSpendings = {};
+                allSpendings.price = myObj[key][key1].price;
+                allSpendings.keyRide = key1;
+                allSpendings.keyUser = key;
+                allSpend.push(allSpendings);
+              });
+              this.itemsallspendings = allSpend;
+            });
+            //TODO: tre sa repar vizualizarea sau cum sunt salvate datele astea (vezi exemple din alte tabele)
+            allSpend.forEach((item) => {
+              let sums = sumsArray[item.keyUser];
+              if (sums) {
+                sums.price += item.price;
+              } else {
+                sumsArray[item.keyUser] = {
+                  keyUser: item.keyUser,
+                  price: item.price,
+                };
+              }
+            });
+            allSpend2.push(sumsArray);
+            this.itemsallspendings2 = allSpend2;
+          },
+          (error) => {
+            console.log("allClientsSpendings Error: " + error.message);
+          }
+        );
+    },
     usersAges() {
       return firebase
         .database()
@@ -973,6 +1106,61 @@ export default {
           }
         );
     },
+    // piechart2() {
+    //   let myObjwith = [];
+    //   let myObj = [];
+    //   let colors = [
+    //     "#9c5463",
+    //     "#7b4c67",
+    //     "#c86060",
+    //     "#5e4469",
+    //     "#7f4c66",
+    //     "#b25a62",
+    //   ];
+    //   firebase
+    //     .database()
+    //     .ref("Users")
+    //     .on("value", (snap) => {
+    //       myObj = snap.val();
+    //     }),
+    //     (error) => {
+    //       console.log("Error: " + error.message);
+    //     };
+    //   firebase
+    //     .database()
+    //     .ref("UsersDestinationsHistory")
+    //     .on("value", (snap) => {
+    //       myObjwith = snap.val();
+    //     }),
+    //     (error) => {
+    //       console.log("Error: " + error.message);
+    //     };
+    //   google.charts.load("visualization", "1.0", {
+    //     packages: ["corechart", "bar", "table"],
+    //     callback: () => {
+    //       let chart = new window.google.visualization.PieChart(
+    //         document.getElementById("piechart2")
+    //       );
+    //       chart.draw(
+    //         window.google.visualization.arrayToDataTable([
+    //           ["Tip", "Numar"],
+    //           ["Cu Istoric", Object.keys(myObjwith).length],
+    //           [
+    //             "Fără Istoric",
+    //             Object.keys(myObj).length - Object.keys(myObjwith).length,
+    //           ],
+    //         ]),
+    //         {
+    //           is3D: false,
+    //           colors: [
+    //             "#f86c5c",
+    //             colors[Math.floor(Math.random() * colors.length)],
+    //           ],
+    //         }
+    //       );
+    //     },
+    //   });
+    // },
     barchart() {
       let a = [];
       let b = [];
@@ -999,6 +1187,7 @@ export default {
       let x = [["Ani", "Frecvență", { role: "style" }]];
       for (let i = 0; i < a.length; i++) {
         x.push([a[i], b[i], colors[Math.floor(Math.random() * colors.length)]]);
+        console.log(x);
       }
       window.google.charts.setOnLoadCallback(() => {
         let view = new window.google.visualization.DataView(
@@ -1028,6 +1217,7 @@ export default {
   },
   created() {},
   mounted() {
+    this.allClientsSpendings();
     this.topUsersLocations();
     this.topClientsLocations();
     this.topDriversLocations();
@@ -1043,6 +1233,7 @@ export default {
     this.clientsAges();
     this.driversAges();
     this.barchart();
+    this.piechart2();
   },
 };
 </script>

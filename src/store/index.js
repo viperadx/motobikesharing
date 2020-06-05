@@ -907,7 +907,8 @@ export default new Vuex.Store({
             .database()
             .ref("/UsersDestinationsHistory/" + payload.ride.clientId + "/" + payload.ride.rideId)
             .set({
-              userFinishPoint: payload.ride.userFinishPoint
+              userFinishPoint: payload.ride.userFinishPoint,
+              price: payload.ride.price
             })
         })
         .then(() => {
@@ -915,7 +916,8 @@ export default new Vuex.Store({
             .database()
             .ref("/DriversRidesHistory/" + payload.ride.idDriver + "/" + payload.ride.rideId)
             .set({
-              userFinishPoint: payload.ride.userFinishPoint
+              userFinishPoint: payload.ride.userFinishPoint,
+              earning: payload.ride.earningDriver
             })
         })
         .catch(err => {
