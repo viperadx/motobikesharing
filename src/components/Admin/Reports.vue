@@ -346,9 +346,9 @@
             <v-card-title>All searched destinations </v-card-title>
             <v-card-text>
               <v-data-table
-                :headers="headersUniqueDestination"
+                :headers="headersuniquedestination"
                 :options.sync="pagination"
-                :items="allUniqueDestinations"
+                :items="alluniquedestinations"
                 item-key="name"
                 class="elevation-1"
               >
@@ -372,9 +372,9 @@
             <v-card-title>All clients spendings </v-card-title>
             <v-card-text>
               <v-data-table
-                :headers="headersAllClientsSpendings"
+                :headers="headersallclientsspendings"
                 :options.sync="pagination"
-                :items="itemsallspendings2"
+                :items="itemsallclientsspendings"
                 item-key="name"
                 class="elevation-1"
               >
@@ -388,6 +388,33 @@
                 <template slot="items" slot-scope="props">
                   <td class="text-xs-left">{{ props.item.keyUser }}</td>
                   <td class="text-xs-left">{{ props.item.price }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>All drivers earnings </v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headersalldriversearnings"
+                :options.sync="pagination"
+                :items="itemsalldriversearnings"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
+                  <td class="text-xs-left">{{ props.item.earning }}</td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -422,7 +449,7 @@
 </template>
 
 <script>
-//TODO: top 3 cei mai cheltuitori clienti, top 3 cei mai castigatori soferi, o lista cu toate cheltuielile/client, o lista cu toate castigurile/sofer
+//TODO: top 3 cei mai cheltuitori clienti, top 3 cei mai castigatori soferi
 //TODO optionale: sa adaug un topic la ticket submission si sa fac un top/grafic cu topicurile tichetelor
 /* eslint-disable no-console */
 // eslint-disable-next-line no-unused-vars
@@ -440,7 +467,7 @@ export default {
       topdriversHistory: [],
       topDestination: [],
       allDestinations: [],
-      allUniqueDestinations: [],
+      alluniquedestinations: [],
       userAges: [],
       clientAges: [],
       driverAges: [],
@@ -451,8 +478,8 @@ export default {
       itemsdrivers: [],
       itemstickets: [],
       itemsrides: [],
-      itemsallspendings: [],
-      itemsallspendings2: [],
+      itemsallclientsspendings: [],
+      itemsalldriversearnings: [],
       pagination: {
         itemsPerPage: 5,
       },
@@ -489,10 +516,14 @@ export default {
         { text: "Price", value: "price" },
         { text: "Time Stamp", value: "timeStampFull" },
       ],
-      headersUniqueDestination: [{ text: "Address", value: "userFinishPoint" }],
-      headersAllClientsSpendings: [
+      headersuniquedestination: [{ text: "Address", value: "userFinishPoint" }],
+      headersallclientsspendings: [
         { text: "User ID", value: "keyUser" },
         { text: "Value", value: "price" },
+      ],
+      headersalldriversearnings: [
+        { text: "User ID", value: "keyUser" },
+        { text: "Value", value: "earning" },
       ],
     };
   },
@@ -866,45 +897,13 @@ export default {
             let uniqueArray = allDest.filter(function(item, pos) {
               return allDest.indexOf(item) == pos;
             });
-            this.allUniqueDestinations = uniqueArray;
+            this.alluniquedestinations = uniqueArray;
           },
           (error) => {
             console.log("allUsersDestinations Error: " + error.message);
           }
         );
     },
-    // allClientsSpendings() {
-    //   return firebase
-    //     .database()
-    //     .ref("UsersDestinationsHistory")
-    //     .on(
-    //       "value",
-    //       (snap) => {
-    //         let allSpend = [];
-    //         let allSpend2 = [];
-    //         const myObj = snap.val();
-    //         const keysUsers = Object.keys(snap.val());
-    //         keysUsers.forEach((key) => {
-    //           const allSpendings2 = {};
-    //           const keysHistory = Object.keys(myObj[key]);
-    //           keysHistory.forEach((key1) => {
-    //             // allSpendings.push(myObj[key][key1].price);
-    //             const allSpendings = {};
-    //             allSpendings.price = myObj[key][key1].price;
-    //             allSpendings.key = key1;
-    //             allSpend.push(allSpendings);
-    //           });
-    //           allSpendings2.finalPrice += allSpend.price;
-    //           allSpendings2.key = key;
-    //           allSpend2.push(allSpendings2);
-    //         });
-    //         this.itemsallspendings = allSpend2;
-    //       },
-    //       (error) => {
-    //         console.log("allClientsSpendings Error: " + error.message);
-    //       }
-    //     );
-    // },
     allClientsSpendings() {
       return firebase
         .database()
@@ -914,7 +913,6 @@ export default {
           (snap) => {
             let sumsArray = {};
             let allSpend = [];
-            let allSpend2 = [];
             const myObj = snap.val();
             const keysUsers = Object.keys(snap.val());
             keysUsers.forEach((key) => {
@@ -927,7 +925,6 @@ export default {
                 allSpendings.keyUser = key;
                 allSpend.push(allSpendings);
               });
-              this.itemsallspendings = allSpend;
             });
             //TODO: tre sa repar vizualizarea sau cum sunt salvate datele astea (vezi exemple din alte tabele)
             allSpend.forEach((item) => {
@@ -941,11 +938,57 @@ export default {
                 };
               }
             });
-            allSpend2.push(sumsArray);
-            this.itemsallspendings2 = allSpend2;
+            this.itemsallclientsspendings = Object.keys(sumsArray).map(
+              (key) => {
+                return sumsArray[key];
+              }
+            );
           },
           (error) => {
             console.log("allClientsSpendings Error: " + error.message);
+          }
+        );
+    },
+    allDriversEarnings() {
+      return firebase
+        .database()
+        .ref("DriversRidesHistory")
+        .on(
+          "value",
+          (snap) => {
+            let sumsArray = {};
+            let allEarned = [];
+            const myObj = snap.val();
+            const keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              const keysHistory = Object.keys(myObj[key]);
+              keysHistory.forEach((key1) => {
+                // allSpendings.push(myObj[key][key1].price);
+                const allEarnings = {};
+                allEarnings.earning = myObj[key][key1].earning;
+                allEarnings.keyRide = key1;
+                allEarnings.keyUser = key;
+                allEarned.push(allEarnings);
+              });
+            });
+            //TODO: tre sa repar vizualizarea sau cum sunt salvate datele astea (vezi exemple din alte tabele)
+            allEarned.forEach((item) => {
+              let sums = sumsArray[item.keyUser];
+              if (sums) {
+                sums.earning += item.earning;
+              } else {
+                sumsArray[item.keyUser] = {
+                  keyUser: item.keyUser,
+                  earning: item.earning,
+                };
+              }
+            });
+            this.itemsalldriversearnings = Object.keys(sumsArray).map((key) => {
+              return sumsArray[key];
+            });
+          },
+          (error) => {
+            console.log("allDriversEarnings Error: " + error.message);
           }
         );
     },
@@ -1218,6 +1261,7 @@ export default {
   created() {},
   mounted() {
     this.allClientsSpendings();
+    this.allDriversEarnings();
     this.topUsersLocations();
     this.topClientsLocations();
     this.topDriversLocations();
