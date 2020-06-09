@@ -53,13 +53,13 @@
         "
       >
         <v-rating v-model="ratingForDriver"> </v-rating>
-        <v-button
+        <v-btn
           class="button-margin-remover"
           rounded
           x-large
           @click="sendRatingForDriver()"
         >
-          Send Rating</v-button
+          Send Rating</v-btn
         >
       </div>
       <div
@@ -157,7 +157,6 @@
         :timeout="0"
         class="custom-snackbar-unverified-driver"
         ><div class="custom-cancel-ride-driver">
-          <!-- //TODO de adaugat nr clientului la driverArrived si optiune de cancel la sofer si client pentru neprezentare -->
           <v-btn
             color="orange"
             rounded
@@ -184,7 +183,16 @@
             :value="currentRideDriver.phoneClient"
           ></v-text-field>
 
-          <v-btn small color="primary" dark @click="cancelRideDriver()"
+          <v-btn
+            small
+            color="primary"
+            dark
+            v-if="
+              driverIsConnected &&
+                currentRideDriver &&
+                currentRideDriver.status === 'driver on route'
+            "
+            @click="cancelRideDriver()"
             >Cancel ride</v-btn
           >
         </div>
@@ -206,6 +214,18 @@
       </v-btn>
 
       <v-btn
+        small
+        color="primary"
+        dark
+        v-if="
+          driverIsConnected &&
+            currentRideDriver &&
+            currentRideDriver.status === 'driver arrived'
+        "
+        @click="cancelRideDriver()"
+        >Cancel ride</v-btn
+      >
+      <v-btn
         color="blue"
         rounded
         x-large
@@ -219,6 +239,7 @@
         >Finish ride
         <!-- @click="finishRide()" -->
       </v-btn>
+      <br />
       <v-card
         class="custom-send-rating-from-driver"
         v-if="
@@ -231,13 +252,13 @@
       >
         <v-rating v-model="ratingForClient"> </v-rating>
         <div class="justify-center-flex">
-          <v-button
+          <v-btn
             class="button-margin-remover"
             rounded
-            x-large
+            large
             @click="finishRide()"
           >
-            Send Rating</v-button
+            Send Rating</v-btn
           >
         </div>
       </v-card>
@@ -451,11 +472,11 @@ export default {
         this.startLocationAddress =
           startLocationResponse.results[0].formatted_address;
       };
-      //TODO nu mai merge userStartPoint/startLocation response
-      // cod alex
+      // test
       let day = new Date();
       let dayWrapper = moment(day);
       let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
+      let completeString = dayWrapper.format("YYYY-MM-DD");
       let dayString = dayWrapper.format("DD");
       let monthString = dayWrapper.format("MM");
       let yearString = dayWrapper.format("YYYY");
@@ -472,6 +493,7 @@ export default {
         phoneClient: this.userDetails.phone,
         clientId: this.user,
         timeStampFull: fullString,
+        timeStampComplete: completeString,
         timeStampDay: dayString,
         timeStampMonth: monthString,
         timeStampYear: yearString,

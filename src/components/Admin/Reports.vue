@@ -423,23 +423,15 @@
 
         <v-flex>
           <v-card>
-            <v-card-title>Frecvența vârstelor utilizatorilor</v-card-title>
+            <v-card-title>Users age frequency</v-card-title>
             <v-card-text>
-              <div id="barchart1"></div>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-
-        <v-flex xs6>
-          <v-card>
-            <v-card-title>
-              <v-icon style="color: #f86c5c;">
-                history
-              </v-icon>
-              Utilizatori cu/fără istoric
-            </v-card-title>
-            <v-card-text>
-              <div id="piechart2"></div>
+              <pie-chart
+                :data="[
+                  [allUsersAges[1], allUsersAges[1]],
+                  [allUsersAges[0], allUsersAges[0]],
+                  [allUsersAges[3], allUsersAges[3]],
+                ]"
+              ></pie-chart>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -456,6 +448,9 @@
 import Vue from "vue";
 import * as firebase from "firebase";
 import moment from "moment";
+import Chartkick from "vue-chartkick";
+import Chart from "chart.js";
+Vue.use(Chartkick.use(Chart));
 export default {
   name: "Reports",
   data() {
@@ -472,6 +467,7 @@ export default {
       clientAges: [],
       driverAges: [],
       allUsersAges: [],
+      allUsersAgesTest: [],
       allClientsAges: [],
       allDriversAges: [],
       items: [],
@@ -1013,7 +1009,11 @@ export default {
                   .duration(moment(new Date()).diff(moment(allAges[i])))
                   .asYears()
               );
+              const umplutura = {};
+              umplutura.valoare = allAges[i];
+              umplutura.nume = allAges[i];
               this.allUsersAges.push(allAges[i]);
+              this.allUsersAgesTest.push(umplutura);
             }
             allAges.sort();
             for (let j = 0; j < 3; j++) {
@@ -1149,114 +1149,6 @@ export default {
           }
         );
     },
-    // piechart2() {
-    //   let myObjwith = [];
-    //   let myObj = [];
-    //   let colors = [
-    //     "#9c5463",
-    //     "#7b4c67",
-    //     "#c86060",
-    //     "#5e4469",
-    //     "#7f4c66",
-    //     "#b25a62",
-    //   ];
-    //   firebase
-    //     .database()
-    //     .ref("Users")
-    //     .on("value", (snap) => {
-    //       myObj = snap.val();
-    //     }),
-    //     (error) => {
-    //       console.log("Error: " + error.message);
-    //     };
-    //   firebase
-    //     .database()
-    //     .ref("UsersDestinationsHistory")
-    //     .on("value", (snap) => {
-    //       myObjwith = snap.val();
-    //     }),
-    //     (error) => {
-    //       console.log("Error: " + error.message);
-    //     };
-    //   google.charts.load("visualization", "1.0", {
-    //     packages: ["corechart", "bar", "table"],
-    //     callback: () => {
-    //       let chart = new window.google.visualization.PieChart(
-    //         document.getElementById("piechart2")
-    //       );
-    //       chart.draw(
-    //         window.google.visualization.arrayToDataTable([
-    //           ["Tip", "Numar"],
-    //           ["Cu Istoric", Object.keys(myObjwith).length],
-    //           [
-    //             "Fără Istoric",
-    //             Object.keys(myObj).length - Object.keys(myObjwith).length,
-    //           ],
-    //         ]),
-    //         {
-    //           is3D: false,
-    //           colors: [
-    //             "#f86c5c",
-    //             colors[Math.floor(Math.random() * colors.length)],
-    //           ],
-    //         }
-    //       );
-    //     },
-    //   });
-    // },
-    barchart() {
-      let a = [];
-      let b = [];
-      let colors = [
-        "#9c5463",
-        "#7b4c67",
-        "#c86060",
-        "#5e4469",
-        "#7f4c66",
-        "#b25a62",
-        "#f86c5c",
-      ];
-      let prev;
-      this.allUsersAges.sort();
-      for (let i = 0; i < this.allUsersAges.length; i++) {
-        if (this.allUsersAges[i] !== prev) {
-          a.push(this.allUsersAges[i]);
-          b.push(1);
-        } else {
-          b[b.length - 1]++;
-        }
-        prev = this.allUsersAges[i];
-      }
-      let x = [["Ani", "Frecvență", { role: "style" }]];
-      for (let i = 0; i < a.length; i++) {
-        x.push([a[i], b[i], colors[Math.floor(Math.random() * colors.length)]]);
-        console.log(x);
-      }
-      window.google.charts.setOnLoadCallback(() => {
-        let view = new window.google.visualization.DataView(
-          window.google.visualization.arrayToDataTable(x)
-        );
-        view.setColumns([
-          0,
-          1,
-          {
-            calc: "stringify",
-            sourceColumn: 1,
-            type: "string",
-            role: "annotation",
-          },
-          2,
-        ]);
-        let chart = new window.google.visualization.ColumnChart(
-          document.getElementById("barchart1")
-        );
-        chart.draw(view, {
-          height: 400,
-          bar: { groupWidth: "95%" },
-          legend: { position: "none" },
-        });
-      });
-    },
   },
   created() {},
   mounted() {
@@ -1276,8 +1168,6 @@ export default {
     this.usersAges();
     this.clientsAges();
     this.driversAges();
-    this.barchart();
-    this.piechart2();
   },
 };
 </script>

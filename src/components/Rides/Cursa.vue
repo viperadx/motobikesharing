@@ -1,76 +1,71 @@
 <template>
   <v-container>
     <!-- <v-img :src="require('../../assets/exemplu cursa 1.jpeg')"></v-img> -->
-    <!-- <v-text-field
-      label="Average Rating"
-      outlined
-      readonly
-      :value="Rides.rideId"
-    ></v-text-field> -->
-    <!-- <div>{{ currentUserRidesHistoryGetter.id }}</div> -->
-    <v-text-field
-      label="Date & time"
-      outlined
-      readonly
-      :value="rideDetails.timeStampFull"
-    ></v-text-field>
-    <v-text-field
-      label="Pick up location"
-      outlined
-      readonly
-      :value="rideDetails.userStartPoint"
-    ></v-text-field>
-    <v-text-field
-      label="Drop off location"
-      outlined
-      readonly
-      :value="rideDetails.userFinishPoint"
-    ></v-text-field>
-    <v-text-field
-      label="Cost"
-      outlined
-      readonly
-      :value="rideDetails.price"
-    ></v-text-field>
-    <v-text-field
-      label="Duration"
-      outlined
-      readonly
-      :value="rideDetails.duration"
-    ></v-text-field>
-    <v-text-field
-      label="Distance"
-      outlined
-      readonly
-      :value="rideDetails.distance"
-    ></v-text-field>
-    <v-text-field
-      v-if="currentUserRidesHistoryGetter.length > 0"
-      label="Your driver"
-      outlined
-      readonly
-      :value="rideDetails.driverFullName"
-    ></v-text-field>
+    <div v-if="rideDetails">
+      <v-text-field
+        label="Date & time"
+        outlined
+        readonly
+        :value="rideDetails.timeStampFull"
+      ></v-text-field>
+      <v-text-field
+        label="Pick up location"
+        outlined
+        readonly
+        :value="rideDetails.userStartPoint"
+      ></v-text-field>
+      <v-text-field
+        label="Drop off location"
+        outlined
+        readonly
+        :value="rideDetails.userFinishPoint"
+      ></v-text-field>
+      <v-text-field
+        label="Cost"
+        outlined
+        readonly
+        :value="rideDetails.price"
+      ></v-text-field>
+      <v-text-field
+        label="Duration"
+        outlined
+        readonly
+        :value="rideDetails.duration"
+      ></v-text-field>
+      <v-text-field
+        label="Distance"
+        outlined
+        readonly
+        :value="rideDetails.distance"
+      ></v-text-field>
+      <v-text-field
+        v-if="currentUserRidesHistoryGetter.length > 0"
+        label="Your driver"
+        outlined
+        readonly
+        :value="rideDetails.driverFullName"
+      ></v-text-field>
 
-    <div v-if="currentUserRidesHistoryGetter.length > 0">
-      <div v-if="rideDetails.ratingForDriver === 'no input at the moment'">
-        Select a rating for your driver
-        <v-rating v-model="ratingForDriver"></v-rating>
-        <v-btn
-          depressed
-          small
-          color="primary"
-          @click="sendRatingForDriverFromHistory()"
-          >Send rating</v-btn
-        >
-      </div>
-      <div v-else>
-        <v-text-field
-          label="Rating given to driver"
-          outlined
-          readonly
-          :value="rideDetails.ratingForDriver"
-        ></v-text-field>
+      <div v-if="currentUserRidesHistoryGetter.length > 0">
+        <div v-if="rideDetails.ratingForDriver === 'no input at the moment'">
+          Select a rating for your driver
+          <v-rating v-model="ratingForDriver"></v-rating>
+          <v-btn
+            depressed
+            small
+            color="primary"
+            @click="sendRatingForDriverFromHistory()"
+            >Send rating</v-btn
+          >
+        </div>
+        <div v-else>
+          <v-text-field
+            label="Rating given to driver"
+            outlined
+            readonly
+            :value="rideDetails.ratingForDriver"
+          ></v-text-field>
+        </div>
       </div>
     </div>
 
@@ -127,11 +122,13 @@ export default {
   },
   computed: {
     user() {
-      return this.$store.getters.user;
+      return this.$store.getters.user ? this.$store.getters.user : "";
     },
 
     userDetails() {
-      return this.$store.getters.loggedInUserData;
+      return this.$store.getters.loggedInUserData
+        ? this.$store.getters.loggedInUserData
+        : "";
     },
     userData() {
       return this.$store.getters.userDataGetter
