@@ -20,12 +20,22 @@
         readonly
         :value="rideDetails.userFinishPoint"
       ></v-text-field>
-      <v-text-field
-        label="Cost"
-        outlined
-        readonly
-        :value="rideDetails.price"
-      ></v-text-field>
+      <div v-if="currentUserRidesHistoryGetter.length > 0">
+        <v-text-field
+          label="Cost"
+          outlined
+          readonly
+          :value="rideDetails.price"
+        ></v-text-field>
+      </div>
+      <div v-else>
+        <v-text-field
+          label="Earning"
+          outlined
+          readonly
+          :value="rideDetails.earningDriver"
+        ></v-text-field>
+      </div>
       <v-text-field
         label="Duration"
         outlined
