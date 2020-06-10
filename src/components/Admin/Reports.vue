@@ -421,6 +421,114 @@
           </v-card>
         </v-flex>
 
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>Clients no. of rides </v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headersallclientsnoofrides"
+                :options.sync="pagination"
+                :items="itemsallclientsnoofrides"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
+                  <td class="text-xs-left">{{ props.item.rides }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>Drivers no. of rides </v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headersalldriversnoofrides"
+                :options.sync="pagination"
+                :items="itemsalldriversnoofrides"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
+                  <td class="text-xs-left">{{ props.item.rides }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>Clients average rating </v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headersallclientsavgrating"
+                :options.sync="pagination"
+                :items="itemsallclientsavgrating"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
+                  <td class="text-xs-left">{{ props.item.ratingForClient }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>Drivers average rating </v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headersalldriversavgrating"
+                :options.sync="pagination"
+                :items="itemsalldriversavgrating"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
+                  <td class="text-xs-left">{{ props.item.ratingForDriver }}</td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
         <v-flex>
           <v-card>
             <v-card-title>Users age frequency</v-card-title>
@@ -476,6 +584,10 @@ export default {
       itemsrides: [],
       itemsallclientsspendings: [],
       itemsalldriversearnings: [],
+      itemsallclientsnoofrides: [],
+      itemsalldriversnoofrides: [],
+      itemsallclientsavgrating: [],
+      itemsalldriversavgrating: [],
       pagination: {
         itemsPerPage: 5,
       },
@@ -520,6 +632,22 @@ export default {
       headersalldriversearnings: [
         { text: "User ID", value: "keyUser" },
         { text: "Value", value: "earning" },
+      ],
+      headersallclientsnoofrides: [
+        { text: "User ID", value: "keyUser" },
+        { text: "Value", value: "rides" },
+      ],
+      headersalldriversnoofrides: [
+        { text: "User ID", value: "keyUser" },
+        { text: "Value", value: "rides" },
+      ],
+      headersallclientsavgrating: [
+        { text: "User ID", value: "keyUser" },
+        { text: "Value", value: "ratingForClient" },
+      ],
+      headersalldriversavgrating: [
+        { text: "User ID", value: "keyUser" },
+        { text: "Value", value: "ratingForDriver" },
       ],
     };
   },
@@ -922,7 +1050,6 @@ export default {
                 allSpend.push(allSpendings);
               });
             });
-            //TODO: tre sa repar vizualizarea sau cum sunt salvate datele astea (vezi exemple din alte tabele)
             allSpend.forEach((item) => {
               let sums = sumsArray[item.keyUser];
               if (sums) {
@@ -967,7 +1094,6 @@ export default {
                 allEarned.push(allEarnings);
               });
             });
-            //TODO: tre sa repar vizualizarea sau cum sunt salvate datele astea (vezi exemple din alte tabele)
             allEarned.forEach((item) => {
               let sums = sumsArray[item.keyUser];
               if (sums) {
@@ -985,6 +1111,188 @@ export default {
           },
           (error) => {
             console.log("allDriversEarnings Error: " + error.message);
+          }
+        );
+    },
+    allClientsNoRides() {
+      return firebase
+        .database()
+        .ref("UsersDestinationsHistory")
+        .on(
+          "value",
+          (snap) => {
+            let sumsArray = {};
+            let allCRides = [];
+            const myObj = snap.val();
+            const keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              const keysHistory = Object.keys(myObj[key]);
+              keysHistory.forEach((key1) => {
+                const allClientsRides = {};
+                allClientsRides.keyRide = key1;
+                allClientsRides.keyUser = key;
+                allCRides.push(allClientsRides);
+              });
+            });
+            allCRides.forEach((item) => {
+              let sums = sumsArray[item.keyUser];
+              if (sums) {
+                sums.rides += 1;
+              } else {
+                sumsArray[item.keyUser] = {
+                  keyUser: item.keyUser,
+                  rides: 1,
+                };
+              }
+            });
+            this.itemsallclientsnoofrides = Object.keys(sumsArray).map(
+              (key) => {
+                return sumsArray[key];
+              }
+            );
+          },
+          (error) => {
+            console.log("allClientsNoRides Error: " + error.message);
+          }
+        );
+    },
+    allDriversNoRides() {
+      return firebase
+        .database()
+        .ref("DriversRidesHistory")
+        .on(
+          "value",
+          (snap) => {
+            let sumsArray = {};
+            let allDRides = [];
+            const myObj = snap.val();
+            const keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              const keysHistory = Object.keys(myObj[key]);
+              keysHistory.forEach((key1) => {
+                const allDriversRides = {};
+                allDriversRides.keyRide = key1;
+                allDriversRides.keyUser = key;
+                allDRides.push(allDriversRides);
+              });
+            });
+            allDRides.forEach((item) => {
+              let sums = sumsArray[item.keyUser];
+              if (sums) {
+                sums.rides += 1;
+              } else {
+                sumsArray[item.keyUser] = {
+                  keyUser: item.keyUser,
+                  rides: 1,
+                };
+              }
+            });
+            this.itemsalldriversnoofrides = Object.keys(sumsArray).map(
+              (key) => {
+                return sumsArray[key];
+              }
+            );
+          },
+          (error) => {
+            console.log("allDriversNoRides Error: " + error.message);
+          }
+        );
+    },
+    allClientsAvgRating() {
+      return firebase
+        .database()
+        .ref("UsersDestinationsHistory")
+        .on(
+          "value",
+          (snap) => {
+            let sumsArray = {};
+            let allCAvgRating = [];
+            const myObj = snap.val();
+            const keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              const keysHistory = Object.keys(myObj[key]);
+              keysHistory.forEach((key1) => {
+                const allClientsAvgRating = {};
+                allClientsAvgRating.ratingForClient =
+                  myObj[key][key1].ratingForClient;
+                allClientsAvgRating.keyUser = key;
+                allCAvgRating.push(allClientsAvgRating);
+              });
+            });
+            allCAvgRating.forEach((item) => {
+              let sums = sumsArray[item.keyUser];
+              if (sums) {
+                (sums.ratingForClientNominator += item.ratingForClient),
+                  (sums.ratingForClientDenominator += 1),
+                  (sums.ratingForClient =
+                    sums.ratingForClientNominator /
+                    sums.ratingForClientDenominator);
+              } else {
+                sumsArray[item.keyUser] = {
+                  keyUser: item.keyUser,
+                  ratingForClientNominator: item.ratingForClient,
+                  ratingForClientDenominator: 1,
+                  ratingForClient: item.ratingForClient,
+                };
+              }
+            });
+            this.itemsallclientsavgrating = Object.keys(sumsArray).map(
+              (key) => {
+                return sumsArray[key];
+              }
+            );
+          },
+          (error) => {
+            console.log("allClientsAvgRating Error: " + error.message);
+          }
+        );
+    },
+    allDriversAvgRating() {
+      return firebase
+        .database()
+        .ref("DriversRidesHistory")
+        .on(
+          "value",
+          (snap) => {
+            let sumsArray = {};
+            let allDAvgRating = [];
+            const myObj = snap.val();
+            const keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              const keysHistory = Object.keys(myObj[key]);
+              keysHistory.forEach((key1) => {
+                const allDriversAvgRating = {};
+                allDriversAvgRating.ratingForDriver =
+                  myObj[key][key1].ratingForDriver;
+                allDriversAvgRating.keyUser = key;
+                allDAvgRating.push(allDriversAvgRating);
+              });
+            });
+            allDAvgRating.forEach((item) => {
+              let sums = sumsArray[item.keyUser];
+              if (sums) {
+                (sums.ratingForDriverNominator += item.ratingForDriver),
+                  (sums.ratingForDriverDenominator += 1),
+                  (sums.ratingForDriver =
+                    sums.ratingForDriverNominator /
+                    sums.ratingForDriverDenominator);
+              } else {
+                sumsArray[item.keyUser] = {
+                  keyUser: item.keyUser,
+                  ratingForDriverNominator: item.ratingForDriver,
+                  ratingForDriverDenominator: 1,
+                  ratingForDriver: item.ratingForDriver,
+                };
+              }
+            });
+            this.itemsalldriversavgrating = Object.keys(sumsArray).map(
+              (key) => {
+                return sumsArray[key];
+              }
+            );
+          },
+          (error) => {
+            console.log("allDriversAvgRating Error: " + error.message);
           }
         );
     },
@@ -1152,6 +1460,10 @@ export default {
   },
   created() {},
   mounted() {
+    this.allClientsAvgRating();
+    this.allDriversAvgRating();
+    this.allClientsNoRides();
+    this.allDriversNoRides();
     this.allClientsSpendings();
     this.allDriversEarnings();
     this.topUsersLocations();

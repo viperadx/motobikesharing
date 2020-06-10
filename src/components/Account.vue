@@ -48,6 +48,7 @@
 </template>
 
 <script>
+//TODO: adauga media de rating si totalul de curse din reports.vue
 /* eslint-disable no-console */
 export default {
   name: "Account",
