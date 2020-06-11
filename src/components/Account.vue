@@ -8,11 +8,12 @@
         readonly
         :value="userDetails.Name"
       ></v-text-field>
+
       <v-text-field
         label="Number of Rides"
         outlined
         readonly
-        :value="userDetails.Name"
+        :value="itemsallclientsnoofrides"
       ></v-text-field>
     </v-col>
     <div v-if="!this.userDetails.idDriver && this.userDetails.admin === false">
@@ -50,10 +51,13 @@
 <script>
 //TODO: adauga media de rating si totalul de curse din reports.vue
 /* eslint-disable no-console */
+import * as firebase from "firebase";
 export default {
   name: "Account",
   data() {
     return {
+      itemsallclientsnoofrides: [],
+      itemsallclientsavgrating: [],
       name: "",
       readonlyData: true,
       email: "",
@@ -78,14 +82,101 @@ export default {
     },
   },
   methods: {
-    faCeva() {
-      this.readonlyData = !this.readonlyData;
+    allClientsNoRides() {
+      return firebase
+        .database()
+        .ref("UsersDestinationsHistory" + "/" + this.userID)
+        .on(
+          "value",
+          (snap) => {
+            let sumsArray = {};
+            let allCRides = [];
+            const keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              const allClientsRides = {};
+              allClientsRides.keyRide = key;
+              allClientsRides.keyUser = this.userID;
+              allCRides.push(allClientsRides);
+            });
+            allCRides.forEach((item) => {
+              let sums = sumsArray[item.keyUser];
+              if (sums) {
+                sums.rides += 1;
+              } else {
+                sumsArray[item.keyUser] = {
+                  rides: 1,
+                };
+              }
+            });
+            this.itemsallclientsnoofrides = sumsArray;
+            // this.itemsallclientsnoofrides = Object.keys(sumsArray).map(
+            //   (key) => {
+            //     return sumsArray[key];
+            //   }
+            // );
+          },
+          (error) => {
+            console.log("allClientsNoRides Error: " + error.message);
+          }
+        );
+    },
+    allClientsAvgRating() {
+      return firebase
+        .database()
+        .ref("UsersDestinationsHistory" + this.userID)
+        .on(
+          "value",
+          (snap) => {
+            let sumsArray = {};
+            let allCAvgRating = [];
+            const myObj = snap.val();
+            const keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              const keysHistory = Object.keys(myObj[key]);
+              keysHistory.forEach((key1) => {
+                const allClientsAvgRating = {};
+                allClientsAvgRating.ratingForClient =
+                  myObj[key][key1].ratingForClient;
+                allClientsAvgRating.keyUser = key;
+                allCAvgRating.push(allClientsAvgRating);
+              });
+            });
+            allCAvgRating.forEach((item) => {
+              let sums = sumsArray[item.keyUser];
+              if (sums) {
+                (sums.ratingForClientNominator += item.ratingForClient),
+                  (sums.ratingForClientDenominator += 1),
+                  (sums.ratingForClient =
+                    sums.ratingForClientNominator /
+                    sums.ratingForClientDenominator);
+              } else {
+                sumsArray[item.keyUser] = {
+                  keyUser: item.keyUser,
+                  ratingForClientNominator: item.ratingForClient,
+                  ratingForClientDenominator: 1,
+                  ratingForClient: item.ratingForClient,
+                };
+              }
+            });
+            this.itemsallclientsavgrating = Object.keys(sumsArray).map(
+              (key) => {
+                return sumsArray[key];
+              }
+            );
+          },
+          (error) => {
+            console.log("allClientsAvgRating Error: " + error.message);
+          }
+        );
     },
   },
   created() {
     this.$store.dispatch("readUserDataByUserID", this.userID);
     this.$store.dispatch("readDriverDetailsByUserID", this.userID);
   },
-  mounted() {},
+  mounted() {
+    this.allClientsAvgRating();
+    this.allClientsNoRides();
+  },
 };
 </script>
