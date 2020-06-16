@@ -50,8 +50,8 @@ export default {
     return {};
   },
   computed: {
-    user() {
-      return this.$store.getters.user;
+    userID() {
+      return this.$store.getters.user ? this.$store.getters.user : "";
     },
     userDetails() {
       return this.$store.getters.loggedInUserData;
@@ -79,12 +79,10 @@ export default {
   },
   methods: {},
   created() {
-    this.$store.dispatch("readUserDataByUserID", this.$store.getters.user);
-    this.$store.dispatch("readDriverDetailsByUserID", this.$store.getters.user);
+    this.$store.dispatch("readUserDataByUserID", this.userID);
+    this.$store.dispatch("readDriverDetailsByUserID", this.userID);
   },
-  mounted() {
-    this.$store.dispatch("");
-  },
+  mounted() {},
 };
 </script>
 

@@ -2,7 +2,7 @@
   <v-app id="inspire">
     <v-navigation-drawer v-model="drawer" app clipped>
       <v-list dense>
-        <v-list-item link to="/home">
+        <v-list-item v-if="user && userDetails.idDriver" link to="/home">
           <v-list-item-action>
             <v-icon>mdi-home</v-icon>
           </v-list-item-action>
@@ -10,11 +10,7 @@
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item
-          v-if="user && userDetails.idDriver"
-          link
-          to="/searchforarideasadriver"
-        >
+        <v-list-item to="/searchforaride">
           <v-list-item-action>
             <v-icon>mdi-magnify</v-icon>
           </v-list-item-action>

@@ -72,7 +72,7 @@ import Chat from "../components/Chat.vue";
 import Faceapi from "../components/Admin/Face-api.vue";
 import Signupdriver from "../components/Authentication/Sign-up-driver.vue";
 import Driverrequests from "../components/Admin/Driver-requests.vue";
-import Searchforarideasadriver from "../components/Search-for-a-ride-as-a-driver.vue";
+import Searchforaride from "../components/Search-for-a-ride.vue";
 import Reports from "../components/Admin/Reports.vue";
 import Authenticationdetails from "../components/Account/Authentication-details.vue";
 import Supporttickets from "../components/Admin/Support-tickets.vue";
@@ -503,9 +503,9 @@ export default new VueRouter({
       beforeEnter: AuthGuard
     },
     {
-      path: "/searchforarideasadriver",
-      name: "Search-for-a-ride-as-a-driver",
-      component: Searchforarideasadriver,
+      path: "/searchforaride",
+      name: "Search-for-a-ride",
+      component: Searchforaride,
       beforeEnter: AuthGuard
     },
     {

@@ -2,147 +2,6 @@
   <div class="map-wrapper">
     <div id="map" />
     <v-snackbar
-      v-model="showSnackbarForUser"
-      :timeout="0"
-      class="custom-snackbar"
-    >
-      <div
-        class="custom-driver-is-on-route"
-        v-if="
-          activeRideRequest && activeRideRequest.status === 'driver on route'
-        "
-      >
-        <div>Driver is on route</div>
-        <div>
-          <v-text-field
-            label="Driver phone"
-            :readonly="readonly"
-            outlined
-            :value="activeRideRequest.phoneDriver"
-          ></v-text-field>
-        </div>
-        <div class="custom-cancel-ride-client">
-          <v-btn small color="primary" dark @click="driverDidntShow()"
-            >Cancel ride</v-btn
-          >
-        </div>
-      </div>
-      <div
-        class="custom-driver-arrived"
-        v-if="
-          activeRideRequest && activeRideRequest.status === 'driver arrived'
-        "
-      >
-        <div>Meet your driver outside</div>
-        <div>
-          <v-text-field
-            label="Driver phone"
-            outlined
-            :readonly="readonly"
-            :value="activeRideRequest.phoneDriver"
-          ></v-text-field>
-        </div>
-      </div>
-      <div
-        class="custom-send-rating-from-client"
-        v-if="
-          activeRideRequest &&
-            (activeRideRequest.status === 'client dropped at destination' ||
-              activeRideRequest.status === 'ride finished') &&
-            activeRideRequest.ratingForDriver === 'no input at the moment'
-        "
-      >
-        <v-rating v-model="ratingForDriver"> </v-rating>
-        <v-btn
-          class="button-margin-remover"
-          rounded
-          x-large
-          @click="sendRatingForDriver()"
-        >
-          Send Rating</v-btn
-        >
-      </div>
-      <div
-        class="custom-waiting-rating"
-        v-if="
-          activeRideRequest &&
-            activeRideRequest.ratingForDriver !== 'no input at the moment'
-        "
-      >
-        Thank you for your ride!
-      </div>
-      <div
-        class="custom-search-progress"
-        column
-        fill-height
-        v-if="activeRideRequest && activeRideRequest.status === 'pending'"
-      >
-        <div>
-          Searching ride
-        </div>
-        <v-progress-circular indeterminate color="primary">
-        </v-progress-circular>
-        <div class="custom-cancel-ride-client">
-          <v-btn small color="primary" dark @click="cancelRideClient()"
-            >Cancel ride</v-btn
-          >
-        </div>
-      </div>
-      <div
-        class="user-ride-info"
-        v-if="!userDetails.idDriver && !activeRideRequest"
-      >
-        <div class="justify-center-flex">
-          <span class="user-ride-info-text bold-text">Ride Info</span>
-        </div>
-        <div class="justify-start-flex">
-          <v-icon class="blue-color">mdi-map-marker-distance</v-icon>
-          <span class="user-ride-info-text ml-1">{{ rideInfo.distance }}</span>
-        </div>
-        <div class="justify-start-flex">
-          <v-icon class="orange-color">mdi-account-clock-outline</v-icon>
-          <span class="user-ride-info-text ml-1">{{ rideInfo.duration }}</span>
-        </div>
-        <div class="justify-start-flex">
-          <v-icon class="green-color">mdi-cash</v-icon>
-          <span class="user-ride-info-text ml-1">{{ rideInfo.price }} RON</span>
-        </div>
-        <div class="justify-center-flex">
-          <v-btn class="button-margin-remover" @click="searchRide()"
-            >Search</v-btn
-          >
-        </div>
-      </div>
-    </v-snackbar>
-
-    <div class="custom-search-wrap" v-if="!userDetails.idDriver">
-      <!-- v-if="!userDetails.idDriver" -->
-      <v-card class="search-card" elevation="0">
-        <vue-google-autocomplete
-          ref="address"
-          id="search"
-          class="form-control"
-          placeholder="Search..."
-          country="ro"
-          enable-geolocation
-          types="address"
-          v-on:placechanged="getAddressData"
-        ></vue-google-autocomplete>
-        <div class="custom-search-icons">
-          <v-icon @click="clearSearch()" class="custom-search-erase"
-            >mdi-close</v-icon
-          >
-          <v-icon color="green" @click="search()">mdi-magnify</v-icon>
-        </div>
-      </v-card>
-    </div>
-    <div class="gps-custom-button" @click="geolocate()">
-      <v-btn class="ma-2" fab dark small color="white" elevation="0">
-        <v-icon color="blue lighten-1">mdi-crosshairs-gps</v-icon>
-      </v-btn>
-    </div>
-    <!-- de aici e driverul -->
-    <v-snackbar
       v-model="snackbarForUnverifiedDriver"
       :timeout="0"
       class="custom-snackbar-unverified-driver"
@@ -322,14 +181,11 @@
 <script>
 /* eslint-disable no-console */
 
-import VueGoogleAutocomplete from "vue-google-autocomplete";
 import * as firebase from "firebase";
 import moment from "moment";
 export default {
   name: "Home",
-  components: {
-    VueGoogleAutocomplete,
-  },
+  components: {},
   data() {
     return {
       readonly: true,
@@ -365,32 +221,32 @@ export default {
   created() {
     this.$store.dispatch("readDriverDetailsByUserID", this.user);
   },
-  watch: {
-    defaultLocation: {
-      deep: true,
-      immediate: false,
-      handler(newLocation) {
-        if (newLocation && this.defaultLocation) {
-          this.createMap();
-        }
-      },
-    },
-    activeRideRequest: {
-      deep: true,
-      immediate: false,
-      handler(newValue) {
-        if (
-          newValue.status === "ride finished" ||
-          newValue.status === "ride cancelled by client" ||
-          newValue.status === "client didn't show" ||
-          newValue.status === "driver didn't show"
-        ) {
-          this.createMap();
-          this.geolocate();
-        }
-      },
-    },
-  },
+  // watch: {
+  //   defaultLocation: {
+  //     deep: true,
+  //     immediate: false,
+  //     handler(newLocation) {
+  //       if (newLocation && this.defaultLocation) {
+  //         this.createMap();
+  //       }
+  //     },
+  //   },
+  //   activeRideRequest: {
+  //     deep: true,
+  //     immediate: false,
+  //     handler(newValue) {
+  //       if (
+  //         newValue.status === "ride finished" ||
+  //         newValue.status === "ride cancelled by client" ||
+  //         newValue.status === "client didn't show" ||
+  //         newValue.status === "driver didn't show"
+  //       ) {
+  //         this.createMap();
+  //         this.geolocate();
+  //       }
+  //     },
+  //   },
+  // },
   computed: {
     currentRideDriver() {
       return this.$store.getters.currentRideDriverGetter;
@@ -405,15 +261,7 @@ export default {
       );
     },
     snackbarForUnverifiedDriver() {
-      return (
-        this.userDetails.idDriver &&
-        this.currentDriverDetails.checkStatus !== "verified"
-      );
-    },
-    showSnackbarForUser() {
-      return (
-        this.rideInfo.status === "requesting" && !this.userDetails.idDriver
-      );
+      return this.currentDriverDetails.checkStatus !== "verified";
     },
     rides() {
       return this.$store.getters.allRidesDataGetter;
@@ -521,23 +369,7 @@ export default {
           console.log(error);
         });
     },
-    cancelRideClient() {
-      const payload = { ride: this.currentRideClient };
-      this.$store.dispatch("cancelRideClient", payload);
-      this.rideInfo.status = "not requesting";
-      this.createMap();
-      this.geolocate();
-      this.clearSearch();
-    },
-    driverDidntShow() {
-      const payload = { ride: this.currentRideClient };
-      this.$store.dispatch("driverDidntShow", payload);
-      this.rideInfo.status = "not requesting";
-      this.createMap();
-      this.geolocate();
-      this.clearSearch();
-      this.driverIsConnected = false;
-    },
+
     cancelRideDriver() {
       const payload = { ride: this.currentRideDriver };
       this.$store.dispatch("cancelRideDriver", payload);
@@ -580,14 +412,6 @@ export default {
     ratingForClientPopup() {
       const payload = { ride: this.currentRideDriver, idDriver: this.user };
       this.$store.dispatch("ratingForClientPopup", payload);
-    },
-    sendRatingForDriver() {
-      const payload = {
-        ride: this.currentRideClient,
-        clientId: this.user,
-        ratingForDriver: this.ratingForDriver,
-      };
-      this.$store.dispatch("sendRatingForDriver", payload);
     },
     finishRide() {
       const payload = {

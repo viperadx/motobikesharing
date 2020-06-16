@@ -155,7 +155,7 @@ export default new Vuex.Store({
           commit("setUser", details.uid);
           this.dispatch("readAllRidesDetailsByDriverID", details.uid);
           this.dispatch("readAllRidesDetailsByUserID", details.uid);
-          router.push("/home");
+          router.push("/account");
           firebase
             .database()
             .ref("Users/" + details.uid)
@@ -344,7 +344,7 @@ export default new Vuex.Store({
         .catch(error => {
           window.alert(error);
         });
-      router.push({ path: "/home" });
+      router.push({ path: "/account" });
     },
     supportRequest({ commit }, payload) {
       let day = new Date();
@@ -400,7 +400,7 @@ export default new Vuex.Store({
         }
       );
       window.alert("Your request has been submitted.");
-      router.push({ path: "/home" });
+      router.push({ path: "account" });
     },
     becomeDriver({ commit }, payload) {
       commit("setUser", payload.userID);
@@ -523,7 +523,7 @@ export default new Vuex.Store({
         .catch(error => {
           window.alert(error);
         });
-      router.push({ path: "/home" });
+      router.push({ path: "/account" });
     },
     readDriverDataByDriverID({ commit }, payload) {
       firebase
@@ -989,17 +989,8 @@ export default new Vuex.Store({
             .update({
               ratingForClient: payload.ratingForClient
             });
-        })
-        .then(() => {
-          firebase
-            .database()
-            .ref("/Rides/" + payload.ride.rideId)
-            .on("value", snap => {
-              commit("setCurrentRideForDriver", snap.val());
-            });
           commit("setCurrentRideForDriver", null);
         })
-
         .catch(err => {
           console.log(err);
         });

@@ -100,7 +100,9 @@ export default {
         : "";
     },
     userDetails() {
-      return this.$store.getters.loggedInUserData;
+      return this.$store.getters.loggedInUserData
+        ? this.$store.getters.loggedInUserData
+        : [];
     },
     userID() {
       return this.$store.getters.user ? this.$store.getters.user : "";

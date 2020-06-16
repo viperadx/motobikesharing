@@ -123,7 +123,7 @@ export default {
         password: this.password,
       });
       this.signin = false;
-      router.push("/home");
+      router.push("/account");
     },
   },
 };

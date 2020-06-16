@@ -12,7 +12,20 @@
           activeRideRequest && activeRideRequest.status === 'driver on route'
         "
       >
-        Driver is on route
+        <div>Driver is on route</div>
+        <div>
+          <v-text-field
+            label="Driver phone"
+            :readonly="readonly"
+            outlined
+            :value="activeRideRequest.phoneDriver"
+          ></v-text-field>
+        </div>
+        <div class="custom-cancel-ride-client">
+          <v-btn small color="primary" dark @click="driverDidntShow()"
+            >Cancel ride</v-btn
+          >
+        </div>
       </div>
       <div
         class="custom-driver-arrived"
@@ -20,7 +33,15 @@
           activeRideRequest && activeRideRequest.status === 'driver arrived'
         "
       >
-        Meet your driver outside
+        <div>Meet your driver outside</div>
+        <div>
+          <v-text-field
+            label="Driver phone"
+            outlined
+            :readonly="readonly"
+            :value="activeRideRequest.phoneDriver"
+          ></v-text-field>
+        </div>
       </div>
       <div
         class="custom-send-rating-from-client"
@@ -32,13 +53,13 @@
         "
       >
         <v-rating v-model="ratingForDriver"> </v-rating>
-        <v-button
+        <v-btn
           class="button-margin-remover"
           rounded
           x-large
           @click="sendRatingForDriver()"
         >
-          Send Rating</v-button
+          Send Rating</v-btn
         >
       </div>
       <div
@@ -61,8 +82,8 @@
         </div>
         <v-progress-circular indeterminate color="primary">
         </v-progress-circular>
-        <div class="custom-cancel-ride">
-          <v-btn small color="primary" dark @click="cancelRide(ride)"
+        <div class="custom-cancel-ride-client">
+          <v-btn small color="primary" dark @click="cancelRideClient()"
             >Cancel ride</v-btn
           >
         </div>
@@ -92,7 +113,6 @@
     </v-snackbar>
 
     <div class="custom-search-wrap">
-      <!-- v-if="!userDetails.idDriver" -->
       <v-card class="search-card" elevation="0">
         <vue-google-autocomplete
           ref="address"
@@ -105,8 +125,9 @@
           v-on:placechanged="getAddressData"
         ></vue-google-autocomplete>
         <div class="custom-search-icons">
-          <v-icon @click="clearSearch()" class="custom-search-erase">mdi-close
-          </v-icon>
+          <v-icon @click="clearSearch()" class="custom-search-erase"
+            >mdi-close</v-icon
+          >
           <v-icon color="green" @click="search()">mdi-magnify</v-icon>
         </div>
       </v-card>
@@ -126,17 +147,18 @@ import VueGoogleAutocomplete from "vue-google-autocomplete";
 import * as firebase from "firebase";
 import moment from "moment";
 export default {
-  name: "Home",
+  name: "Search-for-a-ride",
   components: {
-    VueGoogleAutocomplete
+    VueGoogleAutocomplete,
   },
   data() {
     return {
+      readonly: true,
       startLocationAddress: null,
       address: {},
       defaultLocation: {
         lat: 44.4268006,
-        lng: 26.1025036
+        lng: 26.1025036,
       },
       destination: null,
       map: null,
@@ -144,44 +166,52 @@ export default {
         service: null,
         display: null,
         start: null,
-        end: null
+        end: null,
       },
       rideInfo: {
         status: false,
         distance: null,
         duration: null,
-        price: null
+        price: null,
+        earningDriver: null,
       },
       currentRide: null,
       driverIsConnected: false,
       incomingRequest: true,
       ratingForClient: 3,
       ratingForDriver: 3,
-      showRides: true
+      showRides: true,
     };
   },
-  created() {},
-  watch: {
-    defaultLocation: {
-      deep: true,
-      immediate: false,
-      handler(newLocation) {
-        if (newLocation && this.defaultLocation) {
-          this.createMap();
-        }
-      }
-    },
-    activeRideRequest: {
-      deep: true,
-      immediate: false,
-      handler(newValue) {
-        if (newValue.status === "ride finished") {
-          this.createMap();
-          this.geolocate();
-        }
-      }
-    }
+  created() {
+    this.$store.dispatch("readDriverDetailsByUserID", this.user);
   },
+  // watch: {
+  //   defaultLocation: {
+  //     deep: true,
+  //     immediate: false,
+  //     handler(newLocation) {
+  //       if (newLocation && this.defaultLocation) {
+  //         this.createMap();
+  //       }
+  //     },
+  //   },
+  //   activeRideRequest: {
+  //     deep: true,
+  //     immediate: false,
+  //     handler(newValue) {
+  //       if (
+  //         newValue.status === "ride finished" ||
+  //         newValue.status === "ride cancelled by client" ||
+  //         newValue.status === "client didn't show" ||
+  //         newValue.status === "driver didn't show"
+  //       ) {
+  //         this.createMap();
+  //         this.geolocate();
+  //       }
+  //     },
+  //   },
+  // },
   computed: {
     currentRideDriver() {
       return this.$store.getters.currentRideDriverGetter;
@@ -189,9 +219,16 @@ export default {
     currentRideClient() {
       return this.$store.getters.currentRideClientGetter;
     },
-    showSnackbarForUser() {
+
+    snackbarForDriverArrived() {
       return (
-        this.rideInfo.status === "requesting");
+        this.currentRideDriver &&
+        this.currentRideDriver.status === "driver on route"
+      );
+    },
+
+    showSnackbarForUser() {
+      return this.rideInfo.status === "requesting";
     },
     rides() {
       return this.$store.getters.allRidesDataGetter;
@@ -200,11 +237,13 @@ export default {
       return this.$store.getters.activeRideRequest;
     },
     user() {
-      return this.$store.getters.user;
+      return this.$store.getters.user ? this.$store.getters.user : "";
     },
     userDetails() {
-      return this.$store.getters.loggedInUserData;
-    }
+      return this.$store.getters.loggedInUserData
+        ? this.$store.getters.loggedInUserData
+        : "";
+    },
   },
 
   mounted() {
@@ -213,12 +252,6 @@ export default {
     this.$store.dispatch("readAllRidesDetails");
   },
   methods: {
-    connectDriver() {
-      this.driverIsConnected = !this.driverIsConnected;
-    },
-    disconnectDriver() {
-      this.driverIsConnected = !this.driverIsConnected;
-    },
     newRequest() {
       this.incomingRequest = !this.incomingRequest;
     },
@@ -236,14 +269,17 @@ export default {
       );
       reverseStartLocationRequest.send();
       reverseStartLocationRequest.onload = () => {
-        let startLocationResponse = JSON.parse(reverseStartLocationRequest.responseText);
-        this.startLocationAddress = startLocationResponse.results[0].formatted_address;
+        let startLocationResponse = JSON.parse(
+          reverseStartLocationRequest.responseText
+        );
+        this.startLocationAddress =
+          startLocationResponse.results[0].formatted_address;
       };
-      //TODO nu mai merge userStartPoint/startLocation response
-      // cod alex
+      // test
       let day = new Date();
       let dayWrapper = moment(day);
       let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
+      let completeString = dayWrapper.format("YYYY-MM-DD");
       let dayString = dayWrapper.format("DD");
       let monthString = dayWrapper.format("MM");
       let yearString = dayWrapper.format("YYYY");
@@ -253,25 +289,28 @@ export default {
         status: "pending",
         userDestinationLat: this.destination.geometry.location.lat(),
         userDestinationLng: this.destination.geometry.location.lng(),
-        price: this.rideInfo.price,
+        price: parseFloat(this.rideInfo.price),
+        earningDriver: parseFloat(this.rideInfo.earningDriver),
         distance: this.rideInfo.distance,
         duration: this.rideInfo.duration,
+        phoneClient: this.userDetails.phone,
         clientId: this.user,
         timeStampFull: fullString,
+        timeStampComplete: completeString,
         timeStampDay: dayString,
         timeStampMonth: monthString,
         timeStampYear: yearString,
         ratingForClient: "no input at the moment",
         ratingForDriver: "no input at the moment",
         userStartPoint: this.startLocationAddress,
-        userFinishPoint: this.destination.formatted_address
+        userFinishPoint: this.destination.formatted_address,
       };
       let rideId;
       firebase
         .database()
         .ref("Rides/")
         .push(newRide)
-        .then(res => {
+        .then((res) => {
           rideId = res.key;
           firebase
             .database()
@@ -281,25 +320,52 @@ export default {
               this.$store.dispatch("activeRideRequest", rideId);
             });
         })
-        .catch(error => {
+        .catch((error) => {
           console.log(error);
         });
     },
-    cancelRide() {
+    cancelRideClient() {
       const payload = { ride: this.currentRideClient };
-      this.$store.dispatch("cancelRide", payload);
+      this.$store.dispatch("cancelRideClient", payload);
       this.rideInfo.status = "not requesting";
       this.createMap();
       this.geolocate();
       this.clearSearch();
     },
+    driverDidntShow() {
+      const payload = { ride: this.currentRideClient };
+      this.$store.dispatch("driverDidntShow", payload);
+      this.rideInfo.status = "not requesting";
+      this.createMap();
+      this.geolocate();
+      this.clearSearch();
+      this.driverIsConnected = false;
+    },
+    acceptRide(ride) {
+      const payload = {
+        ride,
+        idDriver: this.user,
+        driverFullName:
+          this.userDetails.firstName + " " + this.userDetails.lastName,
+        phoneDriver: this.userDetails.phone,
+      };
+      this.$store.dispatch("acceptRide", payload);
+      this.initRouteMap(
+        new window.google.maps.LatLng(
+          ride.userLocationLat,
+          ride.userLocationLng
+        )
+      );
+    },
     sendRatingForDriver() {
       const payload = {
         ride: this.currentRideClient,
         clientId: this.user,
-        ratingForDriver: this.ratingForDriver
+        ratingForDriver: this.ratingForDriver,
       };
       this.$store.dispatch("sendRatingForDriver", payload);
+      this.createMap();
+      this.geolocate();
     },
     initialize(data) {
       this.map = data.map;
@@ -307,10 +373,10 @@ export default {
       this.askGeolocation();
     },
     geolocate() {
-      navigator.geolocation.getCurrentPosition(position => {
+      navigator.geolocation.getCurrentPosition((position) => {
         this.defaultLocation = {
           lat: position.coords.latitude,
-          lng: position.coords.longitude
+          lng: position.coords.longitude,
         };
       });
     },
@@ -326,15 +392,15 @@ export default {
         zoom: 16,
         options: {
           disableDefaultUI: true,
-          enableHighAccuracy: true
-        }
+          enableHighAccuracy: true,
+        },
       });
       this.directions.display.setMap(this.map);
       // this.search();
       new window.google.maps.Marker({
         position: myLatLng,
         map: this.map,
-        title: "Your Position"
+        title: "Your Position",
       });
     },
     getAddressData(addressData, placeResultData) {
@@ -353,7 +419,7 @@ export default {
         const request = {
           origin: this.defaultLocation,
           destination: destination,
-          travelMode: "DRIVING"
+          travelMode: "DRIVING",
         };
         this.directions.service.route(request, (response, status) => {
           if (status === "OK") {
@@ -367,6 +433,10 @@ export default {
                 1000 +
               (response.routes[0].legs[0].duration.value * priceduration) / 60
             ).toFixed(2);
+            this.rideInfo.earningDriver = (
+              this.rideInfo.price -
+              this.rideInfo.price * 0.1
+            ).toFixed(2);
             this.rideInfo.duration = response.routes[0].legs[0].duration.text;
             this.directions.display.setDirections(response);
           } else {
@@ -374,8 +444,8 @@ export default {
           }
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -473,7 +543,7 @@ export default {
   flex-flow: column;
 }
 
-.custom-cancel-ride {
+.custom-cancel-ride-client {
   display: flex;
   width: 100%;
   align-items: center;
@@ -519,32 +589,7 @@ export default {
   min-height: 220px;
 }
 
-.driver-ride-info {
-  display: flex;
-  flex-flow: column;
-  width: -webkit-fill-available;
-  padding: 10px;
-}
-
-.driver-ride-info-text {
-  font-size: 1.4rem;
-}
-
 .custom-snackbar {
   min-height: 220px;
-}
-
-.custom-send-rating-from-driver {
-  min-height: 180px;
-}
-
-.connect-driver {
-  position: absolute;
-  height: 100px;
-  right: 40vw;
-  bottom: 5vh;
-  display: flex;
-  flex-flow: column;
-  padding: 10px;
 }
 </style>
