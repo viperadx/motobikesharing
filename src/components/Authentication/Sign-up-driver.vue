@@ -46,14 +46,14 @@
           ></v-text-field>
         </v-flex>
         <v-flex xs6>
-          <v-select
+          <v-autocomplete
             :items="locations"
             v-model="location"
             color="normal"
             label="Residency"
             autocomplete
             :rules="[rules.required]"
-          ></v-select>
+          ></v-autocomplete>
         </v-flex>
         <v-flex xs6>
           <v-menu
@@ -431,7 +431,10 @@
         ></v-checkbox>
       </v-container>
       <v-spacer></v-spacer>
-      <v-btn type="submit" :disabled="f2fVerif" @click="driverSignUp"
+      <v-btn
+        type="submit"
+        :disabled="emptyFieldValidationRegister"
+        @click="driverSignUp"
         >Register</v-btn
       >
     </v-card-actions>
@@ -508,17 +511,39 @@ export default {
     };
   },
   computed: {
+    emptyFieldValidationRegister() {
+      return !(
+        this.firstname &&
+        this.lastname &&
+        this.email &&
+        this.phone &&
+        this.location &&
+        this.bday &&
+        this.gender &&
+        this.creditcard &&
+        this.confirmPassword &&
+        this.password &&
+        this.expireID &&
+        this.expireLicense &&
+        this.expireRCA &&
+        this.expireITP &&
+        this.expireInsurance &&
+        this.imageID &&
+        this.imageRCA &&
+        this.imageLicense &&
+        this.imageITP &&
+        this.imageInsurance &&
+        this.imageSelfie &&
+        this.password == this.confirmPassword &&
+        (this.checkbox1 || this.faceVerification)
+      );
+    },
     comparePasswords() {
       return this.password !== this.confirmPassword
         ? "Passwords do not match"
         : "";
     },
     f2fVerif() {
-      // if (this.checkbox1 === "true") {
-      //   return !this.checkbox1;
-      // } else {
-      //   return !this.faceVerification;
-      // }
       return !(this.checkbox1 || this.faceVerification);
     },
   },

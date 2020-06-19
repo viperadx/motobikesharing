@@ -46,72 +46,15 @@
           ></v-text-field>
         </v-flex>
         <v-flex xs12>
-          <v-select
+          <v-autocomplete
             :items="locations"
             v-model="location"
             color="normal"
             label="Residency"
             autocomplete
             :rules="[rules.required]"
-          ></v-select>
+          ></v-autocomplete>
         </v-flex>
-        <!-- <v-flex xs6> ASTA E ORIGINALUL
-          <v-menu
-            ref="datanamenu"
-            :close-on-content-click="false"
-            v-model="datanamenu"
-            :nudge-right="40"
-            transition="scale-transition"
-            offset-y
-            min-width="290px"
-          >
-            <v-text-field
-              v-slot:activator="{ on }"
-              v-model="datana"
-              label="Birthday date"
-              color="normal"
-              v-on="on"
-              prepend-icon="event"
-              readonly
-            ></v-text-field>
-            <v-date-picker
-              ref="picker"
-              v-model="datana"
-              :max="new Date().toISOString().substr(0, 10)"
-              min="1950-01-01"
-              @change="$refs.datanamenu.save(datana)"
-            ></v-date-picker>
-          </v-menu>
-        </v-flex>
-        <v-flex xs6> -->
-        <!-- <v-flex xs6> - AICI E INCERCAREA MEA
-          <v-menu
-            ref="bdaymenu"
-            lazy
-            :close-on-content-click="false"
-            v-model="bdaymenu"
-            transition="scale-transition"
-            offset-y
-            full-width
-            :nudge-right="40"
-            min-width="290px"
-            :return-value.sync="bday"
-          >
-            <v-text-field
-              slot="activator"
-              v-model="bday"
-              label="Birthday date"
-              color="normal"
-              readonly
-            ></v-text-field>
-            <v-date-picker
-              ref="picker"
-              v-model="bday"
-              :max="new Date().toISOString().substr(0, 10)"
-              min="1930-01-01"
-            ></v-date-picker>
-          </v-menu>
-        </v-flex> -->
         <v-flex xs6>
           <v-menu
             ref="menu"
@@ -204,7 +147,12 @@
     </v-container>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-btn type="submit" @click="clientSignUp">Register</v-btn>
+      <v-btn
+        type="submit"
+        :disabled="emptyFieldValidationRegister"
+        @click="clientSignUp"
+        >Register</v-btn
+      >
       <!-- :disabled="loading" -->
     </v-card-actions>
   </v-card>
@@ -248,6 +196,21 @@ export default {
     };
   },
   computed: {
+    emptyFieldValidationRegister() {
+      return !(
+        this.firstname &&
+        this.lastname &&
+        this.email &&
+        this.phone &&
+        this.location &&
+        this.bday &&
+        this.gender &&
+        this.creditcard &&
+        this.confirmPassword &&
+        this.password &&
+        this.password == this.confirmPassword
+      );
+    },
     comparePasswords() {
       return this.password !== this.confirmPassword
         ? "Passwords do not match"

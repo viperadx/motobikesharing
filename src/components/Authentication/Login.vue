@@ -35,8 +35,7 @@
     </v-container>
     <v-card-actions>
       <v-btn to="/signupclient">New account for client</v-btn>
-      <v-btn to="/signupdriver">New account for driver</v-btn>
-      <v-spacer></v-spacer>
+      <br /><v-btn to="/signupdriver">New account for driver</v-btn>
       <v-btn color="normal" type="submit" @click="userRecover"
         >Forgot password?</v-btn
       >
@@ -90,11 +89,7 @@ export default {
       }
     },
   },
-  mounted() {
-    // if (this.user) {
-    //   router.push("/home");
-    // }
-  },
+  mounted() {},
   methods: {
     switchVisibility() {
       this.passwordFieldType =

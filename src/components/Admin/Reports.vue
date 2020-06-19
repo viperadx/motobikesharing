@@ -237,6 +237,7 @@
                 <template slot="items" slot-scope="props">
                   <td class="text-xs-left">{{ props.item.key }}</td>
                   <td class="text-xs-left">{{ props.item.userFullName }}</td>
+                  <td class="text-xs-left">{{ props.item.ticketStatus }}</td>
                   <td class="text-xs-left">{{ props.item.userID }}</td>
                   <td class="text-xs-left">{{ props.item.email }}</td>
                   <td class="text-xs-left">{{ props.item.subject }}</td>
@@ -611,6 +612,7 @@ export default {
       headerstickets: [
         { text: "Ticket Key", align: "left", value: "key" },
         { text: "User ID", value: "userID" },
+        { text: "Status", value: "ticketStatus" },
         { text: "User Full Name", value: "userFullName" },
         { text: "User Email", value: "email" },
         { text: "Subject", value: "subject" },
@@ -830,6 +832,7 @@ export default {
               ticketdetails.email = myObj[key].email;
               ticketdetails.subject = myObj[key].subject;
               ticketdetails.query = myObj[key].query;
+              ticketdetails.ticketStatus = myObj[key].ticketStatus;
               ticketdetails.key = key;
               allticketdetails.push(ticketdetails);
             });
@@ -1005,23 +1008,30 @@ export default {
           "value",
           (snap) => {
             let allDest = [];
+            let uniqueArray2 = [];
             const myObj = snap.val();
             const keysUsers = Object.keys(snap.val());
             keysUsers.forEach((key) => {
               const keysHistory = Object.keys(myObj[key]);
               keysHistory.forEach((key1) => {
-                const allDestinationsArtificiu = {};
-                allDestinationsArtificiu.userFinishPoint =
-                  myObj[key][key1].userFinishPoint;
-                // allDest.push(myObj[key][key1].userFinishPoint);
-                allDest.push(allDestinationsArtificiu);
+                // const allDestinationsArtificiu = {};
+                // allDestinationsArtificiu.userFinishPoint =
+                //   myObj[key][key1].userFinishPoint;
+
+                // allDest.push(allDestinationsArtificiu);
+                allDest.push(myObj[key][key1].userFinishPoint);
               });
             });
             this.allDestinations = allDest;
             let uniqueArray = allDest.filter(function(item, pos) {
               return allDest.indexOf(item) == pos;
             });
-            this.alluniquedestinations = uniqueArray;
+            uniqueArray.forEach((item) => {
+              const uniqueArrayArtificiu = {};
+              uniqueArrayArtificiu.userFinishPoint = item;
+              uniqueArray2.push(uniqueArrayArtificiu);
+            });
+            this.alluniquedestinations = uniqueArray2;
           },
           (error) => {
             console.log("allUsersDestinations Error: " + error.message);

@@ -87,7 +87,7 @@
     </v-content>
 
     <v-footer app>
-      <span>&copy; 2020</span>
+      <span>&copy; 2020 RADU ALEXANDRU - CONSTANTIN</span>
     </v-footer>
   </v-app>
 </template>
