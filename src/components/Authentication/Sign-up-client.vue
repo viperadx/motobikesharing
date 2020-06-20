@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title>Create new account</v-card-title>
+    <v-card-title>Create new account - CLIENT</v-card-title>
     <v-container grid-list-sm class="pa-4">
       <v-layout wrap>
         <v-flex xs12 align-center justify-space-between>
@@ -57,10 +57,9 @@
         </v-flex>
         <v-flex xs6>
           <v-menu
-            ref="menu"
-            v-model="menu"
+            ref="bdaymenu"
+            v-model="bdaymenu"
             :close-on-content-click="false"
-            :return-value.sync="bday"
             transition="scale-transition"
             offset-y
             min-width="290px"
@@ -75,15 +74,18 @@
               ></v-text-field>
             </template>
             <v-date-picker
+              ref="picker"
               v-model="bday"
               no-title
               scrollable
-              :max="new Date().toISOString().substr(0, 10)"
+              :max="getMaxDate"
               min="1940-01-01"
             >
               <div class="flex-grow-1"></div>
-              <v-btn text color="primary" @click="menu = false">Cancel</v-btn>
-              <v-btn text color="primary" @click="$refs.menu.save(bday)"
+              <v-btn text color="primary" @click="bdaymenu = false"
+                >Cancel</v-btn
+              >
+              <v-btn text color="primary" @click="$refs.bdaymenu.save(bday)"
                 >OK</v-btn
               >
             </v-date-picker>
@@ -160,6 +162,7 @@
 
 <script>
 /* eslint-disable no-console */
+import moment from "moment";
 import LocalitatiRO from "../../assets/LocalitatiRO";
 export default {
   name: "Sign-up-client",
@@ -180,7 +183,6 @@ export default {
       locations: [],
       confirmPassword: "",
       bday: null,
-      menu: null,
       modal: false,
       genders: ["Male", "Female", "Other", "Unspecified"],
       menu2: false,
@@ -196,6 +198,12 @@ export default {
     };
   },
   computed: {
+    getMaxDate() {
+      let day = new Date();
+      let dayWrapper = moment(day).subtract(216, "months");
+      let maxDate = dayWrapper.format("YYYY-MM-DD");
+      return maxDate;
+    },
     emptyFieldValidationRegister() {
       return !(
         this.firstname &&
@@ -248,6 +256,9 @@ export default {
     },
   },
   watch: {
+    bdaymenu(val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = "YEAR"));
+    },
     error(value) {
       if (value) {
         this.alert = true;

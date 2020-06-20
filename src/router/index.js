@@ -76,6 +76,7 @@ import Searchforaride from "../components/Search-for-a-ride.vue";
 import Reports from "../components/Admin/Reports.vue";
 import Authenticationdetails from "../components/Account/Authentication-details.vue";
 import Supporttickets from "../components/Admin/Support-tickets.vue";
+import Signup from "../components/Authentication/Signup.vue";
 
 Vue.use(VueRouter);
 
@@ -511,7 +512,8 @@ export default new VueRouter({
     {
       path: "/reports",
       name: "Reports",
-      component: Reports
+      component: Reports,
+      beforeEnter: AuthGuard
     },
     {
       path: "/authenticationdetails",
@@ -524,6 +526,12 @@ export default new VueRouter({
       name: "Support-tickets",
       component: Supporttickets,
       beforeEnter: AuthGuard
+    }
+    ,
+    {
+      path: "/signup",
+      name: "Signup",
+      component: Signup
     }
   ]
 });

@@ -10,19 +10,6 @@
             color="normal"
             :rules="[rules.required, rules.email]"
           ></v-text-field>
-          <!-- <v-text-field
-            name="input-10-1"
-            label="Password"
-            hint="At least 8 characters"
-            v-model="password"
-            min="8"
-            color="normal"
-            :append-icon="e1 ? 'mdi-eye' : 'mdi-eye-off'"
-            :append-icon-cb="() => (e1 = !e1)"
-            :type="e1 ? 'password' : 'text'"
-            :rules="[rules.required]"
-            counter
-          ></v-text-field> -->
           <v-text-field
             label="Password"
             :type="passwordFieldType"
@@ -34,8 +21,7 @@
       </v-layout>
     </v-container>
     <v-card-actions>
-      <v-btn to="/signupclient">New account for client</v-btn>
-      <br /><v-btn to="/signupdriver">New account for driver</v-btn>
+      <v-btn to="/signup">New account</v-btn>
       <v-btn color="normal" type="submit" @click="userRecover"
         >Forgot password?</v-btn
       >

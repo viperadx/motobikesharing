@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title>Create new account</v-card-title>
+    <v-card-title>Create new account - DRIVER</v-card-title>
     <v-container grid-list-sm class="pa-4">
       <v-layout wrap>
         <v-flex xs6>
@@ -57,10 +57,9 @@
         </v-flex>
         <v-flex xs6>
           <v-menu
-            ref="menubday"
-            v-model="menubday"
+            ref="bdaymenu"
+            v-model="bdaymenu"
             :close-on-content-click="false"
-            :return-value.sync="bday"
             transition="scale-transition"
             offset-y
             min-width="290px"
@@ -75,17 +74,18 @@
               ></v-text-field>
             </template>
             <v-date-picker
+              ref="picker"
               v-model="bday"
               no-title
               scrollable
-              :max="new Date().toISOString().substr(0, 10)"
+              :max="getMaxDate"
               min="1940-01-01"
             >
               <div class="flex-grow-1"></div>
-              <v-btn text color="primary" @click="menubday = false"
+              <v-btn text color="primary" @click="bdaymenu = false"
                 >Cancel</v-btn
               >
-              <v-btn text color="primary" @click="$refs.menubday.save(bday)"
+              <v-btn text color="primary" @click="$refs.bdaymenu.save(bday)"
                 >OK</v-btn
               >
             </v-date-picker>
@@ -129,7 +129,7 @@
             :rules="[comparePasswords]"
           ></v-text-field>
         </v-flex>
-        <v-flex xs3>
+        <v-flex xs6>
           <v-btn raised class="primary" @click="onPickImageSelfie"
             >Upload Selfie</v-btn
           >
@@ -141,9 +141,7 @@
             @change="onPickedImageSelfie"
           />
         </v-flex>
-        <v-flex xs3>
-          <img :src="imageUrlSelfie" height="70" width="200" />
-        </v-flex>
+
         <v-flex xs6>
           <div>
             Upload a selfie and your a picture of your ID, then click on the
@@ -151,7 +149,10 @@
           </div>
           <v-btn @click="testFace()">Verify Identity</v-btn>
         </v-flex>
-        <v-flex xs3>
+        <v-flex xs12>
+          <img :src="imageUrlSelfie" height="70" width="200" />
+        </v-flex>
+        <v-flex xs6>
           <v-btn raised class="primary" @click="onPickImageID">Upload ID</v-btn>
           <input
             type="file"
@@ -161,9 +162,7 @@
             @change="onPickedImageID"
           />
         </v-flex>
-        <v-flex xs3>
-          <img :src="imageUrlID" height="70" width="200" />
-        </v-flex>
+
         <v-flex xs6>
           <v-menu
             ref="menuid"
@@ -197,7 +196,10 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs3>
+        <v-flex xs12>
+          <img :src="imageUrlID" height="70" width="200" />
+        </v-flex>
+        <v-flex xs6>
           <v-btn raised class="primary" @click="onPickImageLicense"
             >Upload License</v-btn
           >
@@ -209,9 +211,7 @@
             @change="onPickedImageLicense"
           />
         </v-flex>
-        <v-flex xs3>
-          <img :src="imageUrlLicense" height="70" width="200" />
-        </v-flex>
+
         <v-flex xs6>
           <v-menu
             ref="menulicense"
@@ -250,7 +250,10 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs3>
+        <v-flex xs12>
+          <img :src="imageUrlLicense" height="70" width="200" />
+        </v-flex>
+        <v-flex xs6>
           <v-btn raised class="primary" @click="onPickImageITP"
             >Upload ITP</v-btn
           >
@@ -262,9 +265,7 @@
             @change="onPickedImageITP"
           />
         </v-flex>
-        <v-flex xs3>
-          <img :src="imageUrlITP" height="70" width="200" />
-        </v-flex>
+
         <v-flex xs6>
           <v-menu
             ref="menuitp"
@@ -300,7 +301,10 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs3>
+        <v-flex xs12>
+          <img :src="imageUrlITP" height="70" width="200" />
+        </v-flex>
+        <v-flex xs6>
           <v-btn raised class="primary" @click="onPickImageRCA"
             >Upload RCA</v-btn
           >
@@ -312,9 +316,7 @@
             @change="onPickedImageRCA"
           />
         </v-flex>
-        <v-flex xs3>
-          <img :src="imageUrlRCA" height="70" width="200" />
-        </v-flex>
+
         <v-flex xs6>
           <v-menu
             ref="menurca"
@@ -350,7 +352,10 @@
             </v-date-picker>
           </v-menu>
         </v-flex>
-        <v-flex xs3>
+        <v-flex xs12>
+          <img :src="imageUrlRCA" height="70" width="200" />
+        </v-flex>
+        <v-flex xs6>
           <v-btn raised class="primary" @click="onPickImageInsurance"
             >Upload Insurance</v-btn
           >
@@ -362,9 +367,7 @@
             @change="onPickedImageInsurance"
           />
         </v-flex>
-        <v-flex xs3>
-          <img :src="imageUrlInsurance" height="70" width="200" />
-        </v-flex>
+
         <v-flex xs6>
           <v-menu
             ref="menuinsurance"
@@ -402,6 +405,9 @@
               >
             </v-date-picker>
           </v-menu>
+        </v-flex>
+        <v-flex xs12>
+          <img :src="imageUrlInsurance" height="70" width="200" />
         </v-flex>
       </v-layout>
       <div>
@@ -444,6 +450,7 @@
 <script>
 /* eslint-disable no-console */
 /*eslint no-unused-vars: "error"*/
+import moment from "moment";
 import Vue from "vue";
 import Axios from "axios";
 import VueAxios from "vue-axios";
@@ -511,6 +518,12 @@ export default {
     };
   },
   computed: {
+    getMaxDate() {
+      let day = new Date();
+      let dayWrapper = moment(day).subtract(216, "months");
+      let maxDate = dayWrapper.format("YYYY-MM-DD");
+      return maxDate;
+    },
     emptyFieldValidationRegister() {
       return !(
         this.firstname &&
@@ -776,6 +789,21 @@ export default {
         uInt8Array[i] = raw.charCodeAt(i);
       }
       return new Blob([uInt8Array], { type: contentType });
+    },
+  },
+  watch: {
+    bdaymenu(val) {
+      val && this.$nextTick(() => (this.$refs.picker.activePicker = "YEAR"));
+    },
+    error(value) {
+      if (value) {
+        this.alert = true;
+      }
+    },
+    alert(value) {
+      if (!value) {
+        this.$store.commit("setError", null);
+      }
     },
   },
   mounted() {
