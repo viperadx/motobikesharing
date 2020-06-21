@@ -1,75 +1,77 @@
 <template>
   <v-container grid-list-sm class="pa-4">
-    <v-layout wrap>
-      <v-flex xs12>
-        <v-text-field
-          label="Ticket ID"
-          outlined
-          readonly
-          :value="ticketDetails.ticketID"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12>
-        <v-text-field
-          label="Subject"
-          outlined
-          readonly
-          :value="ticketDetails.subject"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12>
-        <v-textarea
-          label="Query"
-          outlined
-          readonly
-          :value="ticketDetails.query"
-        ></v-textarea>
-      </v-flex>
-      <v-flex xs12>
-        <v-text-field
-          label="User full name"
-          outlined
-          readonly
-          :value="ticketDetails.userFullName"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12>
-        <v-text-field
-          label="User phone number"
-          outlined
-          readonly
-          :value="ticketDetails.phone"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12>
-        <v-text-field
-          label="User email"
-          outlined
-          readonly
-          :value="ticketDetails.email"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12>
-        <v-text-field
-          label="File link"
-          outlined
-          readonly
-          :value="ticketDetails.supportFileURL"
-        ></v-text-field>
-      </v-flex>
-      <v-flex xs12>
-        <v-select
-          :items="ticketStatuses"
-          v-model="ticketStatusFinal"
-          :placeholder="ticketDetails.ticketStatus"
-          color="normal"
-          label="Verification status"
-          id="ticketStatusUpdated"
-        ></v-select>
-      </v-flex>
-      <v-spacer></v-spacer>
-      <v-btn type="submit" @click="updateTicketStatus()">Submit</v-btn>
-    </v-layout>
+    <div v-if="ticketDetails">
+      <v-layout wrap>
+        <v-flex xs12>
+          <v-text-field
+            label="Ticket ID"
+            outlined
+            readonly
+            :value="ticketDetails.ticketID"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            label="Subject"
+            outlined
+            readonly
+            :value="ticketDetails.subject"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-textarea
+            label="Query"
+            outlined
+            readonly
+            :value="ticketDetails.query"
+          ></v-textarea>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            label="User full name"
+            outlined
+            readonly
+            :value="ticketDetails.userFullName"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            label="User phone number"
+            outlined
+            readonly
+            :value="ticketDetails.phone"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            label="User email"
+            outlined
+            readonly
+            :value="ticketDetails.email"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-text-field
+            label="File link"
+            outlined
+            readonly
+            :value="ticketDetails.supportFileURL"
+          ></v-text-field>
+        </v-flex>
+        <v-flex xs12>
+          <v-select
+            :items="ticketStatuses"
+            v-model="ticketStatusFinal"
+            :placeholder="ticketDetails.ticketStatus"
+            color="normal"
+            label="Verification status"
+            id="ticketStatusUpdated"
+          ></v-select>
+        </v-flex>
+        <v-spacer></v-spacer>
+        <v-btn type="submit" @click="updateTicketStatus()">Submit</v-btn>
+      </v-layout>
+    </div>
   </v-container>
 </template>
 

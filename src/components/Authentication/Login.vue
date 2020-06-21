@@ -25,7 +25,13 @@
       <v-btn color="normal" type="submit" @click="userRecover"
         >Forgot password?</v-btn
       >
-      <v-btn type="submit" @click="userSignin">Login</v-btn>
+      <v-btn
+        type="submit"
+        @keyup.enter="trigger"
+        @click="userSignin"
+        ref="login"
+        >Login</v-btn
+      >
     </v-card-actions>
   </v-card>
 </template>
@@ -77,6 +83,9 @@ export default {
   },
   mounted() {},
   methods: {
+    trigger() {
+      this.$refs.login.click();
+    },
     switchVisibility() {
       this.passwordFieldType =
         this.passwordFieldType === "password" ? "text" : "password";

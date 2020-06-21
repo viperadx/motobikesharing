@@ -530,7 +530,7 @@
           </v-card>
         </v-flex>
 
-        <v-flex>
+        <!-- <v-flex>
           <v-card>
             <v-card-title>Users age frequency</v-card-title>
             <v-card-text>
@@ -543,7 +543,7 @@
               ></pie-chart>
             </v-card-text>
           </v-card>
-        </v-flex>
+        </v-flex> -->
       </v-layout>
     </v-container>
   </v-layout>

@@ -8,7 +8,7 @@
           label="Average Rating"
           outlined
           readonly
-          :value="itemsallclientsavgrating[0].ratingForClient"
+          :value="itemsallclientsavgrating[0].ratingForClient.toFixed(2)"
         ></v-text-field>
 
         <v-text-field
@@ -31,7 +31,7 @@
           label="Average Rating"
           outlined
           readonly
-          :value="itemsalldriversavgrating[0].ratingForDriver"
+          :value="itemsalldriversavgrating[0].ratingForDriver.toFixed(2)"
         ></v-text-field>
 
         <v-text-field
@@ -89,11 +89,11 @@ export default {
     };
   },
   computed: {
-    // userData() {
-    //   return this.$store.getters.userDataGetter
-    //     ? this.$store.getters.userDataGetter
-    //     : "";
-    // },
+    userData() {
+      return this.$store.getters.userDataGetter
+        ? this.$store.getters.userDataGetter
+        : "";
+    },
     driverData() {
       return this.$store.getters.presentDriverDataGetter
         ? this.$store.getters.presentDriverDataGetter

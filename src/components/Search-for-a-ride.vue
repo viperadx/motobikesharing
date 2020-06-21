@@ -186,32 +186,32 @@ export default {
   created() {
     this.$store.dispatch("readDriverDetailsByUserID", this.user);
   },
-  // watch: {
-  //   defaultLocation: {
-  //     deep: true,
-  //     immediate: false,
-  //     handler(newLocation) {
-  //       if (newLocation && this.defaultLocation) {
-  //         this.createMap();
-  //       }
-  //     },
-  //   },
-  //   activeRideRequest: {
-  //     deep: true,
-  //     immediate: false,
-  //     handler(newValue) {
-  //       if (
-  //         newValue.status === "ride finished" ||
-  //         newValue.status === "ride cancelled by client" ||
-  //         newValue.status === "client didn't show" ||
-  //         newValue.status === "driver didn't show"
-  //       ) {
-  //         this.createMap();
-  //         this.geolocate();
-  //       }
-  //     },
-  //   },
-  // },
+  watch: {
+    defaultLocation: {
+      deep: true,
+      immediate: false,
+      handler(newLocation) {
+        if (newLocation && this.defaultLocation) {
+          this.createMap();
+        }
+      },
+    },
+    activeRideRequest: {
+      deep: true,
+      immediate: false,
+      handler(newValue) {
+        if (
+          newValue.status === "ride finished" ||
+          newValue.status === "ride cancelled by client" ||
+          newValue.status === "client didn't show" ||
+          newValue.status === "driver didn't show"
+        ) {
+          this.createMap();
+          this.geolocate();
+        }
+      },
+    },
+  },
   computed: {
     currentRideDriver() {
       return this.$store.getters.currentRideDriverGetter;

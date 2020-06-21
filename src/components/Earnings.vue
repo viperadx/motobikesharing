@@ -1,78 +1,137 @@
 <template>
   <v-container>
-    <v-select
-      :items="years"
-      v-model="year"
-      color="normal"
-      label="Select year"
-    ></v-select>
-    <v-layout text-center wrap>test Earnings normal/test passed</v-layout>
-    <GChart type="ColumnChart" :data="chartData" :options="chartOptions" />test
+    <v-col cols="12" sm="6" md="3">
+      <div v-if="itemsdriverearnings">
+        <v-text-field
+          label="All-Time Earnings"
+          outlined
+          readonly
+          :value="itemsdriverearnings[0].earning.toFixed(2)"
+        ></v-text-field>
+      </div>
+      <div v-if="driverData">
+        <v-text-field
+          label="Paid Earnings"
+          outlined
+          readonly
+          :value="driverData.totalPaymentsMade.toFixed(2)"
+        ></v-text-field>
+      </div>
+      <div v-if="payment">
+        <v-text-field
+          label="Unpaid Earnings"
+          outlined
+          readonly
+          :value="payment.toFixed(2)"
+        ></v-text-field>
+      </div>
+      <div>
+        <v-btn depressed large color="primary" @click="getPaid">Get Paid</v-btn>
+      </div>
+    </v-col>
   </v-container>
 </template>
 
 <script>
-import { GChart } from "vue-google-charts";
+/* eslint-disable no-console */
+import * as firebase from "firebase";
 export default {
   name: "Earnings",
   data() {
     return {
-      // chartData: [
-      //   ["Year", "Sales", "Expenses", "Profit"],
-      //   ["2014", 1000, 400, 200],
-      //   ["2015", 1170, 460, 250],
-      //   ["2016", 660, 1120, 300],
-      //   ["2017", 1030, 540, 350]
-      // ],
-      years: this.chartDataRows,
-      year: null,
-      chartDataHeader: ["Year", "Earning"],
-      // chartDataRows: [1994, 200],
-      chartOptions: {
-        chart: {
-          title: "Company Performance",
-          subtitle: "Sales, Expenses, and Profit: 2014-2017",
-        },
-      },
+      itemsdriverearnings: null,
+      payment: null,
     };
   },
-  components: { GChart },
   computed: {
-    user() {
+    userID() {
       return this.$store.getters.user;
     },
     userDetails() {
-      return this.$store.getters.loggedInUserData;
+      return this.$store.getters.loggedInUserData
+        ? this.$store.getters.loggedInUserData
+        : [];
     },
-    // userData() {
-    //   return this.$store.getters.userDataGetter
-    // ? this.$store.getters.userDataGetter
-    // : "";
-    // },
+    userData() {
+      return this.$store.getters.userDataGetter
+        ? this.$store.getters.userDataGetter
+        : "";
+    },
     driverData() {
-      return this.$store.getters.presentDriverDataGetter;
-      // ? this.$store.getters.presentDriverDataGetter
-      // : "";
+      return this.$store.getters.presentDriverDataGetter
+        ? this.$store.getters.presentDriverDataGetter
+        : "";
     },
     currentDriverRidesHistoryGetter() {
-      return this.$store.getters.currentDriverRidesHistoryGetter;
-      // ? this.$store.getters.currentDriverRidesHistoryGetter
-      // : [];
-    },
-    chartDataRows() {
-      return this.currentDriverRidesHistoryGetter.timeStampYear;
-    },
-    chartData() {
-      return [this.chartDataHeader, this.chartDataRows];
+      return this.$store.getters.currentDriverRidesHistoryGetter
+        ? this.$store.getters.currentDriverRidesHistoryGetter
+        : [];
     },
   },
-  methods: {},
+  methods: {
+    getPaid() {
+      return firebase
+        .database()
+        .ref("Drivers" + "/" + this.userID)
+        .update({
+          totalPaymentsMade: parseFloat(
+            this.itemsdriverearnings[0].earning.toFixed(2)
+          ),
+        })
+        .then(() => {
+          this.driverEarnings();
+        });
+    },
+    driverEarnings() {
+      return firebase
+        .database()
+        .ref("DriversRidesHistory" + "/" + this.userID)
+        .on(
+          "value",
+          (snap) => {
+            let sumsArray = {};
+            let allEarned = [];
+            const myObj = snap.val();
+            const keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              // allSpendings.push(myObj[key][key1].price);
+              const allEarnings = {};
+              allEarnings.earning = myObj[key].earning;
+              allEarnings.keyUser = this.userID;
+
+              allEarned.push(allEarnings);
+            });
+            allEarned.forEach((item) => {
+              let sums = sumsArray[item.keyUser];
+              if (sums) {
+                sums.earning += item.earning;
+              } else {
+                sumsArray[item.keyUser] = {
+                  keyUser: item.keyUser,
+                  earning: item.earning,
+                };
+              }
+            });
+            this.itemsdriverearnings = Object.keys(sumsArray).map((key) => {
+              return sumsArray[key];
+            });
+            this.payment =
+              this.itemsdriverearnings[0].earning -
+              this.driverData.totalPaymentsMade;
+          },
+
+          (error) => {
+            console.log("driverEarnings Error: " + error.message);
+          }
+        );
+    },
+  },
   created() {
-    this.$store.dispatch("readAllRidesDetailsByDriverID", this.user);
-    // this.$store.dispatch("readAllRidesDetailsByDriverID",this.$store.getters.user);
-    this.$store.dispatch("readDriverDetailsByUserID", this.user);
-    // this.rides.push(this.$store.getters.currentDriverRidesHistoryGetter);
+    this.$store.dispatch("readAllRidesDetailsByDriverID", this.userID);
+    this.$store.dispatch("readDriverDetailsByUserID", this.userID);
   },
-  mounted() {},
+  mounted() {
+    this.driverEarnings();
+  },
 };
 </script>
