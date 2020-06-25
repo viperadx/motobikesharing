@@ -557,7 +557,6 @@
 </template>
 
 <script>
-//TODO: top 3 cei mai cheltuitori clienti, top 3 cei mai castigatori soferi
 //TODO optionale: sa adaug un topic la ticket submission si sa fac un top/grafic cu topicurile tichetelor
 /* eslint-disable no-console */
 // eslint-disable-next-line no-unused-vars
@@ -664,6 +663,7 @@ export default {
     };
   },
   mounted() {
+    this.piechart1();
     this.allClientsAvgRating();
     this.allDriversAvgRating();
     this.allClientsNoRides();
@@ -685,7 +685,7 @@ export default {
     this.clientsAges();
     this.driversAges();
     this.topusersbyType();
-    this.piechart1();
+
     this.barchart();
   },
   computed: {},
@@ -1515,14 +1515,14 @@ export default {
             let keysUsers = Object.keys(snap.val());
             keysUsers.forEach((key) => {
               numbers.push(Object.keys(myObj[key].idDriver).length);
-              if (Object.keys(myObj[key].idDriver).length === 0) {
+              if (Object.keys(myObj[key].idDriver).length === null) {
                 this.usersClients = +this.usersClients + 1;
               } else {
                 this.usersDrivers = +this.usersDrivers + 1;
               }
             });
             for (let i = 0; i < 3; i++) {
-              if (numbers.length == 0) console.log("e gol");
+              if (numbers.length == 0) console.log("empty topusersbyType()");
               if (Math.max(...numbers) !== 0) {
                 let a = numbers.indexOf(Math.max(...numbers));
                 topSearch.push(keysUsers[a]);
@@ -1538,14 +1538,15 @@ export default {
     },
     piechart1() {
       let colors = [
-        "#9c5463",
-        "#7b4c67",
-        "#c86060",
-        "#5e4469",
-        "#7f4c66",
-        "#b25a62",
+        "#f8b75c",
+        "#f0f85c",
+        "#8df85c",
+        "#5cf8e8",
+        "#5caaf8",
+        "#765cf8",
+        "#e8000c",
       ];
-      google.charts.load("visualization", "1.0", {
+      window.google.charts.load("visualization", "1.0", {
         packages: ["corechart", "bar", "table"],
         callback: () => {
           let chart = new window.google.visualization.PieChart(
@@ -1572,13 +1573,13 @@ export default {
       let a = [];
       let b = [];
       let colors = [
-        "#9c5463",
-        "#7b4c67",
-        "#c86060",
-        "#5e4469",
-        "#7f4c66",
-        "#b25a62",
-        "#f86c5c",
+        "#f8b75c",
+        "#f0f85c",
+        "#8df85c",
+        "#5cf8e8",
+        "#5caaf8",
+        "#765cf8",
+        "#e8000c",
       ];
       let prev;
       this.allUsersAges.sort();
@@ -1591,7 +1592,7 @@ export default {
         }
         prev = this.allUsersAges[i];
       }
-      let x = [["Ani", "Frecvență", { role: "style" }]];
+      let x = [["Years", "Frequency", { role: "style" }]];
       for (let i = 0; i < a.length; i++) {
         x.push([a[i], b[i], colors[Math.floor(Math.random() * colors.length)]]);
       }

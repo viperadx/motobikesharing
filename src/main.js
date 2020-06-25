@@ -6,6 +6,9 @@ import * as firebase from "@/firebase";
 import store from "./store";
 import VueSimpleAlert from "vue-simple-alert";
 import VModal from 'vue-js-modal';
+import VueGoogleCharts from 'vue-google-charts';
+
+Vue.use(VueGoogleCharts);
 
 Vue.use(VueSimpleAlert);
 Vue.use(VModal, { dialog: true });
