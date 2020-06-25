@@ -530,20 +530,27 @@
           </v-card>
         </v-flex>
 
-        <!-- <v-flex>
+        <v-flex xs6>
           <v-card>
-            <v-card-title>Users age frequency</v-card-title>
+            <v-card-title>
+              Utilizatori cu/fără colaborări
+            </v-card-title>
             <v-card-text>
-              <pie-chart
-                :data="[
-                  [allUsersAges[1], allUsersAges[1]],
-                  [allUsersAges[0], allUsersAges[0]],
-                  [allUsersAges[3], allUsersAges[3]],
-                ]"
-              ></pie-chart>
+              <div id="piechart1"></div>
             </v-card-text>
           </v-card>
-        </v-flex> -->
+        </v-flex>
+
+        <v-flex>
+          <v-card>
+            <v-card-title>
+              Users frequency age
+            </v-card-title>
+            <v-card-text>
+              <div id="barchart1"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
       </v-layout>
     </v-container>
   </v-layout>
@@ -564,6 +571,9 @@ export default {
   name: "Reports",
   data() {
     return {
+      topusersType: [],
+      usersClients: 0,
+      usersDrivers: 0,
       usersLocations: [],
       clientsLocations: [],
       driversLocations: [],
@@ -652,6 +662,31 @@ export default {
         { text: "Value", value: "ratingForDriver" },
       ],
     };
+  },
+  mounted() {
+    this.allClientsAvgRating();
+    this.allDriversAvgRating();
+    this.allClientsNoRides();
+    this.allDriversNoRides();
+    this.allClientsSpendings();
+    this.allDriversEarnings();
+    this.topUsersLocations();
+    this.topClientsLocations();
+    this.topDriversLocations();
+    this.userdetails();
+    this.driverdetails();
+    this.ticketdetails();
+    this.ridedetails();
+    this.topUsersbyRides();
+    this.allUsersDestinations();
+    this.topDriversbyRides();
+    this.topDestinations();
+    this.usersAges();
+    this.clientsAges();
+    this.driversAges();
+    this.topusersbyType();
+    this.piechart1();
+    this.barchart();
   },
   computed: {},
   methods: {
@@ -1467,29 +1502,125 @@ export default {
           }
         );
     },
+    topusersbyType() {
+      return firebase
+        .database()
+        .ref("Users")
+        .on(
+          "value",
+          (snap) => {
+            const topSearch = [];
+            const numbers = [];
+            let myObj = snap.val();
+            let keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              numbers.push(Object.keys(myObj[key].idDriver).length);
+              if (Object.keys(myObj[key].idDriver).length === 0) {
+                this.usersClients = +this.usersClients + 1;
+              } else {
+                this.usersDrivers = +this.usersDrivers + 1;
+              }
+            });
+            for (let i = 0; i < 3; i++) {
+              if (numbers.length == 0) console.log("e gol");
+              if (Math.max(...numbers) !== 0) {
+                let a = numbers.indexOf(Math.max(...numbers));
+                topSearch.push(keysUsers[a]);
+                numbers[a] = 0;
+              }
+            }
+            this.topusersType = topSearch;
+          },
+          function(error) {
+            console.log("topusersbyType Error: " + error.message);
+          }
+        );
+    },
+    piechart1() {
+      let colors = [
+        "#9c5463",
+        "#7b4c67",
+        "#c86060",
+        "#5e4469",
+        "#7f4c66",
+        "#b25a62",
+      ];
+      google.charts.load("visualization", "1.0", {
+        packages: ["corechart", "bar", "table"],
+        callback: () => {
+          let chart = new window.google.visualization.PieChart(
+            document.getElementById("piechart1")
+          );
+          chart.draw(
+            window.google.visualization.arrayToDataTable([
+              ["Tip", "Numar"],
+              ["Cu Colaborări", this.usersClients],
+              ["Fără Colaborări", this.usersDrivers],
+            ]),
+            {
+              is3D: false,
+              colors: [
+                "#f86c5c",
+                colors[Math.floor(Math.random() * colors.length)],
+              ],
+            }
+          );
+        },
+      });
+    },
+    barchart() {
+      let a = [];
+      let b = [];
+      let colors = [
+        "#9c5463",
+        "#7b4c67",
+        "#c86060",
+        "#5e4469",
+        "#7f4c66",
+        "#b25a62",
+        "#f86c5c",
+      ];
+      let prev;
+      this.allUsersAges.sort();
+      for (let i = 0; i < this.allUsersAges.length; i++) {
+        if (this.allUsersAges[i] !== prev) {
+          a.push(this.allUsersAges[i]);
+          b.push(1);
+        } else {
+          b[b.length - 1]++;
+        }
+        prev = this.allUsersAges[i];
+      }
+      let x = [["Ani", "Frecvență", { role: "style" }]];
+      for (let i = 0; i < a.length; i++) {
+        x.push([a[i], b[i], colors[Math.floor(Math.random() * colors.length)]]);
+      }
+      window.google.charts.setOnLoadCallback(() => {
+        var view = new window.google.visualization.DataView(
+          window.google.visualization.arrayToDataTable(x)
+        );
+        view.setColumns([
+          0,
+          1,
+          {
+            calc: "stringify",
+            sourceColumn: 1,
+            type: "string",
+            role: "annotation",
+          },
+          2,
+        ]);
+        var chart = new window.google.visualization.ColumnChart(
+          document.getElementById("barchart1")
+        );
+        chart.draw(view, {
+          height: 400,
+          bar: { groupWidth: "95%" },
+          legend: { position: "none" },
+        });
+      });
+    },
   },
   created() {},
-  mounted() {
-    this.allClientsAvgRating();
-    this.allDriversAvgRating();
-    this.allClientsNoRides();
-    this.allDriversNoRides();
-    this.allClientsSpendings();
-    this.allDriversEarnings();
-    this.topUsersLocations();
-    this.topClientsLocations();
-    this.topDriversLocations();
-    this.userdetails();
-    this.driverdetails();
-    this.ticketdetails();
-    this.ridedetails();
-    this.topUsersbyRides();
-    this.allUsersDestinations();
-    this.topDriversbyRides();
-    this.topDestinations();
-    this.usersAges();
-    this.clientsAges();
-    this.driversAges();
-  },
 };
 </script>
