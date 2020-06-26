@@ -533,21 +533,32 @@
         <v-flex xs6>
           <v-card>
             <v-card-title>
-              Utilizatori cu/fără colaborări
+              Users type
             </v-card-title>
             <v-card-text>
-              <div id="piechart1"></div>
+              <div id="piechartUsersType"></div>
             </v-card-text>
           </v-card>
         </v-flex>
 
-        <v-flex>
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>
+              Tickets status
+            </v-card-title>
+            <v-card-text>
+              <div id="piechartTicketsStatus"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs12>
           <v-card>
             <v-card-title>
               Users frequency age
             </v-card-title>
             <v-card-text>
-              <div id="barchart1"></div>
+              <div id="barchartAgeFrequency"></div>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -573,6 +584,8 @@ export default {
       topusersType: [],
       usersClients: 0,
       usersDrivers: 0,
+      ticketsOpened: 0,
+      ticketsClosed: 0,
       usersLocations: [],
       clientsLocations: [],
       driversLocations: [],
@@ -663,7 +676,7 @@ export default {
     };
   },
   mounted() {
-    this.piechart1();
+    this.piechartUsersType();
     this.allClientsAvgRating();
     this.allDriversAvgRating();
     this.allClientsNoRides();
@@ -685,8 +698,9 @@ export default {
     this.clientsAges();
     this.driversAges();
     this.topusersbyType();
-
-    this.barchart();
+    this.piechartTicketsStatus();
+    this.ticketsStatus();
+    this.barchartAgeFrequency();
   },
   computed: {},
   methods: {
@@ -1509,59 +1523,63 @@ export default {
         .on(
           "value",
           (snap) => {
-            const topSearch = [];
-            const numbers = [];
             let myObj = snap.val();
             let keysUsers = Object.keys(snap.val());
             keysUsers.forEach((key) => {
-              numbers.push(Object.keys(myObj[key].idDriver).length);
-              if (Object.keys(myObj[key].idDriver).length === null) {
-                this.usersClients = +this.usersClients + 1;
-              } else {
+              if (myObj[key].idDriver) {
                 this.usersDrivers = +this.usersDrivers + 1;
+              } else {
+                this.usersClients = +this.usersClients + 1;
               }
             });
-            for (let i = 0; i < 3; i++) {
-              if (numbers.length == 0) console.log("empty topusersbyType()");
-              if (Math.max(...numbers) !== 0) {
-                let a = numbers.indexOf(Math.max(...numbers));
-                topSearch.push(keysUsers[a]);
-                numbers[a] = 0;
-              }
-            }
-            this.topusersType = topSearch;
           },
           function(error) {
             console.log("topusersbyType Error: " + error.message);
           }
         );
     },
-    piechart1() {
-      let colors = [
-        "#f8b75c",
-        "#f0f85c",
-        "#8df85c",
-        "#5cf8e8",
-        "#5caaf8",
-        "#765cf8",
-        "#e8000c",
-      ];
+    ticketsStatus() {
+      return firebase
+        .database()
+        .ref("Tickets")
+        .on(
+          "value",
+          (snap) => {
+            let myObj = snap.val();
+            let keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              if (myObj[key].ticketStatus === "solved") {
+                this.ticketsClosed = +this.ticketsClosed + 1;
+              } else {
+                this.ticketsOpened = +this.ticketsOpened + 1;
+              }
+            });
+          },
+          function(error) {
+            console.log("ticketsStatus Error: " + error.message);
+          }
+        );
+    },
+    piechartUsersType() {
+      let colors = ["#8df85c", "#5cf8e8", "#5caaf8", "#e8000c"];
       window.google.charts.load("visualization", "1.0", {
         packages: ["corechart", "bar", "table"],
         callback: () => {
           let chart = new window.google.visualization.PieChart(
-            document.getElementById("piechart1")
+            document.getElementById("piechartUsersType")
           );
           chart.draw(
             window.google.visualization.arrayToDataTable([
-              ["Tip", "Numar"],
-              ["Cu Colaborări", this.usersClients],
-              ["Fără Colaborări", this.usersDrivers],
+              ["Type", "Number"],
+              ["Clients", this.usersClients],
+              ["Drivers", this.usersDrivers],
             ]),
             {
               is3D: false,
+              backgroundColor: "transparent",
+              legend: { textStyle: { color: "white" } },
               colors: [
-                "#f86c5c",
+                "003dd8",
                 colors[Math.floor(Math.random() * colors.length)],
               ],
             }
@@ -1569,18 +1587,37 @@ export default {
         },
       });
     },
-    barchart() {
+    piechartTicketsStatus() {
+      let colors = ["#8df85c", "#5cf8e8", "#5caaf8", "#e8000c"];
+      window.google.charts.load("visualization", "1.0", {
+        packages: ["corechart", "bar", "table"],
+        callback: () => {
+          let chart = new window.google.visualization.PieChart(
+            document.getElementById("piechartTicketsStatus")
+          );
+          chart.draw(
+            window.google.visualization.arrayToDataTable([
+              ["Type", "Number"],
+              ["Open", this.ticketsOpened],
+              ["Closed", this.ticketsClosed],
+            ]),
+            {
+              is3D: false,
+              backgroundColor: "transparent",
+              legend: { textStyle: { color: "white" } },
+              colors: [
+                "003dd8",
+                colors[Math.floor(Math.random() * colors.length)],
+              ],
+            }
+          );
+        },
+      });
+    },
+    barchartAgeFrequency() {
       let a = [];
       let b = [];
-      let colors = [
-        "#f8b75c",
-        "#f0f85c",
-        "#8df85c",
-        "#5cf8e8",
-        "#5caaf8",
-        "#765cf8",
-        "#e8000c",
-      ];
+      let colors = ["#8df85c", "#5cf8e8", "#5caaf8", "#e8000c"];
       let prev;
       this.allUsersAges.sort();
       for (let i = 0; i < this.allUsersAges.length; i++) {
@@ -1612,12 +1649,25 @@ export default {
           2,
         ]);
         var chart = new window.google.visualization.ColumnChart(
-          document.getElementById("barchart1")
+          document.getElementById("barchartAgeFrequency")
         );
         chart.draw(view, {
           height: 400,
           bar: { groupWidth: "95%" },
-          legend: { position: "none" },
+          legend: { position: "none", textStyle: { color: "white" } },
+          backgroundColor: "transparent",
+          hAxis: {
+            textPosition: "none",
+            textStyle: { color: "#FFFFFF" },
+            gridlines: {
+              color: "#FFFFFF",
+            },
+            baselineColor: "#FFFFFF",
+          },
+          vAxis: {
+            textStyle: { color: "#FFFFFF" },
+            baselineColor: "#FFFFFF",
+          },
         });
       });
     },
