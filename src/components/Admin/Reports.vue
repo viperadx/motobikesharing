@@ -7,7 +7,7 @@
             <v-card-title>All users</v-card-title>
             <v-card-text>
               <v-data-table
-                :headers="headers"
+                :headers="headersusersdetails"
                 :options.sync="pagination"
                 :items="items"
                 item-key="name"
@@ -24,12 +24,24 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.key }}</td>
-                  <td class="text-xs-left">{{ props.item.lastName }}</td>
-                  <td class="text-xs-left">{{ props.item.firstName }}</td>
-                  <td class="text-xs-left">{{ props.item.birthDate }}</td>
-                  <td class="text-xs-left">{{ props.item.email }}</td>
-                  <td class="text-xs-left">{{ props.item.location }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.userKeyuserdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.lastNameuserdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.firstNameuserdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.birthDateuserdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.emailuserdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.locationuserdetails }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -110,7 +122,7 @@
             <v-card-title>Drivers details</v-card-title>
             <v-card-text>
               <v-data-table
-                :headers="headersdrivers"
+                :headers="headersdriversdetails"
                 :options.sync="pagination"
                 :items="itemsdrivers"
                 item-key="name"
@@ -127,17 +139,27 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.key }}</td>
-                  <td class="text-xs-left">{{ props.item.checkStatus }}</td>
-                  <td class="text-xs-left">{{ props.item.expireDateID }}</td>
-                  <td class="text-xs-left">{{ props.item.expireDateITP }}</td>
                   <td class="text-xs-left">
-                    {{ props.item.expireDateInsurance }}
+                    {{ props.item.driverKeydriverdetails }}
                   </td>
                   <td class="text-xs-left">
-                    {{ props.item.expireDateLicense }}
+                    {{ props.item.checkStatusdriverdetails }}
                   </td>
-                  <td class="text-xs-left">{{ props.item.expireDateRCA }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.expireDateIDdriverdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.expireDateITPdriverdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.expireDateInsurancedriverdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.expireDateLicensedriverdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.expireDateRCAdriverdetails }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -218,7 +240,7 @@
             <v-card-title>Tickets details</v-card-title>
             <v-card-text>
               <v-data-table
-                :headers="headerstickets"
+                :headers="headersticketsdetails"
                 :options.sync="pagination"
                 :items="itemstickets"
                 item-key="name"
@@ -235,13 +257,27 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.key }}</td>
-                  <td class="text-xs-left">{{ props.item.userFullName }}</td>
-                  <td class="text-xs-left">{{ props.item.ticketStatus }}</td>
-                  <td class="text-xs-left">{{ props.item.userID }}</td>
-                  <td class="text-xs-left">{{ props.item.email }}</td>
-                  <td class="text-xs-left">{{ props.item.subject }}</td>
-                  <td class="text-xs-left">{{ props.item.query }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.ticketKeyticketdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.userFullNameticketdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.ticketStatusticketdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.userIDticketdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.emailticketdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.subjectticketdetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.queryticketdetails }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -313,7 +349,7 @@
             <v-card-title>Rides details</v-card-title>
             <v-card-text>
               <v-data-table
-                :headers="headersrides"
+                :headers="headersridesdetails"
                 :items="itemsrides"
                 :options.sync="pagination"
                 item-key="name"
@@ -330,12 +366,24 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.key }}</td>
-                  <td class="text-xs-left">{{ props.item.status }}</td>
-                  <td class="text-xs-left">{{ props.item.clientId }}</td>
-                  <td class="text-xs-left">{{ props.item.idDriver }}</td>
-                  <td class="text-xs-left">{{ props.item.price }}</td>
-                  <td class="text-xs-left">{{ props.item.timeStampFull }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.rideKeyridedetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.statusridedetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.clientIdridedetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.idDriverridedetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.priceridedetails }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.timeStampFullridedetails }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -361,7 +409,9 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.userFinishPoint }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.userFinishPointallUsersDestinations }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -387,8 +437,19 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
-                  <td class="text-xs-left">{{ props.item.price }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.keyUserallClientsSpendings }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{
+                      props.item.priceallClientsSpendings.toLocaleString(
+                        locale,
+                        {
+                          style: "decimal",
+                        }
+                      )
+                    }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -414,8 +475,12 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
-                  <td class="text-xs-left">{{ props.item.earning }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.keyUserallDriversEarnings }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.earningallDriversEarnings.toFixed(2) }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -441,8 +506,12 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
-                  <td class="text-xs-left">{{ props.item.rides }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.keyUserallClientsNoRides }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.ridesallClientsNoRides }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -468,8 +537,12 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
-                  <td class="text-xs-left">{{ props.item.rides }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.keyUserallDriversNoRides }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{ props.item.ridesallDriversNoRides }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -495,8 +568,14 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
-                  <td class="text-xs-left">{{ props.item.ratingForClient }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.keyUserallClientsAvgRating }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{
+                      props.item.ratingForClientallClientsAvgRating.toFixed(2)
+                    }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -522,8 +601,14 @@
                   </v-tooltip>
                 </template>
                 <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">{{ props.item.keyUser }}</td>
-                  <td class="text-xs-left">{{ props.item.ratingForDriver }}</td>
+                  <td class="text-xs-left">
+                    {{ props.item.keyUserallDriversAvgRating }}
+                  </td>
+                  <td class="text-xs-left">
+                    {{
+                      props.item.ratingForDriverallDriversAvgRating.toFixed(2)
+                    }}
+                  </td>
                 </template>
               </v-data-table>
             </v-card-text>
@@ -548,6 +633,28 @@
             </v-card-title>
             <v-card-text>
               <div id="piechartTicketsStatus"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>
+              Rides status
+            </v-card-title>
+            <v-card-text>
+              <div id="piechartRidesStatus"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>
+              Cancelled rides status
+            </v-card-title>
+            <v-card-text>
+              <div id="piechartCancelledRides"></div>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -582,6 +689,11 @@ export default {
   data() {
     return {
       topusersType: [],
+      rideCancelledByClient: 0,
+      clientDidntShow: 0,
+      driverDidntShow: 0,
+      ridesFinished: 0,
+      ridesUnfinished: 0,
       usersClients: 0,
       usersDrivers: 0,
       ticketsOpened: 0,
@@ -614,64 +726,72 @@ export default {
       pagination: {
         itemsPerPage: 5,
       },
-      headers: [
-        { text: "User Key", align: "left", value: "key" },
-        { text: "Last Name", value: "lastName" },
-        { text: "First Name", value: "firstName" },
-        { text: "Birth Date", value: "birthDate" },
-        { text: "Email", value: "email" },
-        { text: "Residency", value: "location" },
+      headersusersdetails: [
+        { text: "User Key", align: "left", value: "userKeyuserdetails" },
+        { text: "Last Name", value: "lastNameuserdetails" },
+        { text: "First Name", value: "firstNameuserdetails" },
+        { text: "Birth Date", value: "birthDateuserdetails" },
+        { text: "Email", value: "emailuserdetails" },
+        { text: "Residency", value: "locationuserdetails" },
       ],
-      headersdrivers: [
-        { text: "Driver Key", align: "left", value: "key" },
-        { text: "Verification Status", value: "checkStatus" },
-        { text: "Expiration Date ID", value: "expireDateID" },
-        { text: "Expiration Date ITP", value: "expireDateITP" },
-        { text: "Expiration Date Insurance", value: "expireDateInsurance" },
-        { text: "Expiration Date License", value: "expireDateLicense" },
-        { text: "Expiration Date RCA", value: "expireDateRCA" },
+      headersdriversdetails: [
+        { text: "Driver Key", align: "left", value: "driverKeydriverdetails" },
+        { text: "Verification Status", value: "checkStatusdriverdetails" },
+        { text: "Expiration Date ID", value: "expireDateIDdriverdetails" },
+        { text: "Expiration Date ITP", value: "expireDateITPdriverdetails" },
+        {
+          text: "Expiration Date Insurance",
+          value: "expireDateInsurancedriverdetails",
+        },
+        {
+          text: "Expiration Date License",
+          value: "expireDateLicensedriverdetails",
+        },
+        { text: "Expiration Date RCA", value: "expireDateRCAdriverdetails" },
       ],
-      headerstickets: [
-        { text: "Ticket Key", align: "left", value: "key" },
-        { text: "User ID", value: "userID" },
-        { text: "Status", value: "ticketStatus" },
-        { text: "User Full Name", value: "userFullName" },
-        { text: "User Email", value: "email" },
-        { text: "Subject", value: "subject" },
-        { text: "Query", value: "query" },
+      headersticketsdetails: [
+        { text: "Ticket Key", align: "left", value: "ticketKeyticketdetails" },
+        { text: "User ID", value: "userIDticketdetails" },
+        { text: "Status", value: "ticketStatusticketdetails" },
+        { text: "User Full Name", value: "userFullNameticketdetails" },
+        { text: "User Email", value: "emailticketdetails" },
+        { text: "Subject", value: "subjectticketdetails" },
+        { text: "Query", value: "queryticketdetails" },
       ],
-      headersrides: [
-        { text: "Ride Key", align: "left", value: "key" },
-        { text: "Status", value: "status" },
-        { text: "Client ID", value: "clientId" },
-        { text: "Driver ID", value: "idDriver" },
-        { text: "Price", value: "price" },
-        { text: "Time Stamp", value: "timeStampFull" },
+      headersridesdetails: [
+        { text: "Ride Key", align: "left", value: "rideKeyridedetails" },
+        { text: "Status", value: "statusridedetails" },
+        { text: "Client ID", value: "clientIdridedetails" },
+        { text: "Driver ID", value: "idDriverridedetails" },
+        { text: "Price", value: "priceridedetails" },
+        { text: "Time Stamp", value: "timeStampFullridedetails" },
       ],
-      headersuniquedestination: [{ text: "Address", value: "userFinishPoint" }],
+      headersuniquedestination: [
+        { text: "Address", value: "userFinishPointallUsersDestinations" },
+      ],
       headersallclientsspendings: [
-        { text: "User ID", value: "keyUser" },
-        { text: "Value", value: "price" },
+        { text: "User ID", value: "keyUserallClientsSpendings" },
+        { text: "Value", value: "priceallClientsSpendings" },
       ],
       headersalldriversearnings: [
-        { text: "User ID", value: "keyUser" },
-        { text: "Value", value: "earning" },
+        { text: "User ID", value: "keyUserallDriversEarnings" },
+        { text: "Value", value: "earningallDriversEarnings" },
       ],
       headersallclientsnoofrides: [
-        { text: "User ID", value: "keyUser" },
-        { text: "Value", value: "rides" },
+        { text: "Client ID", value: "keyUserallClientsNoRides" },
+        { text: "Value", value: "ridesallClientsNoRides" },
       ],
       headersalldriversnoofrides: [
-        { text: "User ID", value: "keyUser" },
-        { text: "Value", value: "rides" },
+        { text: "Driver ID", value: "keyUserallDriversNoRides" },
+        { text: "Value", value: "ridesallDriversNoRides" },
       ],
       headersallclientsavgrating: [
-        { text: "User ID", value: "keyUser" },
-        { text: "Value", value: "ratingForClient" },
+        { text: "User ID", value: "keyUserallClientsAvgRating" },
+        { text: "Value", value: "ratingForClientallClientsAvgRating" },
       ],
       headersalldriversavgrating: [
-        { text: "User ID", value: "keyUser" },
-        { text: "Value", value: "ratingForDriver" },
+        { text: "User ID", value: "keyUserallDriversAvgRating" },
+        { text: "Value", value: "ratingForDriverallDriversAvgRating" },
       ],
     };
   },
@@ -700,6 +820,10 @@ export default {
     this.topusersbyType();
     this.piechartTicketsStatus();
     this.ticketsStatus();
+    this.ridesStatus();
+    this.piechartRidesStatus();
+    this.cancelledRides();
+    this.piechartCancelledRides();
     this.barchartAgeFrequency();
   },
   computed: {},
@@ -716,12 +840,12 @@ export default {
             const keysUsers = Object.keys(snap.val());
             keysUsers.forEach((key) => {
               const userdetails = {};
-              userdetails.birthDate = myObj[key].birthDate;
-              userdetails.location = myObj[key].location;
-              userdetails.firstName = myObj[key].firstName;
-              userdetails.lastName = myObj[key].lastName;
-              userdetails.email = myObj[key].email;
-              userdetails.key = key;
+              userdetails.birthDateuserdetails = myObj[key].birthDate;
+              userdetails.locationuserdetails = myObj[key].location;
+              userdetails.firstNameuserdetails = myObj[key].firstName;
+              userdetails.lastNameuserdetails = myObj[key].lastName;
+              userdetails.emailuserdetails = myObj[key].email;
+              userdetails.userKeyuserdetails = key;
               alluserdetails.push(userdetails);
             });
             this.items = alluserdetails;
@@ -847,14 +971,17 @@ export default {
             const keysDrivers = Object.keys(snap.val());
             keysDrivers.forEach((key) => {
               const driverdetails = {};
-              driverdetails.checkStatus = myObj[key].checkStatus;
-              driverdetails.expireDateID = myObj[key].expireDateID;
-              driverdetails.expireDateITP = myObj[key].expireDateITP;
-              driverdetails.expireDateInsurance =
+              driverdetails.checkStatusdriverdetails = myObj[key].checkStatus;
+              driverdetails.expireDateIDdriverdetails = myObj[key].expireDateID;
+              driverdetails.expireDateITPdriverdetails =
+                myObj[key].expireDateITP;
+              driverdetails.expireDateInsurancedriverdetails =
                 myObj[key].expireDateInsurance;
-              driverdetails.expireDateLicense = myObj[key].expireDateLicense;
-              driverdetails.expireDateRCA = myObj[key].expireDateRCA;
-              driverdetails.key = key;
+              driverdetails.expireDateLicensedriverdetails =
+                myObj[key].expireDateLicense;
+              driverdetails.expireDateRCAdriverdetails =
+                myObj[key].expireDateRCA;
+              driverdetails.driverKeydriverdetails = key;
               alldriverdetails.push(driverdetails);
             });
             this.itemsdrivers = alldriverdetails;
@@ -876,13 +1003,13 @@ export default {
             const keysTickets = Object.keys(snap.val());
             keysTickets.forEach((key) => {
               const ticketdetails = {};
-              ticketdetails.userFullName = myObj[key].userFullName;
-              ticketdetails.userID = myObj[key].userID;
-              ticketdetails.email = myObj[key].email;
-              ticketdetails.subject = myObj[key].subject;
-              ticketdetails.query = myObj[key].query;
-              ticketdetails.ticketStatus = myObj[key].ticketStatus;
-              ticketdetails.key = key;
+              ticketdetails.userFullNameticketdetails = myObj[key].userFullName;
+              ticketdetails.userIDticketdetails = myObj[key].userID;
+              ticketdetails.emailticketdetails = myObj[key].email;
+              ticketdetails.subjectticketdetails = myObj[key].subject;
+              ticketdetails.queryticketdetails = myObj[key].query;
+              ticketdetails.ticketStatusticketdetails = myObj[key].ticketStatus;
+              ticketdetails.ticketKeyticketdetails = key;
               allticketdetails.push(ticketdetails);
             });
             this.itemstickets = allticketdetails;
@@ -904,12 +1031,12 @@ export default {
             const keysRides = Object.keys(snap.val());
             keysRides.forEach((key) => {
               const ridedetails = {};
-              ridedetails.status = myObj[key].status;
-              ridedetails.clientId = myObj[key].clientId;
-              ridedetails.idDriver = myObj[key].idDriver;
-              ridedetails.price = myObj[key].price;
-              ridedetails.timeStampFull = myObj[key].timeStampFull;
-              ridedetails.key = key;
+              ridedetails.statusridedetails = myObj[key].status;
+              ridedetails.clientIdridedetails = myObj[key].clientId;
+              ridedetails.idDriverridedetails = myObj[key].idDriver;
+              ridedetails.priceridedetails = myObj[key].price;
+              ridedetails.timeStampFullridedetails = myObj[key].timeStampFull;
+              ridedetails.rideKeyridedetails = key;
               allridedetails.push(ridedetails);
             });
             this.itemsrides = allridedetails;
@@ -1077,7 +1204,7 @@ export default {
             });
             uniqueArray.forEach((item) => {
               const uniqueArrayArtificiu = {};
-              uniqueArrayArtificiu.userFinishPoint = item;
+              uniqueArrayArtificiu.userFinishPointallUsersDestinations = item;
               uniqueArray2.push(uniqueArrayArtificiu);
             });
             this.alluniquedestinations = uniqueArray2;
@@ -1101,22 +1228,22 @@ export default {
             keysUsers.forEach((key) => {
               const keysHistory = Object.keys(myObj[key]);
               keysHistory.forEach((key1) => {
-                // allSpendings.push(myObj[key][key1].price);
                 const allSpendings = {};
-                allSpendings.price = myObj[key][key1].price;
-                allSpendings.keyRide = key1;
-                allSpendings.keyUser = key;
+                allSpendings.priceallClientsSpendings = myObj[key][key1].price;
+                allSpendings.keyRideallClientsSpendings = key1;
+                allSpendings.keyUserallClientsSpendings = key;
                 allSpend.push(allSpendings);
               });
             });
             allSpend.forEach((item) => {
-              let sums = sumsArray[item.keyUser];
+              let sums = sumsArray[item.keyUserallClientsSpendings];
               if (sums) {
-                sums.price += item.price;
+                (sums.priceallClientsSpendings +=
+                  item.priceallClientsSpendings).toFixed(2);
               } else {
-                sumsArray[item.keyUser] = {
-                  keyUser: item.keyUser,
-                  price: item.price,
+                sumsArray[item.keyUserallClientsSpendings] = {
+                  keyUserallClientsSpendings: item.keyUserallClientsSpendings,
+                  priceallClientsSpendings: item.priceallClientsSpendings,
                 };
               }
             });
@@ -1147,20 +1274,22 @@ export default {
               keysHistory.forEach((key1) => {
                 // allSpendings.push(myObj[key][key1].price);
                 const allEarnings = {};
-                allEarnings.earning = myObj[key][key1].earning;
-                allEarnings.keyRide = key1;
-                allEarnings.keyUser = key;
+                allEarnings.earningallDriversEarnings =
+                  myObj[key][key1].earning;
+                allEarnings.keyRideallDriversEarnings = key1;
+                allEarnings.keyUserallDriversEarnings = key;
                 allEarned.push(allEarnings);
               });
             });
             allEarned.forEach((item) => {
-              let sums = sumsArray[item.keyUser];
+              let sums = sumsArray[item.keyUserallDriversEarnings];
               if (sums) {
-                sums.earning += item.earning;
+                sums.earningallDriversEarnings +=
+                  item.earningallDriversEarnings;
               } else {
-                sumsArray[item.keyUser] = {
-                  keyUser: item.keyUser,
-                  earning: item.earning,
+                sumsArray[item.keyUserallDriversEarnings] = {
+                  keyUserallDriversEarnings: item.keyUserallDriversEarnings,
+                  earningallDriversEarnings: item.earningallDriversEarnings,
                 };
               }
             });
@@ -1188,19 +1317,19 @@ export default {
               const keysHistory = Object.keys(myObj[key]);
               keysHistory.forEach((key1) => {
                 const allClientsRides = {};
-                allClientsRides.keyRide = key1;
-                allClientsRides.keyUser = key;
+                allClientsRides.keyRideallClientsNoRides = key1;
+                allClientsRides.keyUserallClientsNoRides = key;
                 allCRides.push(allClientsRides);
               });
             });
             allCRides.forEach((item) => {
-              let sums = sumsArray[item.keyUser];
+              let sums = sumsArray[item.keyUserallClientsNoRides];
               if (sums) {
-                sums.rides += 1;
+                sums.ridesallClientsNoRides += 1;
               } else {
-                sumsArray[item.keyUser] = {
-                  keyUser: item.keyUser,
-                  rides: 1,
+                sumsArray[item.keyUserallClientsNoRides] = {
+                  keyUserallClientsNoRides: item.keyUserallClientsNoRides,
+                  ridesallClientsNoRides: 1,
                 };
               }
             });
@@ -1230,19 +1359,19 @@ export default {
               const keysHistory = Object.keys(myObj[key]);
               keysHistory.forEach((key1) => {
                 const allDriversRides = {};
-                allDriversRides.keyRide = key1;
-                allDriversRides.keyUser = key;
+                allDriversRides.keyRideallDriversNoRides = key1;
+                allDriversRides.keyUserallDriversNoRides = key;
                 allDRides.push(allDriversRides);
               });
             });
             allDRides.forEach((item) => {
-              let sums = sumsArray[item.keyUser];
+              let sums = sumsArray[item.keyUserallDriversNoRides];
               if (sums) {
-                sums.rides += 1;
+                sums.ridesallDriversNoRides += 1;
               } else {
-                sumsArray[item.keyUser] = {
-                  keyUser: item.keyUser,
-                  rides: 1,
+                sumsArray[item.keyUserallDriversNoRides] = {
+                  keyUserallDriversNoRides: item.keyUserallDriversNoRides,
+                  ridesallDriversNoRides: 1,
                 };
               }
             });
@@ -1272,26 +1401,29 @@ export default {
               const keysHistory = Object.keys(myObj[key]);
               keysHistory.forEach((key1) => {
                 const allClientsAvgRating = {};
-                allClientsAvgRating.ratingForClient =
+                allClientsAvgRating.ratingForClientallClientsAvgRating =
                   myObj[key][key1].ratingForClient;
-                allClientsAvgRating.keyUser = key;
+                allClientsAvgRating.keyUserallClientsAvgRating = key;
                 allCAvgRating.push(allClientsAvgRating);
               });
             });
             allCAvgRating.forEach((item) => {
-              let sums = sumsArray[item.keyUser];
+              let sums = sumsArray[item.keyUserallClientsAvgRating];
               if (sums) {
-                (sums.ratingForClientNominator += item.ratingForClient),
-                  (sums.ratingForClientDenominator += 1),
-                  (sums.ratingForClient =
-                    sums.ratingForClientNominator /
-                    sums.ratingForClientDenominator);
+                (sums.ratingForClientNominatorallClientsAvgRating +=
+                  item.ratingForClientallClientsAvgRating),
+                  (sums.ratingForClientDenominatorallClientsAvgRating += 1),
+                  (sums.ratingForClientallClientsAvgRating =
+                    sums.ratingForClientNominatorallClientsAvgRating /
+                    sums.ratingForClientDenominatorallClientsAvgRating);
               } else {
-                sumsArray[item.keyUser] = {
-                  keyUser: item.keyUser,
-                  ratingForClientNominator: item.ratingForClient,
-                  ratingForClientDenominator: 1,
-                  ratingForClient: item.ratingForClient,
+                sumsArray[item.keyUserallClientsAvgRating] = {
+                  keyUserallClientsAvgRating: item.keyUserallClientsAvgRating,
+                  ratingForClientNominatorallClientsAvgRating:
+                    item.ratingForClientallClientsAvgRating,
+                  ratingForClientDenominatorallClientsAvgRating: 1,
+                  ratingForClientallClientsAvgRating:
+                    item.ratingForClientallClientsAvgRating,
                 };
               }
             });
@@ -1321,26 +1453,29 @@ export default {
               const keysHistory = Object.keys(myObj[key]);
               keysHistory.forEach((key1) => {
                 const allDriversAvgRating = {};
-                allDriversAvgRating.ratingForDriver =
+                allDriversAvgRating.ratingForDriverallDriversAvgRating =
                   myObj[key][key1].ratingForDriver;
-                allDriversAvgRating.keyUser = key;
+                allDriversAvgRating.keyUserallDriversAvgRating = key;
                 allDAvgRating.push(allDriversAvgRating);
               });
             });
             allDAvgRating.forEach((item) => {
-              let sums = sumsArray[item.keyUser];
+              let sums = sumsArray[item.keyUserallDriversAvgRating];
               if (sums) {
-                (sums.ratingForDriverNominator += item.ratingForDriver),
-                  (sums.ratingForDriverDenominator += 1),
-                  (sums.ratingForDriver =
-                    sums.ratingForDriverNominator /
-                    sums.ratingForDriverDenominator);
+                (sums.ratingForDriverNominatorallDriversAvgRating +=
+                  item.ratingForDriverallDriversAvgRating),
+                  (sums.ratingForDriverDenominatorallDriversAvgRating += 1),
+                  (sums.ratingForDriverallDriversAvgRating =
+                    sums.ratingForDriverNominatorallDriversAvgRating /
+                    sums.ratingForDriverDenominatorallDriversAvgRating);
               } else {
-                sumsArray[item.keyUser] = {
-                  keyUser: item.keyUser,
-                  ratingForDriverNominator: item.ratingForDriver,
-                  ratingForDriverDenominator: 1,
-                  ratingForDriver: item.ratingForDriver,
+                sumsArray[item.keyUserallDriversAvgRating] = {
+                  keyUserallDriversAvgRating: item.keyUserallDriversAvgRating,
+                  ratingForDriverNominatorallDriversAvgRating:
+                    item.ratingForDriverallDriversAvgRating,
+                  ratingForDriverDenominatorallDriversAvgRating: 1,
+                  ratingForDriverallDriversAvgRating:
+                    item.ratingForDriverallDriversAvgRating,
                 };
               }
             });
@@ -1560,8 +1695,59 @@ export default {
           }
         );
     },
+    ridesStatus() {
+      return firebase
+        .database()
+        .ref("Rides")
+        .on(
+          "value",
+          (snap) => {
+            let myObj = snap.val();
+            let keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              if (myObj[key].status === "ride finished") {
+                this.ridesFinished = +this.ridesFinished + 1;
+              } else {
+                this.ridesUnfinished = +this.ridesUnfinished + 1;
+              }
+            });
+          },
+          function(error) {
+            console.log("ridesStatus Error: " + error.message);
+          }
+        );
+    },
+    cancelledRides() {
+      return firebase
+        .database()
+        .ref("Rides")
+        .on(
+          "value",
+          (snap) => {
+            let myObj = snap.val();
+            let keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              if (myObj[key].status === "ride cancelled by client") {
+                this.rideCancelledByClient = +this.rideCancelledByClient + 1;
+              } else {
+                if (myObj[key].status === "driver didn't show") {
+                  this.driverDidntShow = +this.driverDidntShow + 1;
+                } else {
+                  if (myObj[key].status === "client didn't show") {
+                    this.clientDidntShow = +this.clientDidntShow + 1;
+                  }
+                }
+              }
+            });
+          },
+          function(error) {
+            console.log("cancelledRides Error: " + error.message);
+          }
+        );
+    },
     piechartUsersType() {
-      let colors = ["#8df85c", "#5cf8e8", "#5caaf8", "#e8000c"];
+      let colors1 = ["#8df85c", "#5cf8e8"];
+      let colors2 = ["#5caaf8", "#e8000c"];
       window.google.charts.load("visualization", "1.0", {
         packages: ["corechart", "bar", "table"],
         callback: () => {
@@ -1579,8 +1765,8 @@ export default {
               backgroundColor: "transparent",
               legend: { textStyle: { color: "white" } },
               colors: [
-                "003dd8",
-                colors[Math.floor(Math.random() * colors.length)],
+                colors1[Math.floor(Math.random() * colors1.length)],
+                colors2[Math.floor(Math.random() * colors2.length)],
               ],
             }
           );
@@ -1588,7 +1774,8 @@ export default {
       });
     },
     piechartTicketsStatus() {
-      let colors = ["#8df85c", "#5cf8e8", "#5caaf8", "#e8000c"];
+      let colors1 = ["#8df85c", "#5cf8e8"];
+      let colors2 = ["#5caaf8", "#e8000c"];
       window.google.charts.load("visualization", "1.0", {
         packages: ["corechart", "bar", "table"],
         callback: () => {
@@ -1606,8 +1793,67 @@ export default {
               backgroundColor: "transparent",
               legend: { textStyle: { color: "white" } },
               colors: [
-                "003dd8",
-                colors[Math.floor(Math.random() * colors.length)],
+                colors1[Math.floor(Math.random() * colors1.length)],
+                colors2[Math.floor(Math.random() * colors2.length)],
+              ],
+            }
+          );
+        },
+      });
+    },
+    piechartRidesStatus() {
+      let colors1 = ["#8df85c", "#5cf8e8"];
+      let colors2 = ["#5caaf8", "#e8000c"];
+      window.google.charts.load("visualization", "1.0", {
+        packages: ["corechart", "bar", "table"],
+        callback: () => {
+          let chart = new window.google.visualization.PieChart(
+            document.getElementById("piechartRidesStatus")
+          );
+          chart.draw(
+            window.google.visualization.arrayToDataTable([
+              ["Type", "Number"],
+              ["Finished", this.ridesFinished],
+              ["Unfinished", this.ridesUnfinished],
+            ]),
+            {
+              is3D: false,
+              backgroundColor: "transparent",
+              legend: { textStyle: { color: "white" } },
+              colors: [
+                colors1[Math.floor(Math.random() * colors1.length)],
+                colors2[Math.floor(Math.random() * colors2.length)],
+              ],
+            }
+          );
+        },
+      });
+    },
+    piechartCancelledRides() {
+      let colors1 = ["#8df85c", "#5cf8e8"];
+      let colors2 = ["#5caaf8", "#e8000c"];
+      let colors3 = ["#06912b", "#ff8c00"];
+      window.google.charts.load("visualization", "1.0", {
+        packages: ["corechart", "bar", "table"],
+        callback: () => {
+          let chart = new window.google.visualization.PieChart(
+            document.getElementById("piechartCancelledRides")
+          );
+          chart.draw(
+            window.google.visualization.arrayToDataTable([
+              ["Type", "Number"],
+              ["Ride cancelled by client", this.rideCancelledByClient],
+              ["Client didn't show", this.clientDidntShow],
+              ["Driver didn't show", this.driverDidntShow],
+            ]),
+            {
+              is3D: false,
+              backgroundColor: "transparent",
+              legend: { textStyle: { color: "white" } },
+              colors: [
+                colors1[Math.floor(Math.random() * colors1.length)],
+                colors2[Math.floor(Math.random() * colors2.length)],
+                colors3[Math.floor(Math.random() * colors3.length)],
               ],
             }
           );
