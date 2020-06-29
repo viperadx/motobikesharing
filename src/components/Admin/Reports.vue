@@ -442,11 +442,8 @@
                   </td>
                   <td class="text-xs-left">
                     {{
-                      props.item.priceallClientsSpendings.toLocaleString(
-                        locale,
-                        {
-                          style: "decimal",
-                        }
+                      numeral(props.item.priceallClientsSpendings).format(
+                        "0.00"
                       )
                     }}
                   </td>
@@ -479,7 +476,7 @@
                     {{ props.item.keyUserallDriversEarnings }}
                   </td>
                   <td class="text-xs-left">
-                    {{ props.item.earningallDriversEarnings.toFixed(2) }}
+                    {{ props.item.earningallDriversEarnings }}
                   </td>
                 </template>
               </v-data-table>
@@ -572,9 +569,7 @@
                     {{ props.item.keyUserallClientsAvgRating }}
                   </td>
                   <td class="text-xs-left">
-                    {{
-                      props.item.ratingForClientallClientsAvgRating.toFixed(2)
-                    }}
+                    {{ props.item.ratingForClientallClientsAvgRating }}
                   </td>
                 </template>
               </v-data-table>
@@ -605,9 +600,7 @@
                     {{ props.item.keyUserallDriversAvgRating }}
                   </td>
                   <td class="text-xs-left">
-                    {{
-                      props.item.ratingForDriverallDriversAvgRating.toFixed(2)
-                    }}
+                    {{ props.item.ratingForDriverallDriversAvgRating }}
                   </td>
                 </template>
               </v-data-table>
@@ -659,6 +652,50 @@
           </v-card>
         </v-flex>
 
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>
+              Users gender
+            </v-card-title>
+            <v-card-text>
+              <div id="piechartUsersGender"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>
+              Clients gender
+            </v-card-title>
+            <v-card-text>
+              <div id="piechartClientsGender"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>
+              Drivers gender
+            </v-card-title>
+            <v-card-text>
+              <div id="piechartDriversGender"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>
+              Drivers verification status
+            </v-card-title>
+            <v-card-text>
+              <div id="piechartDriversCheckStatus"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
         <v-flex xs12>
           <v-card>
             <v-card-title>
@@ -684,11 +721,30 @@ import moment from "moment";
 import Chartkick from "vue-chartkick";
 import Chart from "chart.js";
 Vue.use(Chartkick.use(Chart));
+
+Vue.filter("formatNumber", function(value) {
+  return this.numeral(value).format("0.00"); // displaying other groupings/separators is possible, look at the docs
+});
+
 export default {
   name: "Reports",
   data() {
     return {
       topusersType: [],
+      driverCheckStatusVerified: 0,
+      driverCheckStatusNotVerified: 0,
+      userMale: 0,
+      userFemale: 0,
+      userOther: 0,
+      userUnspecified: 0,
+      clientMale: 0,
+      clientFemale: 0,
+      clientOther: 0,
+      clientUnspecified: 0,
+      driverMale: 0,
+      driverFemale: 0,
+      driverOther: 0,
+      driverUnspecified: 0,
       rideCancelledByClient: 0,
       clientDidntShow: 0,
       driverDidntShow: 0,
@@ -824,6 +880,14 @@ export default {
     this.piechartRidesStatus();
     this.cancelledRides();
     this.piechartCancelledRides();
+    this.usersGender();
+    this.clientsGender();
+    this.driversGender();
+    this.driversCheckStatus();
+    this.piechartUsersGender();
+    this.piechartClientsGender();
+    this.piechartDriversGender();
+    this.piechartDriversCheckStatus();
     this.barchartAgeFrequency();
   },
   computed: {},
@@ -1744,6 +1808,260 @@ export default {
             console.log("cancelledRides Error: " + error.message);
           }
         );
+    },
+    usersGender() {
+      return firebase
+        .database()
+        .ref("Users")
+        .on(
+          "value",
+          (snap) => {
+            let myObj = snap.val();
+            let keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              if (myObj[key].gender === "Male") {
+                this.userMale = +this.userMale + 1;
+              } else {
+                if (myObj[key].gender === "Female") {
+                  this.userFemale = +this.userFemale + 1;
+                } else {
+                  if (myObj[key].gender === "Other") {
+                    this.userOther = +this.userOther + 1;
+                  } else {
+                    if (myObj[key].gender === "Unspecified") {
+                      this.userUnspecified = +this.userUnspecified + 1;
+                    }
+                  }
+                }
+              }
+            });
+          },
+          function(error) {
+            console.log("usersGender Error: " + error.message);
+          }
+        );
+    },
+    clientsGender() {
+      return firebase
+        .database()
+        .ref("Users")
+        .on(
+          "value",
+          (snap) => {
+            let myObj = snap.val();
+            let keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              if (myObj[key].idDriver !== null) {
+                if (myObj[key].gender === "Male") {
+                  this.clientMale = +this.clientMale + 1;
+                } else {
+                  if (myObj[key].gender === "Female") {
+                    this.clientFemale = +this.clientFemale + 1;
+                  } else {
+                    if (myObj[key].gender === "Other") {
+                      this.clientOther = +this.clientOther + 1;
+                    } else {
+                      if (myObj[key].gender === "Unspecified") {
+                        this.clientUnspecified = +this.clientUnspecified + 1;
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          },
+          function(error) {
+            console.log("clientsGender Error: " + error.message);
+          }
+        );
+    },
+    driversGender() {
+      return firebase
+        .database()
+        .ref("Users")
+        .on(
+          "value",
+          (snap) => {
+            let myObj = snap.val();
+            let keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              if (myObj[key].idDriver) {
+                if (myObj[key].gender === "Male") {
+                  this.driverMale = +this.driverMale + 1;
+                } else {
+                  if (myObj[key].gender === "Female") {
+                    this.driverFemale = +this.driverFemale + 1;
+                  } else {
+                    if (myObj[key].gender === "Other") {
+                      this.driverOther = +this.driverOther + 1;
+                    } else {
+                      if (myObj[key].gender === "Unspecified") {
+                        this.driverUnspecified = +this.driverUnspecified + 1;
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          },
+          function(error) {
+            console.log("driversGender Error: " + error.message);
+          }
+        );
+    },
+    driversCheckStatus() {
+      return firebase
+        .database()
+        .ref("Drivers")
+        .on(
+          "value",
+          (snap) => {
+            let myObj = snap.val();
+            let keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              if (myObj[key].checkStatus === "verified") {
+                this.driverCheckStatusVerified =
+                  +this.driverCheckStatusVerified + 1;
+              } else {
+                this.driverCheckStatusNotVerified =
+                  +this.driverCheckStatusNotVerified + 1;
+              }
+            });
+          },
+          function(error) {
+            console.log("driversCheckStatus Error: " + error.message);
+          }
+        );
+    },
+    piechartDriversCheckStatus() {
+      let colors1 = ["#8df85c", "#5cf8e8"];
+      let colors2 = ["#5caaf8", "#e8000c"];
+      window.google.charts.load("visualization", "1.0", {
+        packages: ["corechart", "bar", "table"],
+        callback: () => {
+          let chart = new window.google.visualization.PieChart(
+            document.getElementById("piechartDriversCheckStatus")
+          );
+          chart.draw(
+            window.google.visualization.arrayToDataTable([
+              ["Type", "Number"],
+              ["Verified", this.driverCheckStatusVerified],
+              ["Not verified", this.driverCheckStatusNotVerified],
+            ]),
+            {
+              is3D: false,
+              backgroundColor: "transparent",
+              legend: { textStyle: { color: "white" } },
+              colors: [
+                colors1[Math.floor(Math.random() * colors1.length)],
+                colors2[Math.floor(Math.random() * colors2.length)],
+              ],
+            }
+          );
+        },
+      });
+    },
+    piechartUsersGender() {
+      let colors1 = ["#8df85c"];
+      let colors2 = ["#5cf8e8"];
+      let colors3 = ["#5caaf8"];
+      let colors4 = ["#e8000c"];
+      window.google.charts.load("visualization", "1.0", {
+        packages: ["corechart", "bar", "table"],
+        callback: () => {
+          let chart = new window.google.visualization.PieChart(
+            document.getElementById("piechartUsersGender")
+          );
+          chart.draw(
+            window.google.visualization.arrayToDataTable([
+              ["Type", "Number"],
+              ["Male", this.userMale],
+              ["Female", this.userFemale],
+              ["Other", this.userOther],
+              ["Unspecified", this.userUnspecified],
+            ]),
+            {
+              is3D: false,
+              backgroundColor: "transparent",
+              legend: { textStyle: { color: "white" } },
+              colors: [
+                colors1[Math.floor(Math.random() * colors1.length)],
+                colors2[Math.floor(Math.random() * colors2.length)],
+                colors3[Math.floor(Math.random() * colors3.length)],
+                colors4[Math.floor(Math.random() * colors4.length)],
+              ],
+            }
+          );
+        },
+      });
+    },
+    piechartClientsGender() {
+      let colors1 = ["#8df85c"];
+      let colors2 = ["#5cf8e8"];
+      let colors3 = ["#5caaf8"];
+      let colors4 = ["#e8000c"];
+      window.google.charts.load("visualization", "1.0", {
+        packages: ["corechart", "bar", "table"],
+        callback: () => {
+          let chart = new window.google.visualization.PieChart(
+            document.getElementById("piechartClientsGender")
+          );
+          chart.draw(
+            window.google.visualization.arrayToDataTable([
+              ["Type", "Number"],
+              ["Male", this.clientMale],
+              ["Female", this.clientFemale],
+              ["Other", this.clientOther],
+              ["Unspecified", this.clientUnspecified],
+            ]),
+            {
+              is3D: false,
+              backgroundColor: "transparent",
+              legend: { textStyle: { color: "white" } },
+              colors: [
+                colors1[Math.floor(Math.random() * colors1.length)],
+                colors2[Math.floor(Math.random() * colors2.length)],
+                colors3[Math.floor(Math.random() * colors3.length)],
+                colors4[Math.floor(Math.random() * colors4.length)],
+              ],
+            }
+          );
+        },
+      });
+    },
+    piechartDriversGender() {
+      let colors1 = ["#8df85c"];
+      let colors2 = ["#5cf8e8"];
+      let colors3 = ["#5caaf8"];
+      let colors4 = ["#e8000c"];
+      window.google.charts.load("visualization", "1.0", {
+        packages: ["corechart", "bar", "table"],
+        callback: () => {
+          let chart = new window.google.visualization.PieChart(
+            document.getElementById("piechartDriversGender")
+          );
+          chart.draw(
+            window.google.visualization.arrayToDataTable([
+              ["Type", "Number"],
+              ["Male", this.driverMale],
+              ["Female", this.driverFemale],
+              ["Other", this.driverOther],
+              ["Unspecified", this.driverUnspecified],
+            ]),
+            {
+              is3D: false,
+              backgroundColor: "transparent",
+              legend: { textStyle: { color: "white" } },
+              colors: [
+                colors1[Math.floor(Math.random() * colors1.length)],
+                colors2[Math.floor(Math.random() * colors2.length)],
+                colors3[Math.floor(Math.random() * colors3.length)],
+                colors4[Math.floor(Math.random() * colors4.length)],
+              ],
+            }
+          );
+        },
+      });
     },
     piechartUsersType() {
       let colors1 = ["#8df85c", "#5cf8e8"];
