@@ -7,6 +7,9 @@ import store from "./store";
 import VueSimpleAlert from "vue-simple-alert";
 import VModal from 'vue-js-modal';
 import VueGoogleCharts from 'vue-google-charts';
+import vueNumeralFilterInstaller from 'vue-numeral-filter';
+
+Vue.use(vueNumeralFilterInstaller, { locale: 'en-gb' });
 
 Vue.use(VueGoogleCharts);
 

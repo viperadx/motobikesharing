@@ -442,9 +442,7 @@
                   </td>
                   <td class="text-xs-left">
                     {{
-                      numeral(props.item.priceallClientsSpendings).format(
-                        "0.00"
-                      )
+                      props.item.priceallClientsSpendings | numeral("$0,0.00")
                     }}
                   </td>
                 </template>
@@ -702,7 +700,29 @@
               Users frequency age
             </v-card-title>
             <v-card-text>
-              <div id="barchartAgeFrequency"></div>
+              <div id="barchartUsersAgeFrequency"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs12>
+          <v-card>
+            <v-card-title>
+              Clients frequency age
+            </v-card-title>
+            <v-card-text>
+              <div id="barchartClientsAgeFrequency"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs12>
+          <v-card>
+            <v-card-title>
+              Drivers frequency age
+            </v-card-title>
+            <v-card-text>
+              <div id="barchartDriversAgeFrequency"></div>
             </v-card-text>
           </v-card>
         </v-flex>
@@ -888,7 +908,9 @@ export default {
     this.piechartClientsGender();
     this.piechartDriversGender();
     this.piechartDriversCheckStatus();
-    this.barchartAgeFrequency();
+    this.barchartUsersAgeFrequency();
+    this.barchartClientsAgeFrequency();
+    this.barchartDriversAgeFrequency();
   },
   computed: {},
   methods: {
@@ -2178,7 +2200,7 @@ export default {
         },
       });
     },
-    barchartAgeFrequency() {
+    barchartUsersAgeFrequency() {
       let a = [];
       let b = [];
       let colors = ["#8df85c", "#5cf8e8", "#5caaf8", "#e8000c"];
@@ -2213,7 +2235,7 @@ export default {
           2,
         ]);
         var chart = new window.google.visualization.ColumnChart(
-          document.getElementById("barchartAgeFrequency")
+          document.getElementById("barchartUsersAgeFrequency")
         );
         chart.draw(view, {
           height: 400,
@@ -2221,7 +2243,121 @@ export default {
           legend: { position: "none", textStyle: { color: "white" } },
           backgroundColor: "transparent",
           hAxis: {
-            textPosition: "none",
+            textPosition: "bottom",
+            textStyle: { color: "#FFFFFF" },
+            gridlines: {
+              color: "#FFFFFF",
+            },
+            baselineColor: "#FFFFFF",
+          },
+          vAxis: {
+            textStyle: { color: "#FFFFFF" },
+            baselineColor: "#FFFFFF",
+          },
+        });
+      });
+    },
+    barchartClientsAgeFrequency() {
+      let a = [];
+      let b = [];
+      let colors = ["#8df85c", "#5cf8e8", "#5caaf8", "#e8000c"];
+      let prev;
+      this.allClientsAges.sort();
+      for (let i = 0; i < this.allClientsAges.length; i++) {
+        if (this.allClientsAges[i] !== prev) {
+          a.push(this.allClientsAges[i]);
+          b.push(1);
+        } else {
+          b[b.length - 1]++;
+        }
+        prev = this.allClientsAges[i];
+      }
+      let x = [["Years", "Frequency", { role: "style" }]];
+      for (let i = 0; i < a.length; i++) {
+        x.push([a[i], b[i], colors[Math.floor(Math.random() * colors.length)]]);
+      }
+      window.google.charts.setOnLoadCallback(() => {
+        var view = new window.google.visualization.DataView(
+          window.google.visualization.arrayToDataTable(x)
+        );
+        view.setColumns([
+          0,
+          1,
+          {
+            calc: "stringify",
+            sourceColumn: 1,
+            type: "string",
+            role: "annotation",
+          },
+          2,
+        ]);
+        var chart = new window.google.visualization.ColumnChart(
+          document.getElementById("barchartClientsAgeFrequency")
+        );
+        chart.draw(view, {
+          height: 400,
+          bar: { groupWidth: "95%" },
+          legend: { position: "none", textStyle: { color: "white" } },
+          backgroundColor: "transparent",
+          hAxis: {
+            textPosition: "bottom",
+            textStyle: { color: "#FFFFFF" },
+            gridlines: {
+              color: "#FFFFFF",
+            },
+            baselineColor: "#FFFFFF",
+          },
+          vAxis: {
+            textStyle: { color: "#FFFFFF" },
+            baselineColor: "#FFFFFF",
+          },
+        });
+      });
+    },
+    barchartDriversAgeFrequency() {
+      let a = [];
+      let b = [];
+      let colors = ["#8df85c", "#5cf8e8", "#5caaf8", "#e8000c"];
+      let prev;
+      this.allDriversAges.sort();
+      for (let i = 0; i < this.allDriversAges.length; i++) {
+        if (this.allDriversAges[i] !== prev) {
+          a.push(this.allDriversAges[i]);
+          b.push(1);
+        } else {
+          b[b.length - 1]++;
+        }
+        prev = this.allDriversAges[i];
+      }
+      let x = [["Years", "Frequency", { role: "style" }]];
+      for (let i = 0; i < a.length; i++) {
+        x.push([a[i], b[i], colors[Math.floor(Math.random() * colors.length)]]);
+      }
+      window.google.charts.setOnLoadCallback(() => {
+        var view = new window.google.visualization.DataView(
+          window.google.visualization.arrayToDataTable(x)
+        );
+        view.setColumns([
+          0,
+          1,
+          {
+            calc: "stringify",
+            sourceColumn: 1,
+            type: "string",
+            role: "annotation",
+          },
+          2,
+        ]);
+        var chart = new window.google.visualization.ColumnChart(
+          document.getElementById("barchartDriversAgeFrequency")
+        );
+        chart.draw(view, {
+          height: 400,
+          bar: { groupWidth: "95%" },
+          legend: { position: "none", textStyle: { color: "white" } },
+          backgroundColor: "transparent",
+          hAxis: {
+            textPosition: "bottom",
             textStyle: { color: "#FFFFFF" },
             gridlines: {
               color: "#FFFFFF",
