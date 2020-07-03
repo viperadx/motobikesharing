@@ -280,6 +280,7 @@ export default {
       let dayWrapper = moment(day);
       let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
       let completeString = dayWrapper.format("YYYY-MM-DD");
+      let yearMonthString = dayWrapper.format("YYYY-MM");
       let dayString = dayWrapper.format("DD");
       let monthString = dayWrapper.format("MM");
       let yearString = dayWrapper.format("YYYY");
@@ -300,6 +301,7 @@ export default {
         timeStampDay: dayString,
         timeStampMonth: monthString,
         timeStampYear: yearString,
+        timeStampYearMonth: yearMonthString,
         ratingForClient: "no input at the moment",
         ratingForDriver: "no input at the moment",
         userStartPoint: this.startLocationAddress,

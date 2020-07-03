@@ -913,7 +913,8 @@ export default new Vuex.Store({
               timeStampComplete: payload.ride.timeStampComplete,
               timeStampDay: payload.ride.timeStampDay,
               timeStampMonth: payload.ride.timeStampMonth,
-              timeStampYear: payload.ride.timeStampYear
+              timeStampYear: payload.ride.timeStampYear,
+              timeStampYearMonth: payload.ride.timeStampYearMonth
             })
         })
         .then(() => {
@@ -927,7 +928,8 @@ export default new Vuex.Store({
               timeStampComplete: payload.ride.timeStampComplete,
               timeStampDay: payload.ride.timeStampDay,
               timeStampMonth: payload.ride.timeStampMonth,
-              timeStampYear: payload.ride.timeStampYear
+              timeStampYear: payload.ride.timeStampYear,
+              timeStampYearMonth: payload.ride.timeStampYearMonth
             })
         })
         .catch(err => {

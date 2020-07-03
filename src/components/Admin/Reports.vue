@@ -390,34 +390,6 @@
           </v-card>
         </v-flex>
 
-        <v-flex xs12>
-          <v-card>
-            <v-card-title>All searched destinations </v-card-title>
-            <v-card-text>
-              <v-data-table
-                :headers="headersuniquedestination"
-                :options.sync="pagination"
-                :items="alluniquedestinations"
-                item-key="name"
-                class="elevation-1"
-              >
-                <template slot="headerCell" slot-scope="props">
-                  <v-tooltip bottom>
-                    <span slot="activator">
-                      {{ props.header.text }}
-                    </span>
-                  </v-tooltip>
-                </template>
-                <template slot="items" slot-scope="props">
-                  <td class="text-xs-left">
-                    {{ props.item.userFinishPointallUsersDestinations }}
-                  </td>
-                </template>
-              </v-data-table>
-            </v-card-text>
-          </v-card>
-        </v-flex>
-
         <v-flex xs6>
           <v-card>
             <v-card-title>All clients spendings </v-card-title>
@@ -482,6 +454,36 @@
           </v-card>
         </v-flex>
 
+        <v-flex xs12>
+          <v-card>
+            <v-card-title>MBS Income </v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headersincomeCalculation"
+                :options.sync="pagination"
+                :items="itemsincomeCalculation"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">
+                    {{ props.item.yearincomeCalculation }}
+                    {{ props.item.monthincomeCalculation }}
+                    {{ props.item.priceincomeCalculation }}
+                  </td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
         <v-flex xs6>
           <v-card>
             <v-card-title>Clients no. of rides </v-card-title>
@@ -537,6 +539,34 @@
                   </td>
                   <td class="text-xs-left">
                     {{ props.item.ridesallDriversNoRides }}
+                  </td>
+                </template>
+              </v-data-table>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
+        <v-flex xs12>
+          <v-card>
+            <v-card-title>All searched destinations </v-card-title>
+            <v-card-text>
+              <v-data-table
+                :headers="headersuniquedestination"
+                :options.sync="pagination"
+                :items="alluniquedestinations"
+                item-key="name"
+                class="elevation-1"
+              >
+                <template slot="headerCell" slot-scope="props">
+                  <v-tooltip bottom>
+                    <span slot="activator">
+                      {{ props.header.text }}
+                    </span>
+                  </v-tooltip>
+                </template>
+                <template slot="items" slot-scope="props">
+                  <td class="text-xs-left">
+                    {{ props.item.userFinishPointallUsersDestinations }}
                   </td>
                 </template>
               </v-data-table>
@@ -799,6 +829,7 @@ export default {
       itemsalldriversnoofrides: [],
       itemsallclientsavgrating: [],
       itemsalldriversavgrating: [],
+      itemsincomeCalculation: [],
       pagination: {
         itemsPerPage: 5,
       },
@@ -869,6 +900,11 @@ export default {
         { text: "User ID", value: "keyUserallDriversAvgRating" },
         { text: "Value", value: "ratingForDriverallDriversAvgRating" },
       ],
+      headersincomeCalculation: [
+        { text: "Year", value: "yearincomeCalculation" },
+        { text: "Month", value: "monthincomeCalculation" },
+        { text: "Value", value: "priceincomeCalculation" },
+      ],
     };
   },
   mounted() {
@@ -911,6 +947,7 @@ export default {
     this.barchartUsersAgeFrequency();
     this.barchartClientsAgeFrequency();
     this.barchartDriversAgeFrequency();
+    this.incomeCalculation();
   },
   computed: {},
   methods: {
@@ -2370,6 +2407,56 @@ export default {
           },
         });
       });
+    },
+    incomeCalculation() {
+      return firebase
+        .database()
+        .ref("UsersDestinationsHistory")
+        .on(
+          "value",
+          (snap) => {
+            let sumsArray = {};
+            let allSpend = [];
+            const myObj = snap.val();
+            const keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              const keysHistory = Object.keys(myObj[key]);
+              keysHistory.forEach((key1) => {
+                const allSpendings = {};
+                allSpendings.priceincomeCalculation = myObj[key][key1].price;
+                allSpendings.keyRideincomeCalculation = key1;
+                allSpendings.keyUserincomeCalculation = key;
+                allSpendings.monthincomeCalculation =
+                  myObj[key][key1].timeStampMonth;
+                allSpendings.yearincomeCalculation =
+                  myObj[key][key1].timeStampYear;
+                allSpendings.yearMonthincomeCalculation =
+                  myObj[key][key1].timeStampYearMonth;
+                allSpend.push(allSpendings);
+              });
+            });
+            allSpend.forEach((item) => {
+              let sums = sumsArray[item.yearMonthincomeCalculation];
+              if (sums) {
+                (sums.priceincomeCalculation +=
+                  item.priceincomeCalculation * 0.1).toFixed(2);
+              } else {
+                sumsArray[item.yearMonthincomeCalculation] = {
+                  monthincomeCalculation: item.monthincomeCalculation,
+                  yearincomeCalculation: item.yearincomeCalculation,
+                  yearMonthincomeCalculation: item.yearMonthincomeCalculation,
+                  priceincomeCalculation: item.priceincomeCalculation * 0.1,
+                };
+              }
+            });
+            this.itemsincomeCalculation = Object.keys(sumsArray).map((key) => {
+              return sumsArray[key];
+            });
+          },
+          (error) => {
+            console.log("incomeCalculation Error: " + error.message);
+          }
+        );
     },
   },
   created() {},
