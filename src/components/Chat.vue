@@ -22,14 +22,8 @@
         label="Please write your query here"
         id="query"
       ></v-textarea>
-      <!-- <div>{{ filenameSupport }}</div> -->
       <v-card-actions>
-        <input
-          type="file"
-          ref="fileInputSelfie"
-          @change="onPickedSupportFile"
-          id="fileSupport"
-        />
+        <input type="file" @change="onPickedSupportFile" id="fileSupport" />
         <v-spacer></v-spacer>
         <v-btn
           type="submit"
@@ -49,7 +43,7 @@ export default {
   data() {
     return {
       placeholder: null,
-      filenameSupport: null,
+      filenameSupport: "no file attached",
       subject: null,
       querytest: null,
       fileSupportFinal: null,
@@ -81,7 +75,7 @@ export default {
         email: this.userDetails.email,
         phone: this.userDetails.phone,
         supportFile: this.fileSupportFinal,
-        filenameSupport: this.fileSupportFinal.name,
+        filenameSupport: this.filenameSupport,
       });
     },
     onPickedSupportFile(event) {
@@ -91,6 +85,7 @@ export default {
         return alert("Please add a valid file!");
       }
       this.fileSupportFinal = fileSupport[0];
+      this.filenameSupport = fileSupport[0].name;
     },
   },
   created() {

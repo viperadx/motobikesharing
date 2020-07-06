@@ -181,7 +181,6 @@ export default new Vuex.Store({
           commit("setUser", details.user.uid);
           this.dispatch("readAllRidesDetailsByDriverID", details.user.uid);
           this.dispatch("readAllRidesDetailsByUserID", details.user.uid);
-          // router.push({ path: "/home" });
           firebase
             .database()
             .ref("/Users/" + details.user.uid)
@@ -195,7 +194,6 @@ export default new Vuex.Store({
               phone: payload.phone,
               creditCard: payload.creditcard,
               gender: payload.gender
-              // idDriver: "not a driver"
             });
         })
         .catch(error => {
@@ -371,34 +369,36 @@ export default new Vuex.Store({
           console.log(error);
         });
       //TODO tre sa gasesc cum sa schimb numele folderului din Tickets in id ul generat
-      let fullPathSupportFile = firebase
-        .storage()
-        .ref(`Tickets/${payload.userID}/${supportFileName}`)
-        .put(payload.supportFile);
-      fullPathSupportFile.on(
-        "state_changed",
-        (snapshot) => {
-          let percentageSupportFile =
-            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-          this.uploadValueSupportFile = percentageSupportFile;
-        },
-        (error) => {
-          console.log(error.message);
-        },
-        () => {
-          this.uploadValueSupportFile = 100;
-          fullPathSupportFile.snapshot.ref
-            .getDownloadURL()
-            .then((downloadURLSupportFile) => {
-              firebase
-                .database()
-                .ref("/Tickets/" + ticketID)
-                .update({
-                  supportFileURL: downloadURLSupportFile,
-                });
-            });
-        }
-      );
+      if (payload.supportFile) {
+        let fullPathSupportFile = firebase
+          .storage()
+          .ref(`Tickets/${payload.userID}/${supportFileName}`)
+          .put(payload.supportFile);
+        fullPathSupportFile.on(
+          "state_changed",
+          (snapshot) => {
+            let percentageSupportFile =
+              (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueSupportFile = percentageSupportFile;
+          },
+          (error) => {
+            console.log(error.message);
+          },
+          () => {
+            this.uploadValueSupportFile = 100;
+            fullPathSupportFile.snapshot.ref
+              .getDownloadURL()
+              .then((downloadURLSupportFile) => {
+                firebase
+                  .database()
+                  .ref("/Tickets/" + ticketID)
+                  .update({
+                    supportFileURL: downloadURLSupportFile,
+                  });
+              });
+          }
+        )
+      }
       window.alert("Your request has been submitted.");
       router.push({ path: "account" });
     },

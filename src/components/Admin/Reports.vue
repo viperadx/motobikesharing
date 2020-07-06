@@ -735,6 +735,17 @@
           </v-card>
         </v-flex>
 
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>
+              Tickets attachments
+            </v-card-title>
+            <v-card-text>
+              <div id="piechartTicketsAttachments"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
         <v-flex xs12>
           <v-card>
             <v-card-title>
@@ -819,6 +830,8 @@ export default {
       categoryRates: 0,
       categoryFeedback: 0,
       categoryOther: 0,
+      ticketsNoFileAttached: 0,
+      ticketsFileAttached: 0,
       usersLocations: [],
       clientsLocations: [],
       driversLocations: [],
@@ -965,6 +978,8 @@ export default {
     this.incomeCalculation();
     this.ticketsCategories();
     this.piechartTicketsCategories();
+    this.ticketsAttachments();
+    this.piechartTicketsAttachments();
   },
   computed: {},
   methods: {
@@ -1835,6 +1850,28 @@ export default {
           }
         );
     },
+    ticketsAttachments() {
+      return firebase
+        .database()
+        .ref("Tickets")
+        .on(
+          "value",
+          (snap) => {
+            let myObj = snap.val();
+            let keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              if (myObj[key].filenameSupport === "no file attached") {
+                this.ticketsNoFileAttached = +this.ticketsNoFileAttached + 1;
+              } else {
+                this.ticketsFileAttached = +this.ticketsOpened + 1;
+              }
+            });
+          },
+          function(error) {
+            console.log("ticketsAttachments Error: " + error.message);
+          }
+        );
+    },
     ticketsCategories() {
       return firebase
         .database()
@@ -2217,6 +2254,34 @@ export default {
               ["Type", "Number"],
               ["Open", this.ticketsOpened],
               ["Closed", this.ticketsClosed],
+            ]),
+            {
+              is3D: false,
+              backgroundColor: "transparent",
+              legend: { textStyle: { color: "white" } },
+              colors: [
+                colors1[Math.floor(Math.random() * colors1.length)],
+                colors2[Math.floor(Math.random() * colors2.length)],
+              ],
+            }
+          );
+        },
+      });
+    },
+    piechartTicketsAttachments() {
+      let colors1 = ["#8df85c", "#5cf8e8"];
+      let colors2 = ["#5caaf8", "#e8000c"];
+      window.google.charts.load("visualization", "1.0", {
+        packages: ["corechart", "bar", "table"],
+        callback: () => {
+          let chart = new window.google.visualization.PieChart(
+            document.getElementById("piechartTicketsAttachments")
+          );
+          chart.draw(
+            window.google.visualization.arrayToDataTable([
+              ["Type", "Number"],
+              ["File attached", this.ticketsFileAttached],
+              ["No file attached", this.ticketsNoFileAttached],
             ]),
             {
               is3D: false,
