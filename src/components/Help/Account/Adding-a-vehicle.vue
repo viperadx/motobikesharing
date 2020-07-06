@@ -13,10 +13,10 @@ export default {
   computed: {
     text() {
       return this.$store.getters.allTextsGetter.Account.addingAvehicle;
-    }
+    },
   },
   methods: {},
   created() {},
-  mounted() {}
+  mounted() {},
 };
 </script>

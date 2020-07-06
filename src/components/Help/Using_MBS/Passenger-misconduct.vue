@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>test passenger misconduct/test passed</v-layout>
+    <v-layout text-center wrap>{{ text }}</v-layout>
   </v-container>
 </template>
 
@@ -9,6 +9,14 @@ export default {
   name: "Passenger-misconduct",
   data() {
     return {};
-  }
+  },
+  computed: {
+    text() {
+      return this.$store.getters.allTextsGetter.UsingMBS.passengerMisconduct;
+    },
+  },
+  methods: {},
+  created() {},
+  mounted() {},
 };
 </script>

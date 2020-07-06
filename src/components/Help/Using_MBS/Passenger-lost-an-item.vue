@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>test passenger lost an item/test passed</v-layout>
+    <v-layout text-center wrap>{{ text }}</v-layout>
   </v-container>
 </template>
 
@@ -9,6 +9,14 @@ export default {
   name: "Passenger-lost-an-item",
   data() {
     return {};
-  }
+  },
+  computed: {
+    text() {
+      return this.$store.getters.allTextsGetter.UsingMBS.passengerLostAnItem;
+    },
+  },
+  methods: {},
+  created() {},
+  mounted() {},
 };
 </script>

@@ -1,12 +1,22 @@
 <template>
   <v-container fluid>
     <v-col cols="12" md="6">
+      <v-layout text-center wrap
+        >Please note that only the file attachment is optional!</v-layout
+      >
+      <v-select
+        :items="categories"
+        v-model="category"
+        color="normal"
+        label="Category"
+      ></v-select>
       <v-text-field
         v-model="placeholder"
         label="Subject"
         id="subject"
       ></v-text-field>
       <v-textarea
+        v-model="querytest"
         solo
         name="input-7-4"
         label="Please write your query here"
@@ -21,7 +31,12 @@
           id="fileSupport"
         />
         <v-spacer></v-spacer>
-        <v-btn type="submit" @click="supportRequest">Submit</v-btn>
+        <v-btn
+          type="submit"
+          :disabled="emptyFieldValidationRegister"
+          @click="supportRequest"
+          >Submit</v-btn
+        >
       </v-card-actions>
     </v-col>
   </v-container>
@@ -35,10 +50,17 @@ export default {
     return {
       placeholder: null,
       filenameSupport: null,
+      subject: null,
+      querytest: null,
       fileSupportFinal: null,
+      category: null,
+      categories: ["Application", "Misconduct", "Rates", "Feedback", "Other"],
     };
   },
   computed: {
+    emptyFieldValidationRegister() {
+      return !(this.category && this.placeholder && this.querytest);
+    },
     userDetails() {
       return this.$store.getters.loggedInUserData;
     },
@@ -52,6 +74,7 @@ export default {
         subject: document.getElementById("subject").value,
         query: document.getElementById("query").value,
         ticketStatus: "pending",
+        category: this.category,
         userID: this.userID,
         userFullName:
           this.userDetails.firstName + " " + this.userDetails.lastName,

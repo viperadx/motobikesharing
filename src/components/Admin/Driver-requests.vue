@@ -1,114 +1,119 @@
 <template>
-  <v-layout column>
-    <v-container fluid grid-list-md>
-      <v-layout wrap>
-        <div v-if="driverDetails">
-          <v-flex xs6>
-            <v-text-field
-              label="Driver/User ID"
-              outlined
-              readonly
-              :value="driverDetails.idUser"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs6>
-            <expandable-image
-              :src="driverDetails.imageSelfieURL"
-              height="70"
-              width="70"
-            />
-          </v-flex>
-          <v-flex xs6>
-            <v-text-field
-              label="Expire date ID"
-              outlined
-              readonly
-              :value="driverDetails.expireDateID"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs6>
-            <expandable-image
-              :src="driverDetails.imageIDURL"
-              height="70"
-              width="70"
-            />
-          </v-flex>
-          <v-flex xs6>
-            <v-text-field
-              label="Expire date ITP"
-              outlined
-              readonly
-              :value="driverDetails.expireDateITP"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs6>
-            <expandable-image
-              :src="driverDetails.imageITPURL"
-              height="70"
-              width="70"
-            />
-          </v-flex>
-          <v-flex xs6>
-            <v-text-field
-              label="Expire date Insurance"
-              outlined
-              readonly
-              :value="driverDetails.expireDateInsurance"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs6>
-            <expandable-image
-              :src="driverDetails.imageInsuranceURL"
-              height="70"
-              width="70"
-            />
-          </v-flex>
-          <v-flex xs6>
-            <v-text-field
-              label="Expire date License"
-              outlined
-              readonly
-              :value="driverDetails.expireDateLicense"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs6>
-            <expandable-image
-              :src="driverDetails.imageLicenseURL"
-              height="70"
-              width="70"
-            />
-          </v-flex>
-          <v-flex xs6>
-            <v-text-field
-              label="Expire date RCA"
-              outlined
-              readonly
-              :value="driverDetails.expireDateRCA"
-            ></v-text-field>
-          </v-flex>
-          <v-flex xs6>
-            <expandable-image
-              :src="driverDetails.imageRCAURL"
-              height="70"
-              width="70"
-            />
-          </v-flex>
-          <v-flex xs6>
-            <v-select
-              :items="checkStatuses"
-              v-model="checkStatusFinal"
-              :placeholder="driverDetails.checkStatus"
-              color="normal"
-              label="Verification status"
-              id="checkStatusUpdated"
-            ></v-select>
-          </v-flex>
-        </div>
-        <v-spacer></v-spacer>
-        <v-btn type="submit" @click="updateCheckStatus()">Submit</v-btn>
-      </v-layout>
-    </v-container>
-  </v-layout>
+  <v-card>
+    <v-layout column>
+      <v-container fluid grid-list-md>
+        <v-layout wrap>
+          <div v-if="driverDetails">
+            <v-flex xs6>
+              <v-text-field
+                label="Driver/User ID"
+                outlined
+                readonly
+                :value="driverDetails.idUser"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6>
+              <expandable-image
+                :src="driverDetails.imageSelfieURL"
+                height="70"
+                width="70"
+              />
+            </v-flex>
+            <v-flex xs6>
+              <v-text-field
+                label="Expire date ID"
+                outlined
+                readonly
+                :value="driverDetails.expireDateID"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6>
+              <expandable-image
+                :src="driverDetails.imageIDURL"
+                height="70"
+                width="70"
+              />
+            </v-flex>
+            <v-flex xs6>
+              <v-text-field
+                label="Expire date ITP"
+                outlined
+                readonly
+                :value="driverDetails.expireDateITP"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6>
+              <expandable-image
+                :src="driverDetails.imageITPURL"
+                height="70"
+                width="70"
+              />
+            </v-flex>
+            <v-flex xs6>
+              <v-text-field
+                label="Expire date Insurance"
+                outlined
+                readonly
+                :value="driverDetails.expireDateInsurance"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6>
+              <expandable-image
+                :src="driverDetails.imageInsuranceURL"
+                height="70"
+                width="70"
+              />
+            </v-flex>
+            <v-flex xs6>
+              <v-text-field
+                label="Expire date License"
+                outlined
+                readonly
+                :value="driverDetails.expireDateLicense"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6>
+              <expandable-image
+                :src="driverDetails.imageLicenseURL"
+                height="70"
+                width="70"
+              />
+            </v-flex>
+            <v-flex xs6>
+              <v-text-field
+                label="Expire date RCA"
+                outlined
+                readonly
+                :value="driverDetails.expireDateRCA"
+              ></v-text-field>
+            </v-flex>
+            <v-flex xs6>
+              <expandable-image
+                :src="driverDetails.imageRCAURL"
+                height="70"
+                width="70"
+              />
+            </v-flex>
+            <v-flex xs6>
+              <v-select
+                :items="checkStatuses"
+                v-model="checkStatusFinal"
+                :placeholder="driverDetails.checkStatus"
+                color="normal"
+                label="Verification status"
+                id="checkStatusUpdated"
+              ></v-select>
+            </v-flex>
+          </div>
+
+          <!-- <v-spacer></v-spacer> -->
+          <v-card-actions>
+            <v-btn type="submit" @click="updateCheckStatus()">Submit</v-btn>
+          </v-card-actions>
+        </v-layout>
+      </v-container>
+    </v-layout>
+  </v-card>
 </template>
 
 <script>

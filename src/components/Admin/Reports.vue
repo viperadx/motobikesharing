@@ -4,7 +4,7 @@
       <v-layout row wrap>
         <v-flex xs12>
           <v-card>
-            <v-card-title>All users</v-card-title>
+            <v-card-title>All users details</v-card-title>
             <v-card-text>
               <v-data-table
                 :headers="headersusersdetails"
@@ -724,6 +724,17 @@
           </v-card>
         </v-flex>
 
+        <v-flex xs6>
+          <v-card>
+            <v-card-title>
+              Tickets categories
+            </v-card-title>
+            <v-card-text>
+              <div id="piechartTicketsCategories"></div>
+            </v-card-text>
+          </v-card>
+        </v-flex>
+
         <v-flex xs12>
           <v-card>
             <v-card-title>
@@ -762,7 +773,6 @@
 </template>
 
 <script>
-//TODO optionale: sa adaug un topic la ticket submission si sa fac un top/grafic cu topicurile tichetelor
 /* eslint-disable no-console */
 // eslint-disable-next-line no-unused-vars
 import Vue from "vue";
@@ -804,6 +814,11 @@ export default {
       usersDrivers: 0,
       ticketsOpened: 0,
       ticketsClosed: 0,
+      categoryApplication: 0,
+      categoryMisconduct: 0,
+      categoryRates: 0,
+      categoryFeedback: 0,
+      categoryOther: 0,
       usersLocations: [],
       clientsLocations: [],
       driversLocations: [],
@@ -948,6 +963,8 @@ export default {
     this.barchartClientsAgeFrequency();
     this.barchartDriversAgeFrequency();
     this.incomeCalculation();
+    this.ticketsCategories();
+    this.piechartTicketsCategories();
   },
   computed: {},
   methods: {
@@ -1818,6 +1835,42 @@ export default {
           }
         );
     },
+    ticketsCategories() {
+      return firebase
+        .database()
+        .ref("Tickets")
+        .on(
+          "value",
+          (snap) => {
+            let myObj = snap.val();
+            let keysUsers = Object.keys(snap.val());
+            keysUsers.forEach((key) => {
+              if (myObj[key].category === "Application") {
+                this.categoryApplication = +this.categoryApplication + 1;
+              } else {
+                if (myObj[key].category === "Misconduct") {
+                  this.categoryMisconduct = +this.categoryMisconduct + 1;
+                } else {
+                  if (myObj[key].category === "Rates") {
+                    this.categoryRates = +this.categoryRates + 1;
+                  } else {
+                    if (myObj[key].category === "Feedback") {
+                      this.categoryFeedback = +this.categoryFeedback + 1;
+                    } else {
+                      if (myObj[key].category === "Other") {
+                        this.categoryOther = +this.categoryOther + 1;
+                      }
+                    }
+                  }
+                }
+              }
+            });
+          },
+          function(error) {
+            console.log("ticketsCategories Error: " + error.message);
+          }
+        );
+    },
     ridesStatus() {
       return firebase
         .database()
@@ -2172,6 +2225,43 @@ export default {
               colors: [
                 colors1[Math.floor(Math.random() * colors1.length)],
                 colors2[Math.floor(Math.random() * colors2.length)],
+              ],
+            }
+          );
+        },
+      });
+    },
+    piechartTicketsCategories() {
+      let colors1 = ["#8df85c"];
+      let colors2 = ["#5cf8e8"];
+      let colors3 = ["#5caaf8"];
+      let colors4 = ["#e8000c"];
+      let colors5 = ["#03c6fc"];
+      window.google.charts.load("visualization", "1.0", {
+        packages: ["corechart", "bar", "table"],
+        callback: () => {
+          let chart = new window.google.visualization.PieChart(
+            document.getElementById("piechartTicketsCategories")
+          );
+          chart.draw(
+            window.google.visualization.arrayToDataTable([
+              ["Type", "Number"],
+              ["Application", this.categoryApplication],
+              ["Misconduct", this.categoryMisconduct],
+              ["Rates", this.categoryRates],
+              ["Feedback", this.categoryFeedback],
+              ["Other", this.categoryOther],
+            ]),
+            {
+              is3D: false,
+              backgroundColor: "transparent",
+              legend: { textStyle: { color: "white" } },
+              colors: [
+                colors1[Math.floor(Math.random() * colors1.length)],
+                colors2[Math.floor(Math.random() * colors2.length)],
+                colors3[Math.floor(Math.random() * colors3.length)],
+                colors4[Math.floor(Math.random() * colors4.length)],
+                colors5[Math.floor(Math.random() * colors5.length)],
               ],
             }
           );

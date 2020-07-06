@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>test Tips-to-get-more-journey-requests/test passed</v-layout>
+    <v-layout text-center wrap>{{ text }}</v-layout>
   </v-container>
 </template>
 
@@ -9,6 +9,15 @@ export default {
   name: "Tips-to-get-more-journey-requests",
   data() {
     return {};
-  }
+  },
+  computed: {
+    text() {
+      return this.$store.getters.allTextsGetter.UsingMBS
+        .tipsToGetMoreJourneyRequests;
+    },
+  },
+  methods: {},
+  created() {},
+  mounted() {},
 };
 </script>

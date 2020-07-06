@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>test out of radius rides/test passed</v-layout>
+    <v-layout text-center wrap>{{ text }}</v-layout>
   </v-container>
 </template>
 
@@ -9,6 +9,14 @@ export default {
   name: "Out-of-radius-rides",
   data() {
     return {};
-  }
+  },
+  computed: {
+    text() {
+      return this.$store.getters.allTextsGetter.UsingMBS.improvingYourRatings;
+    },
+  },
+  methods: {},
+  created() {},
+  mounted() {},
 };
 </script>

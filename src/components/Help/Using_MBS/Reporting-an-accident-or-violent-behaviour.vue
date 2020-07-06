@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>test reporting accident or violent behaviour/test passed</v-layout>
+    <v-layout text-center wrap>{{ text }}</v-layout>
   </v-container>
 </template>
 
@@ -9,6 +9,15 @@ export default {
   name: "Reporting-an-accident-or-violent-behaviour",
   data() {
     return {};
-  }
+  },
+  computed: {
+    text() {
+      return this.$store.getters.allTextsGetter.UsingMBS
+        .reportingAnAccidentorViolentBehaviour;
+    },
+  },
+  methods: {},
+  created() {},
+  mounted() {},
 };
 </script>

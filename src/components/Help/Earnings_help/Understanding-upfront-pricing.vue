@@ -12,11 +12,12 @@ export default {
   },
   computed: {
     text() {
-      return this.$store.getters.allTextsGetter.Earnings.cancellationFee;
-    }
+      return this.$store.getters.allTextsGetter.Earnings
+        .understandingUpfrontPricing;
+    },
   },
   methods: {},
   created() {},
-  mounted() {}
+  mounted() {},
 };
 </script>

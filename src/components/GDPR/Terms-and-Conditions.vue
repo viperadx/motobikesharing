@@ -1,9 +1,8 @@
 <template>
   <v-container>
-    <v-layout text-center wrap>test terms and conditions/test passed</v-layout>
+    <v-layout text-center wrap>{{ text }}</v-layout>
   </v-container>
 </template>
-
 
 <script>
 export default {
@@ -11,9 +10,13 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    text() {
+      return this.$store.getters.allTextsGetter.GDPR;
+    },
+  },
   methods: {},
   created() {},
-  mounted() {}
+  mounted() {},
 };
 </script>
