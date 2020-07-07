@@ -50,31 +50,32 @@
       ></v-text-field>
       <v-text-field
         v-if="currentUserRidesHistoryGetter.length > 0"
-        label="Your driver"
+        label="Driver"
         outlined
         readonly
         :value="rideDetails.driverFullName"
       ></v-text-field>
-
-      <div v-if="currentUserRidesHistoryGetter.length > 0">
-        <div v-if="rideDetails.ratingForDriver === 'no input at the moment'">
-          Select a rating for your driver
-          <v-rating v-model="ratingForDriver"></v-rating>
-          <v-btn
-            depressed
-            small
-            color="primary"
-            @click="sendRatingForDriverFromHistory()"
-            >Send rating</v-btn
-          >
-        </div>
-        <div v-else>
-          <v-text-field
-            label="Rating given to driver"
-            outlined
-            readonly
-            :value="rideDetails.ratingForDriver"
-          ></v-text-field>
+      <div v-if="rideDetails.idDriver !== user">
+        <div v-if="currentUserRidesHistoryGetter.length > 0">
+          <div v-if="rideDetails.ratingForDriver === 'no input at the moment'">
+            Select a rating for your driver
+            <v-rating v-model="ratingForDriver"></v-rating>
+            <v-btn
+              depressed
+              small
+              color="primary"
+              @click="sendRatingForDriverFromHistory()"
+              >Send rating</v-btn
+            >
+          </div>
+          <div v-else>
+            <v-text-field
+              label="Rating given to driver"
+              outlined
+              readonly
+              :value="rideDetails.ratingForDriver"
+            ></v-text-field>
+          </div>
         </div>
       </div>
     </div>
