@@ -200,41 +200,6 @@
         </v-date-picker>
       </v-menu>
     </v-flex>
-    <!-- <v-text-field
-      label="Expire date ID"
-      outlined
-      :readonly="readonly"
-      :value="driverData.expireDateID"
-      id="expireDateID"
-    ></v-text-field>
-    <v-text-field
-      label="Expire date License"
-      outlined
-      :readonly="readonly"
-      :value="driverData.expireDateLicense"
-      id="expireDateLicense"
-    ></v-text-field>
-    <v-text-field
-      label="Expire date ITP"
-      outlined
-      :readonly="readonly"
-      :value="driverData.expireDateITP"
-      id="expireDateITP"
-    ></v-text-field>
-    <v-text-field
-      label="Expire date RCA"
-      outlined
-      :readonly="readonly"
-      :value="driverData.expireDateRCA"
-      id="expireDateRCA"
-    ></v-text-field>
-    <v-text-field
-      label="Expire date Insurance"
-      outlined
-      :readonly="readonly"
-      :value="driverData.expireDateInsurance"
-      id="expireDateInsurance"
-    ></v-text-field> -->
     <div v-if="readonly === false">
       <v-btn
         :loading="loading3"

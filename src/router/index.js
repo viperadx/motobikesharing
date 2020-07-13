@@ -77,6 +77,7 @@ import Reports from "../components/Admin/Reports.vue";
 import Authenticationdetails from "../components/Account/Authentication-details.vue";
 import Supporttickets from "../components/Admin/Support-tickets.vue";
 import Signup from "../components/Authentication/Signup.vue";
+import ID from "../components/Account/Vehicle-Documents/ID.vue";
 
 Vue.use(VueRouter);
 
@@ -532,6 +533,12 @@ export default new VueRouter({
       path: "/signup",
       name: "Signup",
       component: Signup
+    },
+    {
+      path: "/id",
+      name: "ID",
+      component: ID,
+      beforeEnter: AuthGuard
     }
   ]
 });

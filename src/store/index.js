@@ -253,12 +253,12 @@ export default new Vuex.Store({
           let fileNameRCA = "RCA" + payload.imageRCA.name.slice(payload.imageRCA.name.lastIndexOf('.'))
           let fileNameInsurance = "Insurance" + payload.imageInsurance.name.slice(payload.imageInsurance.name.lastIndexOf('.'))
           let fileNameLicense = "License" + payload.imageLicense.name.slice(payload.imageLicense.name.lastIndexOf('.'))
-          let fullPathSelfie = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameSelfie}`).put(payload.imageSelfie)
-          let fullPathID = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameID}`).put(payload.imageID)
-          let fullPathITP = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameITP}`).put(payload.imageITP)
-          let fullPathRCA = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameRCA}`).put(payload.imageRCA)
-          let fullPathInsurance = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameInsurance}`).put(payload.imageInsurance)
-          let fullPathLicense = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameLicense}`).put(payload.imageLicense)
+          let fullPathSelfie = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameSelfie}`).put(payload.imageSelfie)
+          let fullPathID = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameID}`).put(payload.imageID)
+          let fullPathITP = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameITP}`).put(payload.imageITP)
+          let fullPathRCA = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameRCA}`).put(payload.imageRCA)
+          let fullPathInsurance = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameInsurance}`).put(payload.imageInsurance)
+          let fullPathLicense = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameLicense}`).put(payload.imageLicense)
           fullPathSelfie.on('state_changed', snapshot => {
             let percentageSelfie = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             this.uploadValueSelfie = percentageSelfie;
@@ -434,12 +434,12 @@ export default new Vuex.Store({
           let fileNameRCA = "RCA" + payload.imageRCA.name.slice(payload.imageRCA.name.lastIndexOf('.'))
           let fileNameInsurance = "Insurance" + payload.imageInsurance.name.slice(payload.imageInsurance.name.lastIndexOf('.'))
           let fileNameLicense = "License" + payload.imageLicense.name.slice(payload.imageLicense.name.lastIndexOf('.'))
-          let fullPathSelfie = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameSelfie}`).put(payload.imageSelfie)
-          let fullPathID = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameID}`).put(payload.imageID)
-          let fullPathITP = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameITP}`).put(payload.imageITP)
-          let fullPathRCA = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameRCA}`).put(payload.imageRCA)
-          let fullPathInsurance = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameInsurance}`).put(payload.imageInsurance)
-          let fullPathLicense = firebase.storage().ref(`Drivers/${newDirectory}/${fileNameLicense}`).put(payload.imageLicense)
+          let fullPathSelfie = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameSelfie}`).put(payload.imageSelfie)
+          let fullPathID = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameID}`).put(payload.imageID)
+          let fullPathITP = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameITP}`).put(payload.imageITP)
+          let fullPathRCA = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameRCA}`).put(payload.imageRCA)
+          let fullPathInsurance = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameInsurance}`).put(payload.imageInsurance)
+          let fullPathLicense = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameLicense}`).put(payload.imageLicense)
           fullPathSelfie.on('state_changed', snapshot => {
             let percentageSelfie = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
             this.uploadValueSelfie = percentageSelfie;
@@ -819,6 +819,46 @@ export default new Vuex.Store({
             .ref("/Users/" + payload.userID)
             .on("value", snap => {
               commit("setloggedInUserData", snap.val());
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    updateIDDetails({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Drivers/" + payload.userID)
+        .update({
+          expireDateID: payload.expireDateID,
+        })
+        .then(() => {
+          let day = new Date();
+          let dayWrapper = moment(day);
+          let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
+          let newDirectory = payload.userID
+          let fileNameID = "ID" + payload.imageID.name.slice(payload.imageID.name.lastIndexOf('.'))
+          let fullPathID = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameID}`).put(payload.imageID)
+          fullPathID.on('state_changed', snapshot => {
+            let percentageID = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueID = percentageID;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueID = 100;
+              fullPathID.snapshot.ref.getDownloadURL().then((downloadURLID) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageIDURL: downloadURLID
+                  })
+              })
+            });
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Drivers/" + payload.userID)
+            .on("value", snap => {
+              commit("savePresentDriverData", snap.val());
             });
         })
         .catch(err => {

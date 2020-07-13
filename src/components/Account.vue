@@ -158,10 +158,16 @@ export default {
             let allCAvgRating = [];
             const keysUsers = Object.keys(snap.val());
             keysUsers.forEach((key) => {
-              const allClientsAvgRating = {};
-              allClientsAvgRating.ratingForClient = myObj[key].ratingForClient;
-              allClientsAvgRating.keyUser = this.userID;
-              allCAvgRating.push(allClientsAvgRating);
+              if (
+                myObj[key].ratingForClient &&
+                myObj[key].ratingForClient !== "no input at the moment"
+              ) {
+                const allClientsAvgRating = {};
+                allClientsAvgRating.ratingForClient =
+                  myObj[key].ratingForClient;
+                allClientsAvgRating.keyUser = this.userID;
+                allCAvgRating.push(allClientsAvgRating);
+              }
             });
             allCAvgRating.forEach((item) => {
               let sums = sumsArray[item.keyUser];
@@ -240,10 +246,16 @@ export default {
             let allDAvgRating = [];
             const keysUsers = Object.keys(snap.val());
             keysUsers.forEach((key) => {
-              const allDriversAvgRating = {};
-              allDriversAvgRating.ratingForDriver = myObj[key].ratingForDriver;
-              allDriversAvgRating.keyUser = this.userID;
-              allDAvgRating.push(allDriversAvgRating);
+              if (
+                myObj[key].ratingForDriver &&
+                myObj[key].ratingForDriver !== "no input at the moment"
+              ) {
+                const allDriversAvgRating = {};
+                allDriversAvgRating.ratingForDriver =
+                  myObj[key].ratingForDriver;
+                allDriversAvgRating.keyUser = this.userID;
+                allDAvgRating.push(allDriversAvgRating);
+              }
             });
             allDAvgRating.forEach((item) => {
               let sums = sumsArray[item.keyUser];
