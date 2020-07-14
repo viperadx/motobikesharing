@@ -865,6 +865,166 @@ export default new Vuex.Store({
           console.log(err);
         });
     },
+    updateITPDetails({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Drivers/" + payload.userID)
+        .update({
+          expireDateITP: payload.expireDateITP,
+        })
+        .then(() => {
+          let day = new Date();
+          let dayWrapper = moment(day);
+          let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
+          let newDirectory = payload.userID
+          let fileNameITP = "ITP" + payload.imageITP.name.slice(payload.imageITP.name.lastIndexOf('.'))
+          let fullPathITP = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameITP}`).put(payload.imageITP)
+          fullPathITP.on('state_changed', snapshot => {
+            let percentageITP = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueITP = percentageITP;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueITP = 100;
+              fullPathITP.snapshot.ref.getDownloadURL().then((downloadURLITP) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageITPURL: downloadURLITP
+                  })
+              })
+            });
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Drivers/" + payload.userID)
+            .on("value", snap => {
+              commit("savePresentDriverData", snap.val());
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    updateLicenseDetails({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Drivers/" + payload.userID)
+        .update({
+          expireDateLicense: payload.expireDateLicense,
+        })
+        .then(() => {
+          let day = new Date();
+          let dayWrapper = moment(day);
+          let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
+          let newDirectory = payload.userID
+          let fileNameLicense = "License" + payload.imageLicense.name.slice(payload.imageLicense.name.lastIndexOf('.'))
+          let fullPathLicense = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameLicense}`).put(payload.imageLicense)
+          fullPathLicense.on('state_changed', snapshot => {
+            let percentageLicense = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueLicense = percentageLicense;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueLicense = 100;
+              fullPathLicense.snapshot.ref.getDownloadURL().then((downloadURLLicense) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageLicenseURL: downloadURLLicense
+                  })
+              })
+            });
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Drivers/" + payload.userID)
+            .on("value", snap => {
+              commit("savePresentDriverData", snap.val());
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    updateRCADetails({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Drivers/" + payload.userID)
+        .update({
+          expireDateRCA: payload.expireDateRCA,
+        })
+        .then(() => {
+          let day = new Date();
+          let dayWrapper = moment(day);
+          let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
+          let newDirectory = payload.userID
+          let fileNameRCA = "RCA" + payload.imageRCA.name.slice(payload.imageRCA.name.lastIndexOf('.'))
+          let fullPathRCA = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameRCA}`).put(payload.imageRCA)
+          fullPathRCA.on('state_changed', snapshot => {
+            let percentageRCA = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueRCA = percentageRCA;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueRCA = 100;
+              fullPathRCA.snapshot.ref.getDownloadURL().then((downloadURLRCA) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageRCAURL: downloadURLRCA
+                  })
+              })
+            });
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Drivers/" + payload.userID)
+            .on("value", snap => {
+              commit("savePresentDriverData", snap.val());
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    updateInsuranceDetails({ commit }, payload) {
+      firebase
+        .database()
+        .ref("/Drivers/" + payload.userID)
+        .update({
+          expireDateInsurance: payload.expireDateInsurance,
+        })
+        .then(() => {
+          let day = new Date();
+          let dayWrapper = moment(day);
+          let fullString = dayWrapper.format("YYYY-MM-DD HH:MM");
+          let newDirectory = payload.userID
+          let fileNameInsurance = "Insurance" + payload.imageInsurance.name.slice(payload.imageInsurance.name.lastIndexOf('.'))
+          let fullPathInsurance = firebase.storage().ref(`Drivers/${newDirectory}/${fullString}/${fileNameInsurance}`).put(payload.imageInsurance)
+          fullPathInsurance.on('state_changed', snapshot => {
+            let percentageInsurance = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+            this.uploadValueInsurance = percentageInsurance;
+          }, error => { console.log(error.message) },
+            () => {
+              this.uploadValueInsurance = 100;
+              fullPathInsurance.snapshot.ref.getDownloadURL().then((downloadURLInsurance) => {
+                firebase.database().ref("/Drivers/" + newDirectory)
+                  .update({
+                    imageInsuranceURL: downloadURLInsurance
+                  })
+              })
+            });
+        })
+        .then(() => {
+          firebase
+            .database()
+            .ref("/Drivers/" + payload.userID)
+            .on("value", snap => {
+              commit("savePresentDriverData", snap.val());
+            });
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
     updateVehicleDocuments({ commit }, payload) {
       firebase
         .database()

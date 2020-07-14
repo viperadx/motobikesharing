@@ -78,6 +78,10 @@ import Authenticationdetails from "../components/Account/Authentication-details.
 import Supporttickets from "../components/Admin/Support-tickets.vue";
 import Signup from "../components/Authentication/Signup.vue";
 import ID from "../components/Account/Vehicle-Documents/ID.vue";
+import ITP from "../components/Account/Vehicle-Documents/ITP.vue";
+import License from "../components/Account/Vehicle-Documents/License.vue";
+import RCA from "../components/Account/Vehicle-Documents/RCA.vue";
+import Insurance from "../components/Account/Vehicle-Documents/Insurance.vue";
 
 Vue.use(VueRouter);
 
@@ -538,6 +542,32 @@ export default new VueRouter({
       path: "/id",
       name: "ID",
       component: ID,
+      beforeEnter: AuthGuard
+    }
+    ,
+    {
+      path: "/itp",
+      name: "ITP",
+      component: ITP,
+      beforeEnter: AuthGuard
+    }
+    ,
+    {
+      path: "/license",
+      name: "License",
+      component: License,
+      beforeEnter: AuthGuard
+    },
+    {
+      path: "/rca",
+      name: "RCA",
+      component: RCA,
+      beforeEnter: AuthGuard
+    },
+    {
+      path: "/insurance",
+      name: "Insurance",
+      component: Insurance,
       beforeEnter: AuthGuard
     }
   ]

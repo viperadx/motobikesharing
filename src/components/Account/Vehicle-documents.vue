@@ -1,6 +1,14 @@
 <template>
   <v-container>
-    <v-switch
+    <v-layout text-center wrap>Please choose what documents to update</v-layout>
+    <v-btn to="/id">ID</v-btn>
+    <br /><v-btn to="/license">License</v-btn> <br /><v-btn to="/rca"
+      >RCA</v-btn
+    >
+    <br /><v-btn to="/itp">ITP</v-btn> <br /><v-btn to="/insurance"
+      >Insurance</v-btn
+    >
+    <!-- <v-switch
       v-model="readonly"
       inset
       :label="`Readonly: ${readonly.toString()}`"
@@ -214,7 +222,7 @@
         Save changes
         <v-icon right dark>mdi-cloud-upload</v-icon>
       </v-btn>
-    </div>
+    </div> -->
   </v-container>
 </template>
 
