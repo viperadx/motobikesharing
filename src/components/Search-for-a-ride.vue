@@ -28,6 +28,14 @@
         </div>
       </div>
       <div
+        class="custom-client-didnt-show"
+        v-if="
+          activeRideRequest && activeRideRequest.status === 'client didnt show'
+        "
+      >
+        You didn't show up and the driver cancelled the ride
+      </div>
+      <div
         class="custom-driver-arrived"
         v-if="
           activeRideRequest && activeRideRequest.status === 'driver arrived'
@@ -203,7 +211,7 @@ export default {
         if (
           newValue.status === "ride finished" ||
           newValue.status === "ride cancelled by client" ||
-          newValue.status === "client didn't show" ||
+          newValue.status === "client didnt show" ||
           newValue.status === "driver didn't show"
         ) {
           this.createMap();
@@ -329,7 +337,7 @@ export default {
     cancelRideClient() {
       const payload = { ride: this.currentRideClient };
       this.$store.dispatch("cancelRideClient", payload);
-      this.rideInfo.status = "not requesting";
+      this.rideInfo.status = false;
       this.createMap();
       this.geolocate();
       this.clearSearch();
@@ -337,11 +345,10 @@ export default {
     driverDidntShow() {
       const payload = { ride: this.currentRideClient };
       this.$store.dispatch("driverDidntShow", payload);
-      this.rideInfo.status = "not requesting";
+      this.rideInfo.status = false;
       this.createMap();
       this.geolocate();
       this.clearSearch();
-      this.driverIsConnected = false;
     },
     acceptRide(ride) {
       const payload = {
@@ -560,6 +567,13 @@ export default {
 }
 
 .custom-driver-arrived {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-flow: column;
+}
+
+.custom-client-didnt-show {
   display: flex;
   width: 100%;
   align-items: center;

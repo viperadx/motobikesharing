@@ -1555,11 +1555,16 @@ export default {
             keysUsers.forEach((key) => {
               const keysHistory = Object.keys(myObj[key]);
               keysHistory.forEach((key1) => {
-                const allClientsAvgRating = {};
-                allClientsAvgRating.ratingForClientallClientsAvgRating =
-                  myObj[key][key1].ratingForClient;
-                allClientsAvgRating.keyUserallClientsAvgRating = key;
-                allCAvgRating.push(allClientsAvgRating);
+                if (
+                  myObj[key][key1].ratingForClient &&
+                  myObj[key][key1].ratingForClient !== "no input at the moment"
+                ) {
+                  const allClientsAvgRating = {};
+                  allClientsAvgRating.ratingForClientallClientsAvgRating =
+                    myObj[key][key1].ratingForClient;
+                  allClientsAvgRating.keyUserallClientsAvgRating = key;
+                  allCAvgRating.push(allClientsAvgRating);
+                }
               });
             });
             allCAvgRating.forEach((item) => {
@@ -1607,11 +1612,16 @@ export default {
             keysUsers.forEach((key) => {
               const keysHistory = Object.keys(myObj[key]);
               keysHistory.forEach((key1) => {
-                const allDriversAvgRating = {};
-                allDriversAvgRating.ratingForDriverallDriversAvgRating =
-                  myObj[key][key1].ratingForDriver;
-                allDriversAvgRating.keyUserallDriversAvgRating = key;
-                allDAvgRating.push(allDriversAvgRating);
+                if (
+                  myObj[key][key1].ratingForDriver &&
+                  myObj[key][key1].ratingForDriver !== "no input at the moment"
+                ) {
+                  const allDriversAvgRating = {};
+                  allDriversAvgRating.ratingForDriverallDriversAvgRating =
+                    myObj[key][key1].ratingForDriver;
+                  allDriversAvgRating.keyUserallDriversAvgRating = key;
+                  allDAvgRating.push(allDriversAvgRating);
+                }
               });
             });
             allDAvgRating.forEach((item) => {
@@ -1946,7 +1956,7 @@ export default {
                 if (myObj[key].status === "driver didn't show") {
                   this.driverDidntShow = +this.driverDidntShow + 1;
                 } else {
-                  if (myObj[key].status === "client didn't show") {
+                  if (myObj[key].status === "client didnt show") {
                     this.clientDidntShow = +this.clientDidntShow + 1;
                   }
                 }

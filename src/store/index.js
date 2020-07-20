@@ -243,6 +243,7 @@ export default new Vuex.Store({
               expireDateLicense: payload.expiredatelicense,
               expireDateRCA: payload.expiredaterca,
               idUser: details.user.uid,
+              driverIsConnected: "false",
               checkStatus: "pending",
               createdDate: fullString
             });
@@ -424,6 +425,7 @@ export default new Vuex.Store({
               expireDateLicense: payload.expiredatelicense,
               expireDateRCA: payload.expiredaterca,
               idUser: payload.userID,
+              driverIsConnected: "false",
               checkStatus: "pending",
               createdDate: fullString
             });
@@ -677,6 +679,7 @@ export default new Vuex.Store({
         commit("setActiveRideRequest", null);
       }
     },
+
     acceptRide({ commit }, payload) {
       firebase
         .database()
@@ -732,9 +735,10 @@ export default new Vuex.Store({
         .then(() => {
           firebase
             .database()
-            .ref("/Rides/" + payload.ride.rideId)
-            .on("value", snap => {
-              commit("setCurrentRideForClient", snap.val());
+            .ref("/Drivers/" + payload.ride.idDriver)
+            .update({
+              driverIsConnected: "false",
+              pageRefresh: "yes",
             });
           commit("setCurrentRideForClient", null);
           commit("setCurrentRideForDriver", null);
@@ -749,7 +753,7 @@ export default new Vuex.Store({
         .database()
         .ref("/Rides/" + payload.ride.rideId)
         .update({
-          status: "client didn't show"
+          status: "client didnt show"
         })
         .then(() => {
           firebase
@@ -1114,6 +1118,7 @@ export default new Vuex.Store({
               timeStampDay: payload.ride.timeStampDay,
               timeStampMonth: payload.ride.timeStampMonth,
               timeStampYear: payload.ride.timeStampYear,
+              ratingForClient: "waiting the driver to rate client",
               timeStampYearMonth: payload.ride.timeStampYearMonth
             })
         })
@@ -1129,6 +1134,7 @@ export default new Vuex.Store({
               timeStampDay: payload.ride.timeStampDay,
               timeStampMonth: payload.ride.timeStampMonth,
               timeStampYear: payload.ride.timeStampYear,
+              ratingForDriver: "no input at the moment",
               timeStampYearMonth: payload.ride.timeStampYearMonth
             })
         })
@@ -1149,8 +1155,16 @@ export default new Vuex.Store({
             .ref("/DriversRidesHistory/" + payload.ride.idDriver + "/" + payload.ride.rideId)
             .update({
               ratingForDriver: payload.ratingForDriver
-            });
-          commit("setCurrentRideForClient", null);
+            })
+            .then(() => {
+              firebase
+                .database()
+                .ref("/Rides/" + payload.ride.rideId)
+                .on("value", snap => {
+                  commit("setCurrentRideForClient", snap.val());
+                });
+              commit("setCurrentRideForClient", null);
+            })
         })
         .catch(err => {
           console.log(err);
@@ -1166,16 +1180,17 @@ export default new Vuex.Store({
         .then(() => {
           firebase
             .database()
-            .ref("/Rides/" + payload.id)
-            .on("value", snap => {
-              commit("sendRatingForDriverFromHistory", snap.val());
+            .ref("/DriversRidesHistory/" + payload.idDriver + "/" + payload.id)
+            .update({
+              ratingForDriver: payload.ratingForDriver
             });
-          commit("setCurrentRideForClient", null);
+          commit("setCurrentRideForClient", null)
         })
         .catch(err => {
           console.log(err);
         });
     },
+
     finishRide({ commit }, payload) {
       firebase
         .database()
@@ -1190,8 +1205,16 @@ export default new Vuex.Store({
             .ref("/UsersDestinationsHistory/" + payload.ride.clientId + "/" + payload.ride.rideId)
             .update({
               ratingForClient: payload.ratingForClient
-            });
-          commit("setCurrentRideForDriver", null);
+            })
+            .then(() => {
+              firebase
+                .database()
+                .ref("/Rides/" + payload.ride.rideId)
+                .on("value", snap => {
+                  commit("setCurrentRideForDriver", snap.val());
+                });
+              commit("setCurrentRideForDriver", null);
+            })
         })
         .catch(err => {
           console.log(err);
@@ -1213,7 +1236,7 @@ export default new Vuex.Store({
           commit("setAllTexts", snap.val());
         });
     },
-    readDriverDetailsByUserID({ commit }, payload) { //TODO: de verificat +snap.val()[] ala
+    readDriverDetailsByUserID({ commit }, payload) {
       firebase
         .database()
         .ref("/Drivers/" + payload)

@@ -167,6 +167,7 @@ export default {
       const payload = {
         ratingForDriver: this.ratingForDriver,
         id: this.id,
+        idDriver: this.rideDetails.idDriver,
         // rideId: this.rideDetails.rideId,
       };
       this.$store.dispatch("sendRatingForDriverFromHistory", payload);

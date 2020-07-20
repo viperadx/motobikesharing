@@ -14,7 +14,7 @@
       <v-snackbar
         v-model="snackbarForDriverArrived"
         :timeout="0"
-        class="custom-snackbar-unverified-driver"
+        class="custom-snackbar-verified-driver"
         ><div class="custom-cancel-ride-driver">
           <v-btn
             color="orange"
@@ -22,7 +22,7 @@
             large
             dark
             v-if="
-              driverIsConnected &&
+              currentDriverDetails.driverIsConnected === 'true' &&
                 currentRideDriver &&
                 currentRideDriver.status === 'driver on route'
             "
@@ -32,7 +32,7 @@
           <br />
           <v-text-field
             v-if="
-              driverIsConnected &&
+              currentDriverDetails.driverIsConnected === 'true' &&
                 currentRideDriver &&
                 currentRideDriver.status === 'driver on route'
             "
@@ -47,7 +47,7 @@
             color="primary"
             dark
             v-if="
-              driverIsConnected &&
+              currentDriverDetails.driverIsConnected === 'true' &&
                 currentRideDriver &&
                 currentRideDriver.status === 'driver on route'
             "
@@ -57,6 +57,7 @@
         </div>
       </v-snackbar>
     </div>
+
     <div
       class="connect-driver"
       v-if="currentDriverDetails.checkStatus === 'verified'"
@@ -66,7 +67,10 @@
         fab
         x-large
         dark
-        v-if="!driverIsConnected && !currentRideDriver"
+        v-if="
+          currentDriverDetails.driverIsConnected === 'false' &&
+            !currentRideDriver
+        "
         @click="connectDriver()"
       >
         <v-icon>mdi-motorbike</v-icon>
@@ -77,7 +81,7 @@
         color="primary"
         dark
         v-if="
-          driverIsConnected &&
+          currentDriverDetails.driverIsConnected === 'true' &&
             currentRideDriver &&
             currentRideDriver.status === 'driver arrived'
         "
@@ -90,7 +94,7 @@
         x-large
         dark
         v-if="
-          driverIsConnected &&
+          currentDriverDetails.driverIsConnected === 'true' &&
             currentRideDriver &&
             currentRideDriver.status === 'driver arrived'
         "
@@ -102,7 +106,7 @@
       <v-card
         class="custom-send-rating-from-driver"
         v-if="
-          driverIsConnected &&
+          currentDriverDetails.driverIsConnected === 'true' &&
             currentRideDriver &&
             currentRideDriver.status === 'client dropped at destination' &&
             currentRideDriver.ratingForClient ===
@@ -127,7 +131,10 @@
         fab
         x-large
         dark
-        v-if="driverIsConnected && !currentRideDriver"
+        v-if="
+          currentDriverDetails.driverIsConnected === 'true' &&
+            !currentRideDriver
+        "
         @click="disconnectDriver()"
       >
         <v-icon>mdi-motorbike</v-icon>
@@ -144,7 +151,10 @@
           v-on:
           click="showRides"
         >
-          <div class="driver-ride-info" v-if="driverIsConnected">
+          <div
+            class="driver-ride-info"
+            v-if="currentDriverDetails.driverIsConnected === 'true'"
+          >
             <div class="justify-center-flex">
               <span class="driver-ride-info-text bold-text">Ride Info</span>
             </div>
@@ -185,7 +195,6 @@
 
 <script>
 /* eslint-disable no-console */
-
 import * as firebase from "firebase";
 import moment from "moment";
 export default {
@@ -216,7 +225,7 @@ export default {
         earningDriver: null,
       },
       currentRide: null,
-      driverIsConnected: false,
+      // driverIsConnected: false,
       incomingRequest: true,
       ratingForClient: 3,
       ratingForDriver: 3,
@@ -236,6 +245,18 @@ export default {
         }
       },
     },
+    currentDriverDetails: {
+      deep: true,
+      immediate: false,
+      handler(newValue) {
+        if (newValue.pageRefresh === "yes") {
+          // this.createMap();
+          // this.geolocate();
+          this.disconnectDriver();
+          this.pageRefresh();
+        }
+      },
+    },
     activeRideRequest: {
       deep: true,
       immediate: false,
@@ -244,7 +265,8 @@ export default {
           newValue.status === "ride finished" ||
           newValue.status === "ride cancelled by client" ||
           newValue.status === "client didn't show" ||
-          newValue.status === "driver didn't show"
+          newValue.status === "driver didn't show" ||
+          newValue.status === "client dropped at destination"
         ) {
           this.createMap();
           this.geolocate();
@@ -296,11 +318,33 @@ export default {
     this.$store.dispatch("readDriverDetailsByUserID", this.user);
   },
   methods: {
+    pageRefresh() {
+      firebase
+        .database()
+        .ref("/Drivers/" + this.user)
+        .update({
+          pageRefresh: "no",
+        });
+      window.location.reload();
+      window.alert(
+        "You didn't show up in time and the client cancelled the ride. You will need to reconnect"
+      );
+    },
     connectDriver() {
-      this.driverIsConnected = !this.driverIsConnected;
+      firebase
+        .database()
+        .ref("/Drivers/" + this.user)
+        .update({
+          driverIsConnected: "true",
+        });
     },
     disconnectDriver() {
-      this.driverIsConnected = !this.driverIsConnected;
+      firebase
+        .database()
+        .ref("/Drivers/" + this.user)
+        .update({
+          driverIsConnected: "false",
+        });
     },
     newRequest() {
       this.incomingRequest = !this.incomingRequest;
@@ -383,7 +427,7 @@ export default {
       this.rideInfo.status = "not requesting";
       this.createMap();
       this.geolocate();
-      this.driverIsConnected = true;
+      this.connectDriver();
     },
     acceptRide(ride) {
       const payload = {
@@ -419,6 +463,7 @@ export default {
     ratingForClientPopup() {
       const payload = { ride: this.currentRideDriver, idDriver: this.user };
       this.$store.dispatch("ratingForClientPopup", payload);
+      this.rideInfo.status = "not requesting";
     },
     finishRide() {
       const payload = {
@@ -429,7 +474,7 @@ export default {
       this.$store.dispatch("finishRide", payload);
       this.createMap();
       this.geolocate();
-      this.driverIsConnected = true;
+      this.connectDriver();
     },
     initialize(data) {
       this.map = data.map;
@@ -675,6 +720,10 @@ export default {
 }
 
 .custom-snackbar-unverified-driver {
+  min-height: 220px;
+}
+
+.custom-snackbar-verified-driver {
   min-height: 220px;
 }
 
