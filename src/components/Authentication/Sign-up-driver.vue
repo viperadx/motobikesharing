@@ -1,6 +1,9 @@
 <template>
   <v-card>
     <v-card-title>Create new account - DRIVER</v-card-title>
+    <v-layout text-center wrap
+      >Please note that all fields are required!</v-layout
+    >
     <v-container grid-list-sm class="pa-4">
       <v-layout wrap>
         <v-flex xs6>

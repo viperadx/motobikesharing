@@ -50,19 +50,21 @@
             :value="ticketDetails.email"
           ></v-text-field>
         </v-flex>
-        <div
-          xs12
-          v-if="this.ticketDetails.filenameSupport !== 'no file attached'"
-        >
-          <v-flex xs12>
+
+        <v-flex xs12>
+          <div
+            xs12
+            v-if="this.ticketDetails.filenameSupport !== 'no file attached'"
+          >
             <v-text-field
               label="File link"
               outlined
               readonly
               :value="ticketDetails.supportFileURL"
             ></v-text-field>
-          </v-flex>
-        </div>
+          </div>
+        </v-flex>
+
         <v-flex xs12>
           <v-select
             :items="ticketStatuses"
