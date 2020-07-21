@@ -12,11 +12,10 @@
                 :value="driverDetails.idUser"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs3>
               <expandable-image
+                class="custom-expandable-image"
                 :src="driverDetails.imageSelfieURL"
-                height="70"
-                width="70"
               />
             </v-flex>
             <v-flex xs6>
@@ -27,11 +26,10 @@
                 :value="driverDetails.expireDateID"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs3>
               <expandable-image
+                class="custom-expandable-image"
                 :src="driverDetails.imageIDURL"
-                height="70"
-                width="70"
               />
             </v-flex>
             <v-flex xs6>
@@ -42,11 +40,10 @@
                 :value="driverDetails.expireDateITP"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs3>
               <expandable-image
+                class="custom-expandable-image"
                 :src="driverDetails.imageITPURL"
-                height="70"
-                width="70"
               />
             </v-flex>
             <v-flex xs6>
@@ -57,11 +54,10 @@
                 :value="driverDetails.expireDateInsurance"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs3>
               <expandable-image
+                class="custom-expandable-image"
                 :src="driverDetails.imageInsuranceURL"
-                height="70"
-                width="70"
               />
             </v-flex>
             <v-flex xs6>
@@ -72,26 +68,25 @@
                 :value="driverDetails.expireDateLicense"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs3>
               <expandable-image
+                class="custom-expandable-image"
                 :src="driverDetails.imageLicenseURL"
-                height="70"
-                width="70"
               />
             </v-flex>
             <v-flex xs6>
               <v-text-field
+                class="custom-expandable-image"
                 label="Expire date RCA"
                 outlined
                 readonly
                 :value="driverDetails.expireDateRCA"
               ></v-text-field>
             </v-flex>
-            <v-flex xs6>
+            <v-flex xs3>
               <expandable-image
+                class="custom-expandable-image"
                 :src="driverDetails.imageRCAURL"
-                height="70"
-                width="70"
               />
             </v-flex>
             <v-flex xs6>
@@ -105,12 +100,10 @@
               ></v-select>
             </v-flex>
           </div>
-
-          <!-- <v-spacer></v-spacer> -->
-          <v-card-actions>
-            <v-btn type="submit" @click="updateCheckStatus()">Submit</v-btn>
-          </v-card-actions>
         </v-layout>
+        <v-card-actions>
+          <v-btn type="submit" @click="updateCheckStatus()">Submit</v-btn>
+        </v-card-actions>
       </v-container>
     </v-layout>
   </v-card>
@@ -122,6 +115,7 @@ import Vue from "vue";
 import VueExpandableImage from "vue-expandable-image";
 Vue.use(VueExpandableImage);
 import * as firebase from "firebase";
+
 export default {
   name: "Driver-requests",
   data() {
@@ -168,3 +162,103 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 600px;
+  max-width: 100%;
+  margin: 50px auto;
+  position: relative;
+}
+
+.image {
+  width: 400px;
+  max-width: 100%;
+}
+
+.expandable-image {
+  position: relative;
+  transition: 0.25s opacity;
+  cursor: zoom-in;
+}
+
+body > .expandable-image.expanded {
+  position: fixed;
+  z-index: 999999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: black;
+  display: flex;
+  align-items: center;
+  opacity: 0;
+  padding-bottom: 0 !important;
+  cursor: default;
+}
+
+.custom-expandable-image {
+  width: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+body > .expandable-image.expanded > img {
+  width: 100%;
+  max-width: 1200px;
+  max-height: 100%;
+  object-fit: contain;
+  margin: 0 auto;
+}
+
+body > .expandable-image.expanded > .close-button {
+  display: block;
+}
+
+.close-button {
+  position: fixed;
+  top: 10px;
+  right: 10px;
+  display: none;
+  cursor: pointer;
+}
+svg {
+  filter: drop-shadow(1px 1px 1px rgba(0, 0, 0, 0.5));
+}
+svg path {
+  fill: #fff;
+}
+.expand-button {
+  position: absolute;
+  z-index: 999;
+  right: 10px;
+  top: 10px;
+  padding: 0px;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  opacity: 0;
+  transition: 0.2s opacity;
+}
+
+.expandable-image:hover .expand-button {
+  opacity: 1;
+}
+.expand-button svg {
+  width: 20px;
+  height: 20px;
+}
+.expand-button path {
+  fill: #fff;
+}
+
+.expandable-image img {
+  width: 100%;
+}
+</style>

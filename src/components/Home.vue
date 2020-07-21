@@ -325,7 +325,7 @@ export default {
         .update({
           pageRefresh: "no",
         });
-      window.location.reload();
+      setTimeout(() => window.location.reload(), 3000);
       window.alert(
         "You didn't show up in time and the client cancelled the ride. You will need to reconnect"
       );

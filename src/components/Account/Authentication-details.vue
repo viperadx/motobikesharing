@@ -7,7 +7,7 @@
     <v-switch
       v-model="readonly"
       inset
-      :label="`Readonly: ${readonly.toString()}`"
+      :label="`Locked for edit: ${readonly.toString()}`"
     ></v-switch>
     <v-text-field
       label="Email"
@@ -58,7 +58,7 @@
     <div v-if="readonly === false">
       <v-btn
         :loading="loading3"
-        :disabled="loading3"
+        :disabled="emptyFieldValidationRegister"
         color="blue-grey"
         class="ma-2 white--text"
         @click="
@@ -98,6 +98,12 @@ export default {
     };
   },
   computed: {
+    emptyFieldValidationRegister() {
+      return !(
+        this.password == this.confirmPassword ||
+        (!this.password && !this.confirmPassword)
+      );
+    },
     comparePasswords() {
       return this.password !== this.confirmPassword
         ? "Passwords do not match"
@@ -148,6 +154,9 @@ export default {
         userID: this.userID,
       };
       this.$store.dispatch("updateAuthenticationDetails", payload);
+      this.$store.dispatch("signOut");
+      setTimeout(() => window.location.reload(), 3000);
+      window.alert("Changes saved");
     },
   },
   created() {

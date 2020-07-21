@@ -1,10 +1,9 @@
 <template>
   <v-container>
-    <!-- <div>{{ userData.email }}</div> -->
     <v-switch
       v-model="readonly"
       inset
-      :label="`Readonly: ${readonly.toString()}`"
+      :label="`Locked for edit: ${readonly.toString()}`"
     ></v-switch>
     <v-col cols="12" sm="6" md="3">
       <v-text-field

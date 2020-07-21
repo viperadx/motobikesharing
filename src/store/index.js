@@ -245,7 +245,8 @@ export default new Vuex.Store({
               idUser: details.user.uid,
               driverIsConnected: "false",
               checkStatus: "pending",
-              createdDate: fullString
+              createdDate: fullString,
+              totalPaymentsMade: 0,
             });
           let newDirectory = details.user.uid
           let fileNameSelfie = "Selfie" + payload.imageSelfie.name.slice(payload.imageSelfie.name.lastIndexOf('.'))
@@ -427,7 +428,8 @@ export default new Vuex.Store({
               idUser: payload.userID,
               driverIsConnected: "false",
               checkStatus: "pending",
-              createdDate: fullString
+              createdDate: fullString,
+              totalPaymentsMade: 0,
             });
           let newDirectory = payload.userID
           let fileNameSelfie = "Selfie" + payload.imageSelfie.name.slice(payload.imageSelfie.name.lastIndexOf('.'))
