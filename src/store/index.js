@@ -101,6 +101,7 @@ export default new Vuex.Store({
           commit("setUser", null);
           commit("setloggedInUserData", null);
           router.push({ path: "/" });
+          window.location.reload();
         })
         .catch(error => {
           window.alert(error.message);

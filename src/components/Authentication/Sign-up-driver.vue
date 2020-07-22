@@ -413,7 +413,7 @@
           <img :src="imageUrlInsurance" height="70" width="200" />
         </v-flex>
       </v-layout>
-      <div>
+      <!-- <div>
         By registering, you agree to the
         <v-tooltip bottom>
           <template v-slot:activator="{ on }">
@@ -428,7 +428,13 @@
           </template>
           Opens in new window
         </v-tooltip>
-      </div>
+      </div> -->
+      <v-layout text-center wrap>
+        By register you agree to the
+        <router-link to="/termsandconditions">
+          Terms and conditions</router-link
+        >
+      </v-layout>
     </v-container>
     <v-card-actions>
       <v-container fluid

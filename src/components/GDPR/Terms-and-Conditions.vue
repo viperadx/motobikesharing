@@ -12,11 +12,13 @@ export default {
   },
   computed: {
     text() {
-      return this.$store.getters.allTextsGetter.GDPR;
+      return this.$store.getters.allTextsGetter.GDPR.gdpr;
     },
   },
   methods: {},
-  created() {},
+  created() {
+    // this.$store.dispatch("readAllTexts");
+  },
   mounted() {},
 };
 </script>
